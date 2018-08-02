@@ -1,0 +1,13 @@
+{% if external_vlan is defined %}
+interface vlan {{ external_vlan }}
+  description tagged
+  no shutdown
+  ip address {{ external_vlan_ip }}
+{% endif %}
+
+{% if internal_vlan is defined %}
+interface vlan {{ internal_vlan }}
+  description untagged
+  no shutdown
+  ip address {{ internal_vlan_ip }}
+{% endif %}
