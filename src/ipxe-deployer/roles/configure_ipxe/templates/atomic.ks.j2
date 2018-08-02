@@ -30,12 +30,12 @@ GATEWAY={{ external_gateway }}
 {% elif hostvars[item]['openshift_public_ip'] is defined and external_vlan is defined %}
 IPADDR={{ hostvars[item]['openshift_ip'] }}
 NETMASK={{ internal_netmask }}
-DNS1={{ local_dns }}
+DNS1={{ dns_local }}
 {% elif internal_vlan is not defined %}
 IPADDR={{ hostvars[item]['openshift_ip'] }}
 NETMASK={{ internal_netmask }}
 GATEWAY={{ internal_gateway }}
-DNS1={{ local_dns }}
+DNS1={{ dns_local }}
 {% endif %}
 BOOTPROTO=none
 USERCTL=no
@@ -50,7 +50,7 @@ NETMASK={{ internal_netmask }}
 {% if hostvars[item]['openshift_public_ip'] is undefined %}
 GATEWAY={{ internal_gateway }}
 {% endif %}
-DNS1={{ local_dns }}
+DNS1={{ dns_local }}
 ONBOOT=yes
 VLAN=yes
 BOOTPROTO=none
@@ -64,7 +64,7 @@ DEVICE=bond0.{{ external_vlan }}
 IPADDR={{ hostvars[item]['openshift_public_ip'] }}
 NETMASK={{ external_netmask }}
 GATEWAY={{ external_gateway }}
-DNS1={{ local_dns }}
+DNS1={{ dns_local }}
 ONBOOT=yes
 VLAN=yes
 BOOTPROTO=none
