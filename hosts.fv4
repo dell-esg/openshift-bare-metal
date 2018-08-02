@@ -18,7 +18,7 @@ openshift_master_cluster_hostname=ocp.fv4.lab
 openshift_master_cluster_public_hostname=ocp.example.com
 openshift_master_default_subdomain=apps.ocp.example.com
 openshift_master_cluster_ip=192.168.20.30
-openshift_master_cluster_public_ip=100.65.0.30
+openshift_master_cluster_public_ip=192.168.253.26
 openshift_master_portal_net=10.0.0.0/16
 openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
 openshift_master_htpasswd_users={'admin': '$apr1$vC6GcVUP$AHZDU5BAFF6dDMfk.IFzG1'}
@@ -34,25 +34,25 @@ os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
 # XXX do we have subscription account?
 rhel_subscription_user=RHSM_USER
 rhel_subscription_pass=RHSM_PASS
+root_password="1S0lut1on!"
 
-
-local_dns=192.168.20.11
+dns_local=192.168.20.11
 dns_upstream=8.8.8.8
-external_interface=bond0
 
 # XXX assuming it's not native
+external_interface=bond0
 external_vlan=8
 external_netmask=255.255.250.0
-external_gateway=192.168.8.1
+external_gateway=192.168.253.1
+
 internal_interface=bond0
-# XXX assuming it's native
-# internal_vlan
+# internal_vlan=
 internal_netmask=255.255.255.0
-bastion_ip=192.168.20.11
 internal_gateway={{ bastion_ip }}
+
+bastion_ip=192.168.20.11
 dhcp_first_ip=192.168.20.100
 dhcp_last_ip=192.168.20.150
-root_password="1S0lut1on!"
 
 
 
@@ -76,6 +76,9 @@ rhel0[2:4].ocp.fv4.lab
 [lb]
 rhel0[5:7].ocp.fv4.lab
 
+[glusterfs_registry]
+rhel1[3:5].ocp.fv4.lab glusterfs_devices="[ '/dev/sdb', '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl', '/dev/sdm', '/dev/sdn', '/dev/sdo', '/dev/sdp', '/dev/sdq', '/dev/sdr', '/dev/sds', '/dev/sdt', '/dev/sdu', '/dev/sdx' ]"
+
 [nodes]
 rhel02.ocp.fv4.lab openshift_ip=192.168.20.23 openshift_hostname=master1.ocp.fv4.lab ipmi=192.168.8.12 serial=6NSHBM2 openshift_node_group_name='node-config-master'
 rhel03.ocp.fv4.lab openshift_ip=192.168.20.24 openshift_hostname=master2.ocp.fv4.lab ipmi=192.168.8.13 serial=6NSDBM2 openshift_node_group_name='node-config-master'
@@ -94,9 +97,3 @@ rhel12.ocp.fv4.lab openshift_ip=192.168.20.25 openshift_hostname=app5.ocp.fv4.la
 rhel13.ocp.fv4.lab openshift_ip=192.168.20.23 openshift_hostname=stor1.ocp.fv4.lab ipmi=192.168.8.23 serial=5B98RP2 openshift_node_group_name='node-config-compute'
 rhel14.ocp.fv4.lab openshift_ip=192.168.20.24 openshift_hostname=stor2.ocp.fv4.lab ipmi=192.168.8.24 serial=5B99RP2 openshift_node_group_name='node-config-compute'
 rhel15.ocp.fv4.lab openshift_ip=192.168.20.25 openshift_hostname=stor3.ocp.fv4.lab ipmi=192.168.8.25 serial=5BB4RP2 openshift_node_group_name='node-config-compute'
-
-
-[glusterfs_registry]
-rhel13.ocp.fv4.lab glusterfs_devices="[ '/dev/sdb', '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl', '/dev/sdm', '/dev/sdn', '/dev/sdo', '/dev/sdp', '/dev/sdq', '/dev/sdr', '/dev/sds', '/dev/sdt', '/dev/sdu', '/dev/sdx' ]"
-rhel14.ocp.fv4.lab glusterfs_devices="[ '/dev/sdb', '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl', '/dev/sdm', '/dev/sdn', '/dev/sdo', '/dev/sdp', '/dev/sdq', '/dev/sdr', '/dev/sds', '/dev/sdt', '/dev/sdu', '/dev/sdx' ]"
-rhel15.ocp.fv4.lab glusterfs_devices="[ '/dev/sdb', '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl', '/dev/sdm', '/dev/sdn', '/dev/sdo', '/dev/sdp', '/dev/sdq', '/dev/sdr', '/dev/sds', '/dev/sdt', '/dev/sdu', '/dev/sdx' ]"
