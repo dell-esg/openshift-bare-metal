@@ -60,8 +60,7 @@ dhcp_last_ip=192.168.20.150
 # new in 3.10
 openshift_node_groups=[{'name': 'node-config-stor', 'labels': ['node-role.kubernetes.io/stor=true']},
                       {'name': 'node-config-infra', 'labels': ['node-role.kubernetes.io/infra=true',]},
-                      {'name': 'node-config-compute', 'labels': ['node-role.kubernetes.io/compute=true'],
-                      'edits': [{ 'key': 'kubeletArguments.pods-per-core','value': ['20']}]}]
+                      {'name': 'node-config-compute', 'labels': ['node-role.kubernetes.io/compute=true'], 'edits': [{ 'key': 'kubeletArguments.pods-per-core','value': ['20']}]}]
 
 
 [local]
