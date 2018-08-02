@@ -20,6 +20,9 @@
   with_items:
     - "docker-python"
     - "ipxe-bootimgs"
+    - "docker"
+    - "python-docker-py"
+    - "python-urllib3"
 
 - name: Ensure docker is started
   systemd:
