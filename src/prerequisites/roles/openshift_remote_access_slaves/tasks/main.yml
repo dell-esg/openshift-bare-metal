@@ -1,0 +1,45 @@
+---
+# Copyright (c) 2017 Intel Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+- name: add group
+  group:
+    name: openshift
+    state: present
+- user:
+    name: openshift
+    shell: /bin/bash
+    group: openshift
+    groups: adm
+    append: yes
+
+- name: set up sudo without password
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    line: 'openshift      ALL=(ALL)       NOPASSWD: ALL'
+- name: ensure the directory exist
+  file:
+    path: /home/openshift/.ssh/
+    recurse: yes
+    owner: openshift
+    group: openshift
+    state: directory
+
+- name: copy ssh keys
+  copy:
+    src: /home/openshift/.ssh/id_rsa.pub
+    dest: /home/openshift/.ssh/authorized_keys
+    owner: openshift
+    group: openshift
+    mode: 0600

@@ -1,0 +1,14 @@
+[Unit]
+Description=Docker dnsmasq container
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+RestartSec=5s
+ExecStartPre=-/usr/bin/docker rm -f dnsmasq
+ExecStart=/usr/bin/docker run  --name dnsmasq -v "/etc/dnsmasq.d:/etc/dnsmasq.d:ro" -v "/tftp/ipxe:/tftp:ro,z" -v "/etc/dnsmasq_c.conf:/etc/dnsmasq.conf:ro" --cap-add=NET_ADMIN --net=host {{dnsmasq_image}}:{{ dnsmasq_image_tag }}
+ExecStop=/usr/bin/docker rm -f dnsmasq
+
+[Install]
+WantedBy=default.target

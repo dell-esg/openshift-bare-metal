@@ -1,0 +1,43 @@
+#dnsmasq.conf
+
+# include additional configuration files
+conf-dir=/etc/dnsmasq.d
+
+# Speeds up dhcp, but also dangerous where another dhcp server exists
+#dhcp-authoritative
+
+# Log lots of extra information about DHCP transactions.
+log-dhcp
+
+# For debugging purposes, log each DNS query as it passes through dnsmasq.
+#log-queries
+
+
+### tftp options
+enable-tftp
+tftp-root=/tftp
+
+### dns options
+
+# do not use local /etc/hosts file
+no-hosts
+
+# do not use local /etc/resolv.conf file
+no-resolv
+
+# do not forward queries without domain name
+domain-needed
+
+# forward all queries to following dns
+server={{ dns_upstream }}
+
+### dhcp options
+
+dhcp-match=set:ipxe,175
+dhcp-boot=tag:!ipxe,ipxe.efi
+dhcp-boot=http://{{ bastion_ip }}/ipxe/main.ipxe
+
+{% if internal_dhcp_first_ip is defined and dhcp_last_ip is defined %}
+dhcp-range={{ dhcp_first_ip }},{{ dhcp_last_ip }}
+{% endif %}
+# end of config file

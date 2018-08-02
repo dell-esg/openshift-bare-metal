@@ -1,0 +1,2 @@
+#---
+host_public_ip:  hostvars['{{ item }}']['ipmi']

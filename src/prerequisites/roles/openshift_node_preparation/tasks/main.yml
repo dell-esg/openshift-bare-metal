@@ -1,0 +1,53 @@
+---
+# Copyright (c) 2017 Intel Corporation 
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+- include: os_definition.yml
+- name: install packagges 
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+     - wget
+     - git
+     - net-tools
+     - bind-utils
+     - iptables-services
+     - bridge-utils
+     - bash-completion
+  when: os_version != 'atomic'
+- name: yum update
+  yum:
+    name: '*'
+    state: latest
+  when: os_version != 'atomic'
+- name: atomic-openshift-utils
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - atomic-openshift-utils
+    - atomic-openshift-excluder
+    - atomic-openshift-docker-excluder
+    - docker
+  when: os_version != 'atomic'
+- name: Workaround for docker 1.12
+  lineinfile:
+    dest: /etc/yum.conf
+    state: present
+    line: 'exclude=docker*1.12*'     
+- name: Enable insecure registry 
+  lineinfile:
+    dest: /etc/sysconfig/docker
+    state: present
+    line: "OPTIONS=' --selinux-enabled --insecure-registry {{ openshift_master_portal_net }}'"

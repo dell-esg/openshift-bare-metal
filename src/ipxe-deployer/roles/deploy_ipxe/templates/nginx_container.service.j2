@@ -1,0 +1,14 @@
+[Unit]
+Description=Docker nginx container
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+RestartSec=5s
+ExecStartPre=-/usr/bin/docker rm -f nginx
+ExecStart=/usr/bin/docker run  --name nginx -v "/tftp:/opt/rh/rh-nginx110/root/usr/share/nginx/html:ro,z" -p 80:8080 {{ nginx_image }}:{{ nginx_image_tag }}
+ExecStop=/usr/bin/docker rm -f nginx
+
+[Install]
+WantedBy=default.target

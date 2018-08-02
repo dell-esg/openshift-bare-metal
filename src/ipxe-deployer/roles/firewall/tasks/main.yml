@@ -1,0 +1,76 @@
+---
+# Copyright (c) 2017 Intel Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Check if firewalld is running
+  command: systemctl status firewalld
+  ignore_errors: yes
+  changed_when: false
+  register: firewalld_status
+  failed_when: false
+
+- name: Report status of firewalld
+  fail:
+    msg: "Firewalld is stopped or disabled. Please enable firewalld if you want to use NAT features on bastion node"
+  when: firewalld_status | failed
+
+- name: Enable tftp traffic
+  firewalld:
+    service: tftp
+    permanent: true
+    state: enabled
+    zone: public
+
+- name: Enable dhcp traffic
+  firewalld:
+    service: dhcp
+    permanent: true
+    state: enabled
+    zone: public
+
+- name: Enable dns traffic
+  firewalld:
+    service: dns
+    permanent: true
+    state: enabled
+    zone: public
+
+- name: Enable http traffic
+  firewalld:
+    service: http
+    permanent: true
+    state: enabled
+    zone: public
+
+- name: Add docker0 interface to public zone
+  firewalld:
+    zone: public
+    interface: docker0
+    permanent: true
+    state: enabled
+
+- name: Add NAT rule
+  command: firewall-cmd --direct --add-rule ipv4 nat POSTROUTING 0 -o {{ external_interface }}{% if external_vlan is defined %}.{{ external_vlan }}{% endif %} -j MASQUERADE
+
+- name: Add forwarding rule public -> private
+  command: firewall-cmd --direct --add-rule ipv4 filter FORWARD 0 -i {{ internal_interface }}{% if internal_vlan is defined %}.{{ internal_vlan }}{% endif %} -o {{ external_interface }}{% if external_vlan is defined %}.{{ external_vlan }}{% endif %} -j ACCEPT
+
+- name: Add forwarding rule private -> public
+  command: firewall-cmd --direct --add-rule ipv4 filter FORWARD 0 -i {{ external_interface }}{% if external_vlan is defined %}.{{ external_vlan }}{% endif %} -o {{ internal_interface }}{% if internal_vlan is defined %}.{{ internal_vlan }}{% endif %} -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+- name: Add masquerade
+  command: firewall-cmd --zone=public --add-masquerade --permanent
+
+- name: Reload firewalld
+  command: firewall-cmd --reload

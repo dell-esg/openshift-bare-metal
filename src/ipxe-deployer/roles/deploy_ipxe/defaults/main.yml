@@ -1,0 +1,7 @@
+---
+root_password: 'openshift'
+nginx_image: 'openshift3/nginx'
+nginx_image_tag: '1.0_ra'
+dnsmasq_image: 'openshift3/dnsmasq'
+dnsmasq_image_tag: '1.0_ra'
+dns_upstream: '8.8.8.8'

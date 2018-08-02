@@ -1,0 +1,16 @@
+[Unit]
+After=docker.service
+Requires=docker.service
+PartOf=docker.service
+
+[Service]
+ExecStartPre=-/usr/bin/docker rm -f openshift_keepalived
+ExecStart=/usr/bin/docker run --name openshift_keepalived --rm -v /etc/keepalived:/etc/keepalived:z,ro --cap-add=NET_ADMIN --net=host -v /dev/log:/dev/log:z -v /lib/modules:/lib/modules:ro {{ keepalived_image }}:{{ keepalived_image_tag }} 
+ExecStop=/usr/bin/docker stop openshift_keepalived
+LimitNOFILE=100000
+LimitCORE=infinity
+Restart=always
+RestartSec=5s
+
+[Install]
+WantedBy=docker.service
