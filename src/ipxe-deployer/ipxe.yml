@@ -18,4 +18,5 @@
     - {role: deploy_ipxe, tags: ['run']}
     - {role: configure_ipxe, tags: ['config']}
     - {role: firewall, tags: ['firewall']}
-    - {role: reboot, tags: ['reboot']}
+# needs testing
+#    - {role: reboot, tags: ['reboot']}
