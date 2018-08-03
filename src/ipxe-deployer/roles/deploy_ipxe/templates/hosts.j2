@@ -1,0 +1,18 @@
+#[master/worker private ip]
+{% for host  in groups['masters'] %}
+address=/{{hostvars[host]['openshift_hostname']}}/{{hostvars[host]['inventory_hostname']}}/{{ hostvars[host]['openshift_ip'] }}
+{% endfor %}
+{% for host  in groups['nodes'] %}
+address=/{{hostvars[host]['openshift_hostname']}}/{{hostvars[host]['inventory_hostname']}}/{{ hostvars[host]['openshift_ip'] }}
+{% endfor %}
+{% for host  in groups['etcd'] %}
+address=/{{hostvars[host]['openshift_hostname']}}/{{hostvars[host]['inventory_hostname']}}/{{ hostvars[host]['openshift_ip'] }}
+{% endfor %}
+{% for host  in groups['lb'] %}
+address=/{{hostvars[host]['openshift_hostname']}}/{{hostvars[host]['inventory_hostname']}}/{{ hostvars[host]['openshift_ip'] }}
+{% endfor %}
+
+# [lb private ip]
+host-record={{ openshift_master_cluster_hostname }},{{ openshift_master_cluster_ip }}
+# [lb public ip]
+address=/{{ openshift_master_cluster_public_hostname }}/{{ openshift_master_cluster_public_ip }}
