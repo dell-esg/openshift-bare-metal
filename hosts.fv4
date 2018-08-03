@@ -41,7 +41,7 @@ dns_upstream=8.8.8.8
 
 # XXX assuming it's not native
 external_interface=bond0
-external_vlan=8
+external_vlan=25
 external_netmask=255.255.250.0
 external_gateway=192.168.253.1
 
@@ -53,7 +53,6 @@ internal_gateway={{ bastion_ip }}
 bastion_ip=192.168.20.11
 dhcp_first_ip=192.168.20.100
 dhcp_last_ip=192.168.20.150
-# xxx dhcp_range LACKING
 
 
 
