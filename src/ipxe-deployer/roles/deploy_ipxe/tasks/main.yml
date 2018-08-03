@@ -49,6 +49,14 @@
     src: dnsmasq_c.conf.j2
     dest: /etc/dnsmasq_c.conf
 
+- name: Populate DNS entries
+  template:
+    src: "hosts.j2"
+    dest: "/etc/dnsmasq.d/hosts"
+    owner: root
+    group: root
+    mode: 0644
+
 - name: Create dnsmasq systemd unit
   template:
     src:  dnsmasq_container.service.j2
@@ -98,14 +106,6 @@
     state: started
     enabled: True
     daemon_reload: yes
-
-- name: Populate DNS entries
-  template:
-    src: "hosts.j2"
-    dest: "/etc/dnsmasq.d/hosts"
-    owner: root
-    group: root
-    mode: 0644
 
 - name: Modify local resolvconf
   lineinfile:

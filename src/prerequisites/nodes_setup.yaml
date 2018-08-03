@@ -19,7 +19,6 @@
     - rhel_unsubscribe
     - rhel_subscribe
     - openshift_remote_access_master
-  # - openshift_dns
     - known_hosts
   post_tasks:
     - name: Install openshift-ansible
