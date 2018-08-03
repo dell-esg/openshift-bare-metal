@@ -53,12 +53,12 @@ internal_gateway={{ bastion_ip }}
 bastion_ip=192.168.20.11
 dhcp_first_ip=192.168.20.100
 dhcp_last_ip=192.168.20.150
-
+# xxx dhcp_range LACKING
 
 
 
 # new in 3.10
-openshift_node_groups=[{'name': 'node-config-stor', 'labels': ['node-role.kubernetes.io/stor=true']},
+openshift_node_groups=[{'name': 'node-config-master', 'labels': ['node-role.kubernetes.io/master=true']},
                       {'name': 'node-config-infra', 'labels': ['node-role.kubernetes.io/infra=true',]},
                       {'name': 'node-config-compute', 'labels': ['node-role.kubernetes.io/compute=true'], 'edits': [{ 'key': 'kubeletArguments.pods-per-core','value': ['20']}]}]
 
