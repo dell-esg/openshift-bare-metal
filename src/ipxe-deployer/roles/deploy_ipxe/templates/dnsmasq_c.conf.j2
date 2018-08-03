@@ -37,7 +37,7 @@ dhcp-match=set:ipxe,175
 dhcp-boot=tag:!ipxe,ipxe.efi
 dhcp-boot=http://{{ bastion_ip }}/ipxe/main.ipxe
 
-{% if internal_dhcp_first_ip is defined and dhcp_last_ip is defined %}
+{% if dhcp_first_ip is defined and dhcp_last_ip is defined %}
 dhcp-range={{ dhcp_first_ip }},{{ dhcp_last_ip }}
 {% endif %}
 # end of config file
