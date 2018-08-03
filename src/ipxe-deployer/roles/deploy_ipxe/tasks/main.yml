@@ -99,6 +99,20 @@
     enabled: True
     daemon_reload: yes
 
+- name: Populate DNS entries
+  template:
+    src: "hosts.j2"
+    dest: "/etc/dnsmasq.d/hosts"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Modify local resolvconf
+  lineinfile:
+    dest: /etc/resolv.conf
+    state: present
+    line: "nameserver 127.0.0.1"
+
 - name: Start dnsmasq_container service
   systemd:
     name: dnsmasq_container.service
