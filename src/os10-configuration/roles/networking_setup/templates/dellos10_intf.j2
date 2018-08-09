@@ -2,7 +2,7 @@ interface port-channel1
  no shutdown
  switchport mode trunk
  switchport access vlan {{ internal_vlan }}
- switchport trunk allowed vlan {{ external_vlan }}
+ switchport trunk allowed vlan {{ mgmt_vlan }}, {{ external_vlan }}
  vlt-port-channel 1
  lacp fallback enable
  spanning-tree port type edge
@@ -137,6 +137,13 @@ interface port-channel15
  spanning-tree port type edge
  mtu {{ mtu }}
 !
+interface port-channel48
+ no shutdown
+ switchport mode trunk
+ switchport access vlan 1
+ switchport trunk allowed vlan {{ mgmt_vlan }}, {{ internal_vlan }}, {{ external_vlan }}
+ vlt-port-channel 48
+!
 interface ethernet1/1/1
  description bastion
  no switchport
@@ -256,4 +263,13 @@ interface ethernet1/1/15
  channel-group 15 mode active
  lacp port-priority {{ lacp_port_priorty }}
  mtu {{ mtu }}
+!
+interface ethernet1/1/48
+ description uplink
+ no shutdown
+ channel-group 48 mode active
+ no switchport
+ mtu {{ mtu }}
+!
+no iscsi enable
 !

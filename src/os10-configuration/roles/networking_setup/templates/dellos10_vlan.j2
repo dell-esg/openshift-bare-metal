@@ -1,13 +1,19 @@
+{% if mgmt_vlan is defined %}
+interface vlan {{ mgmt_vlan }}
+  description mgmt
+  no shutdown
+{% endif %}
+
 {% if external_vlan is defined %}
 interface vlan {{ external_vlan }}
-  description tagged
+  description external
   no shutdown
   ip address {{ external_vlan_ip }}
 {% endif %}
 
 {% if internal_vlan is defined %}
 interface vlan {{ internal_vlan }}
-  description untagged
+  description internal
   no shutdown
   ip address {{ internal_vlan_ip }}
 {% endif %}
