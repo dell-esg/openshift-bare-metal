@@ -77,6 +77,7 @@
     - "/tftp"
     - "/tftp/ipxe/serial"
     - "/tftp/atomic/media"
+    - "/tftp/rhel/media"
 
 - name: Copy undionly iPXE image
   copy:
