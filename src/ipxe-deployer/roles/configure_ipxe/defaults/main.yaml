@@ -14,3 +14,4 @@
 # limitations under the License.
 interface1: 'p2p1'
 interface2: 'p2p2'
+os: 'atomic'
