@@ -22,9 +22,25 @@
     src: atomic.ks.j2
     dest: /tftp/atomic/media/atomic-{{ item }}.ks
   with_items: "{{ groups.nodes }}"
+  when: hostvars[item]['os'] is undefined
+  
+- name: Create RHEL kickstarts
+  template:
+    src: rhel.ks.j2
+    dest: /tftp/rhel/media/rhel-{{ item }}.ks
+  with_items: "{{ groups.nodes }}"
+  when: (hostvars[item]['os'] is defined) and (hostvars[item]['os'] == "rhel")
 
 - name: Create iPXE configs
   template:
     src: serial.ipxe.j2
     dest: /tftp/ipxe/serial/{{ hostvars[item]['serial'] }}.ipxe
   with_items: "{{ groups.nodes }}"
+  when: hostvars[item]['os'] is undefined
+  
+- name: Create iPXE configs for RHEL
+  template:
+    src: serialrhel.ipxe.j2
+    dest: /tftp/ipxe/serial/{{ hostvars[item]['serial'] }}.ipxe
+  with_items: "{{ groups.nodes }}"
+  when: (hostvars[item]['os'] is defined) and (hostvars[item]['os'] == "rhel")
