@@ -76,7 +76,7 @@ rhel0[2:4].ocp.fv4.lab
 rhel0[5:7].ocp.fv4.lab
 
 [glusterfs_registry]
-rhel11[3:5].ocp.fv4.lab glusterfs_devices="[ '/dev/sdb', '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl', '/dev/sdm', '/dev/sdn', '/dev/sdo', '/dev/sdp', '/dev/sdq', '/dev/sdr', '/dev/sds', '/dev/sdt', '/dev/sdu', '/dev/sdx' ]"
+rhel1[3:5].ocp.fv4.lab glusterfs_devices="[ '/dev/sdb', '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl', '/dev/sdm', '/dev/sdn', '/dev/sdo', '/dev/sdp', '/dev/sdq', '/dev/sdr', '/dev/sds', '/dev/sdt', '/dev/sdu', '/dev/sdx' ]"
 
 [nodes]
 rhel02.ocp.fv4.lab openshift_ip=192.168.20.12 openshift_hostname=master1.ocp.fv4.lab ipmi=192.168.8.12 serial=6NSHBM2 openshift_node_group_name='node-config-master'
