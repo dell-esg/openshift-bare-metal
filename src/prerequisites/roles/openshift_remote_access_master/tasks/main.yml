@@ -13,14 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 - user:
-    name: {{ ansible_ssh_user }}
+    name: "{{ ansible_ssh_user }}"
     shell: /bin/bash
     group: root
     append: yes
 
 - name: Add ssh key
   user:
-    name: {{ ansible_ssh_user }}
+    name: "{{ ansible_ssh_user }}"
     generate_ssh_key: yes
     ssh_key_bits: 2048
     ssh_key_file: .ssh/id_rsa
@@ -28,9 +28,9 @@
 
 - name: Locally authorize ssh public key
   copy:
-    src: /home/{{ ansible_ssh_user }}/.ssh/id_rsa.pub
-    dest: /home/{{ ansible_ssh_user }}/.ssh/authorized_keys
-    owner: {{ ansible_ssh_user }}
+    src: "/home/{{ ansible_ssh_user }}/.ssh/id_rsa.pub"
+    dest: "/home/{{ ansible_ssh_user }}/.ssh/authorized_keys"
+    owner: "{{ ansible_ssh_user }}"
     mode: 0600
 
 - name: Set up sudo without password
