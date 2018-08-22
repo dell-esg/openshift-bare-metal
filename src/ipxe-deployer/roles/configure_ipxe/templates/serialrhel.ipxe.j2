@@ -1,0 +1,9 @@
+#!ipxe
+
+set base http://{{ bastion_ip}}/rhel/media
+set pxe images/pxeboot
+set ks  rhel-{{ item }}.ks
+
+kernel ${base}/${pxe}/vmlinuz initrd=initrd.img ip=dhcp inst.repo=${base} inst.ks=${base}/${ks}
+initrd ${base}/${pxe}/initrd.img
+boot
