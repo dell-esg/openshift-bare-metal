@@ -31,7 +31,7 @@
   with_items: "{{ groups.nodes }}"
   when: (hostvars[item]['os'] is defined) and (hostvars[item]['os'] == "rhel")
 
-- name: Create iPXE configs
+- name: Create iPXE configs for Atomic
   template:
     src: serial.ipxe.j2
     dest: /tftp/ipxe/serial/{{ hostvars[item]['serial'] }}.ipxe
