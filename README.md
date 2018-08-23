@@ -14,9 +14,13 @@ Refer to *hosts.example* for possible variables.
 vim /etc/ansible/hosts`
 
 ### Switch Configuration
-Update inventory file and run:
+The OS10 configuration role requires Ansible v2.5, which is available in a container. Build the container image:
 
-`ansible-playbook -i src/os10-configuration/inventory.yaml src/os10-configuration/configure_dellos10.yaml`
+`cd src/os10-configuration; docker build -t ansible25 .`
+
+Update inventory.yaml and run:
+
+`docker run --rm -it -v $PWD:/playbooks ansible25 configure_dellos10.yaml`
 
 ### Server BIOS Configuration
 First, setup NFS share for Server Configuration Profile (SCP) environment that will be used to set BIOS settings on servers. Update inventory_scp_setup.yaml and run:
