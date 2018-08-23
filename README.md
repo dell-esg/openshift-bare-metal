@@ -19,9 +19,12 @@ Update inventory file and run:
 `ansible-playbook -i src/os10-configuration/inventory.yaml src/os10-configuration/configure_dellos10.yaml`
 
 ### Server BIOS Configuration
-Update inventory file and run:
+First, setup NFS share for Server Configuration Profile (SCP) environment that will be used to set BIOS settings on servers. Update inventory_scp_setup.yaml and run:
 
 `ansible-playbook -i src/scp_configuration/inventory_scp_setup.yaml src/scp_configuration/setup_scp_environment.yaml`
+
+Next, update inventory_scp_apply.yaml and run:
+
 `ansible-playbook -i src/scp_configuration/inventory_scp_apply.yaml src/scp_configuration/bios_settings.yaml`
 
 This will:
@@ -31,8 +34,7 @@ This will:
 - Enable PXE for addon NIC port 1
 - Setup boot order: 1) BOSS cards 2) NIC
 
-### Configure server for one time boot from NIC
-Update inventory file and run:
+To setup one time boot from NIC, run:
 
 `ansible-playbook -i src/scp_configuration/inventory_scp_apply.yaml src/scp_configuration/one_time_boot.yaml`
 
