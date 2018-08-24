@@ -1,6 +1,6 @@
 [dellos10]
-dellos10_sw1 ansible_host=192.168.8.2 host_name="S5148-1" internal_vlan_ip=192.168.20.2/24 external_vlan_ip=192.168.253.2/24 peer_ip=192.168.8.3 bridge_priority=20480 vlt_priority=32768 lacp_port_priorty=1
-dellos10_sw2 ansible_host=192.168.8.3 host_name="S5148-2" internal_vlan_ip=192.168.20.3/24 external_vlan_ip=192.168.253.3/24 peer_ip=192.168.8.2 bridge_priority=24576 vlt_priority=65535 lacp_port_priorty=32768
+dellos10_sw1 ansible_host=192.168.7.2 host_name="S5148_1" internal_vlan_ip=192.168.20.2/24 external_vlan_ip=192.168.253.2/24 peer_ip=192.168.7.3 bridge_priority=20480 vlt_priority=32768 lacp_port_priorty=1
+dellos10_sw2 ansible_host=192.168.7.3 host_name="S5148_2" internal_vlan_ip=192.168.20.3/24 external_vlan_ip=192.168.253.3/24 peer_ip=192.168.7.2 bridge_priority=24576 vlt_priority=65535 lacp_port_priorty=32768
 [dellos10:vars]
 mgmt_vlan = 8
 internal_vlan = 20
