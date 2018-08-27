@@ -74,6 +74,7 @@ USERCTL=no
 EOF
 {% endif %}
 
+{% if hostvars[item]['interface1'] is defined -%}
 cat << EOF > /etc/sysconfig/network-scripts/ifcfg-{{ hostvars[item]['interface1'] }}
 DEVICE={{ hostvars[item]['interface1'] }}
 ONBOOT=yes
@@ -81,7 +82,17 @@ MASTER=bond0
 BOOTPROTO=none
 SLAVE=yes
 EOF
+{%- else -%}
+cat << EOF > /etc/sysconfig/network-scripts/ifcfg-{{ interface1 }}
+DEVICE={{ interface1 }}
+ONBOOT=yes
+MASTER=bond0
+BOOTPROTO=none
+SLAVE=yes
+EOF
+{%- endif -%}
 
+{% if hostvars[item]['interface2'] is defined -%}
 cat << EOF > /etc/sysconfig/network-scripts/ifcfg-{{ hostvars[item]['interface2'] }}
 DEVICE={{ hostvars[item]['interface2'] }}
 ONBOOT=yes
@@ -89,6 +100,15 @@ MASTER=bond0
 BOOTPROTO=none
 SLAVE=yes
 EOF
+{%- else -%}
+cat << EOF > /etc/sysconfig/network-scripts/ifcfg-{{ interface2 }}
+DEVICE={{ interface2 }}
+ONBOOT=yes
+MASTER=bond0
+BOOTPROTO=none
+SLAVE=yes
+EOF
+{%- endif -%}
 
 cat << EOF > /etc/hostname
 {{ hostvars[item]['openshift_hostname'] }}
