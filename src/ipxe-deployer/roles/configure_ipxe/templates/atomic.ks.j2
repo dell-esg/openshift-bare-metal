@@ -74,16 +74,16 @@ USERCTL=no
 EOF
 {% endif %}
 
-cat << EOF > /etc/sysconfig/network-scripts/ifcfg-{{ interface1 }}
-DEVICE={{ interface1 }}
+cat << EOF > /etc/sysconfig/network-scripts/ifcfg-{{ hostvars[item]['interface1'] }}
+DEVICE={{ hostvars[item]['interface1'] }}
 ONBOOT=yes
 MASTER=bond0
 BOOTPROTO=none
 SLAVE=yes
 EOF
 
-cat << EOF > /etc/sysconfig/network-scripts/ifcfg-{{ interface2 }}
-DEVICE={{ interface2 }}
+cat << EOF > /etc/sysconfig/network-scripts/ifcfg-{{ hostvars[item]['interface2'] }}
+DEVICE={{ hostvars[item]['interface2'] }}
 ONBOOT=yes
 MASTER=bond0
 BOOTPROTO=none
