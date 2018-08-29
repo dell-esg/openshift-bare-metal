@@ -8,7 +8,7 @@ rootpw --iscrypted {{ root_password|password_hash('sha512') }}
 auth --enableshadow --passalgo=sha512
 services --enabled="chronyd"
 firstboot --enable
-#ignoredisk --only-use=sda
+clearpart --all --initlabel
 zerombr
 part /boot --fstype ext4 --size=500
 part /boot/efi --fstype vfat --size=200
