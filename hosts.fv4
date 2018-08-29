@@ -79,20 +79,20 @@ rhel0[5:7].ocp.fv4.lab
 rhel1[3:5].ocp.fv4.lab glusterfs_devices="[ '/dev/sdb', '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl', '/dev/sdm', '/dev/sdn', '/dev/sdo', '/dev/sdp', '/dev/sdq', '/dev/sdr', '/dev/sds', '/dev/sdt', '/dev/sdu', '/dev/sdx' ]"
 
 [nodes]
-rhel02.ocp.fv4.lab openshift_ip=192.168.20.12 openshift_hostname=master1.ocp.fv4.lab ipmi=192.168.8.12 serial=6NSHBM2 openshift_node_group_name='node-config-master' interface1='p1p1' interface2='p1p2'
-rhel03.ocp.fv4.lab openshift_ip=192.168.20.13 openshift_hostname=master2.ocp.fv4.lab ipmi=192.168.8.13 serial=6NSDBM2 openshift_node_group_name='node-config-master' interface1='p1p1' interface2='p1p2'
-rhel04.ocp.fv4.lab openshift_ip=192.168.20.14 openshift_hostname=master3.ocp.fv4.lab ipmi=192.168.8.14 serial=6NSFBM2 openshift_node_group_name='node-config-master' interface1='p1p1' interface2='p1p2'
+rhel02.ocp.fv4.lab openshift_ip=192.168.20.12 openshift_hostname=master1.ocp.fv4.lab ipmi=192.168.8.12 serial=6NSHBM2 openshift_node_group_name='node-config-master'
+rhel03.ocp.fv4.lab openshift_ip=192.168.20.13 openshift_hostname=master2.ocp.fv4.lab ipmi=192.168.8.13 serial=6NSDBM2 openshift_node_group_name='node-config-master'
+rhel04.ocp.fv4.lab openshift_ip=192.168.20.14 openshift_hostname=master3.ocp.fv4.lab ipmi=192.168.8.14 serial=6NSFBM2 openshift_node_group_name='node-config-master'
 
-rhel05.ocp.fv4.lab openshift_ip=192.168.20.15 openshift_hostname=infra1.ocp.fv4.lab ipmi=192.168.8.15 serial=6NSGBM2 openshift_node_group_name='node-config-infra' openshift_public_ip=192.168.253.15 interface1='p1p1' interface2='p1p2'
-rhel06.ocp.fv4.lab openshift_ip=192.168.20.16 openshift_hostname=infra2.ocp.fv4.lab ipmi=192.168.8.16 serial=6NRKBM2 openshift_node_group_name='node-config-infra' openshift_public_ip=192.168.253.16 interface1='p1p1' interface2='p1p2'
-rhel07.ocp.fv4.lab openshift_ip=192.168.20.17 openshift_hostname=infra3.ocp.fv4.lab ipmi=192.168.8.17 serial=6NTFBM2 openshift_node_group_name='node-config-infra' openshift_public_ip=192.168.253.17 interface1='p1p1' interface2='p1p2'
+rhel05.ocp.fv4.lab openshift_ip=192.168.20.15 openshift_hostname=infra1.ocp.fv4.lab ipmi=192.168.8.15 serial=6NSGBM2 openshift_node_group_name='node-config-infra' openshift_public_ip=192.168.253.15
+rhel06.ocp.fv4.lab openshift_ip=192.168.20.16 openshift_hostname=infra2.ocp.fv4.lab ipmi=192.168.8.16 serial=6NRKBM2 openshift_node_group_name='node-config-infra' openshift_public_ip=192.168.253.16
+rhel07.ocp.fv4.lab openshift_ip=192.168.20.17 openshift_hostname=infra3.ocp.fv4.lab ipmi=192.168.8.17 serial=6NTFBM2 openshift_node_group_name='node-config-infra' openshift_public_ip=192.168.253.17
 
-rhel08.ocp.fv4.lab openshift_ip=192.168.20.18 openshift_hostname=app1.ocp.fv4.lab ipmi=192.168.8.18 serial=6NTHBM2 openshift_node_group_name='node-config-compute' interface1='p1p1' interface2='p1p2'
-rhel09.ocp.fv4.lab openshift_ip=192.168.20.19 openshift_hostname=app2.ocp.fv4.lab ipmi=192.168.8.19 serial=6NTDBM2 openshift_node_group_name='node-config-compute' interface1='p1p1' interface2='p1p2'
-rhel10.ocp.fv4.lab openshift_ip=192.168.20.20 openshift_hostname=app3.ocp.fv4.lab ipmi=192.168.8.20 serial=6NTGBM2 openshift_node_group_name='node-config-compute' interface1='p1p1' interface2='p1p2'
-rhel11.ocp.fv4.lab openshift_ip=192.168.20.21 openshift_hostname=app4.ocp.fv4.lab ipmi=192.168.8.21 serial=6NSKBM2 openshift_node_group_name='node-config-compute' interface1='p1p1' interface2='p1p2'
-rhel12.ocp.fv4.lab openshift_ip=192.168.20.22 openshift_hostname=app5.ocp.fv4.lab ipmi=192.168.8.22 serial=6NTJBM2 openshift_node_group_name='node-config-compute' interface1='p1p1' interface2='p1p2'
+rhel08.ocp.fv4.lab openshift_ip=192.168.20.18 openshift_hostname=app1.ocp.fv4.lab ipmi=192.168.8.18 serial=6NTHBM2 openshift_node_group_name='node-config-compute'
+rhel09.ocp.fv4.lab openshift_ip=192.168.20.19 openshift_hostname=app2.ocp.fv4.lab ipmi=192.168.8.19 serial=6NTDBM2 openshift_node_group_name='node-config-compute'
+rhel10.ocp.fv4.lab openshift_ip=192.168.20.20 openshift_hostname=app3.ocp.fv4.lab ipmi=192.168.8.20 serial=6NTGBM2 openshift_node_group_name='node-config-compute'
+rhel11.ocp.fv4.lab openshift_ip=192.168.20.21 openshift_hostname=app4.ocp.fv4.lab ipmi=192.168.8.21 serial=6NSKBM2 openshift_node_group_name='node-config-compute'
+rhel12.ocp.fv4.lab openshift_ip=192.168.20.22 openshift_hostname=app5.ocp.fv4.lab ipmi=192.168.8.22 serial=6NTJBM2 openshift_node_group_name='node-config-compute'
 
-rhel13.ocp.fv4.lab openshift_ip=192.168.20.23 openshift_hostname=stor1.ocp.fv4.lab ipmi=192.168.8.23 serial=5B98RP2 openshift_node_group_name='node-config-compute' interface1='p2p1' interface2='p2p2'
-rhel14.ocp.fv4.lab openshift_ip=192.168.20.24 openshift_hostname=stor2.ocp.fv4.lab ipmi=192.168.8.24 serial=5B99RP2 openshift_node_group_name='node-config-compute' interface1='p2p1' interface2='p2p2'
-rhel15.ocp.fv4.lab openshift_ip=192.168.20.25 openshift_hostname=stor3.ocp.fv4.lab ipmi=192.168.8.25 serial=5BB4RP2 openshift_node_group_name='node-config-compute' interface1='p2p1' interface2='p2p2'
+rhel13.ocp.fv4.lab openshift_ip=192.168.20.23 openshift_hostname=stor1.ocp.fv4.lab ipmi=192.168.8.23 serial=5B98RP2 openshift_node_group_name='node-config-compute' interface1='p1p1' interface2='p1p2'
+rhel14.ocp.fv4.lab openshift_ip=192.168.20.24 openshift_hostname=stor2.ocp.fv4.lab ipmi=192.168.8.24 serial=5B99RP2 openshift_node_group_name='node-config-compute' interface1='p1p1' interface2='p1p2'
+rhel15.ocp.fv4.lab openshift_ip=192.168.20.25 openshift_hostname=stor3.ocp.fv4.lab ipmi=192.168.8.25 serial=5BB4RP2 openshift_node_group_name='node-config-compute' interface1='p1p1' interface2='p1p2'
