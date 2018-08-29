@@ -99,7 +99,7 @@ MASTER=bond0
 BOOTPROTO=none
 SLAVE=yes
 EOF
-{%- else -%}
+{% else %}
 cat << EOF > /etc/sysconfig/network-scripts/ifcfg-{{ interface1 }}
 DEVICE={{ interface1 }}
 ONBOOT=yes
@@ -107,7 +107,7 @@ MASTER=bond0
 BOOTPROTO=none
 SLAVE=yes
 EOF
-{%- endif -%}
+{% endif %}
 
 {% if hostvars[item]['interface2'] is defined -%}
 cat << EOF > /etc/sysconfig/network-scripts/ifcfg-{{ hostvars[item]['interface2'] }}
@@ -117,7 +117,7 @@ MASTER=bond0
 BOOTPROTO=none
 SLAVE=yes
 EOF
-{%- else -%}
+{% else %}
 cat << EOF > /etc/sysconfig/network-scripts/ifcfg-{{ interface2 }}
 DEVICE={{ interface2 }}
 ONBOOT=yes
@@ -125,14 +125,10 @@ MASTER=bond0
 BOOTPROTO=none
 SLAVE=yes
 EOF
-{%- endif -%}
+{% endif %}
 
 cat << EOF > /etc/hostname
 {{ hostvars[item]['openshift_hostname'] }}
-EOF
-
-cat << EOF > /etc/sysconfig/docker-storage-setup
-DEVS=/dev/sdb
 EOF
 
 %end
