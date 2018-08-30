@@ -16,10 +16,10 @@ part pv.01 --size=100000 --grow --ondisk=sda
 volgroup vg00 pv.01
 logvol swap --vgname=vg00 --name=swapvol --fstype=swap --size=4000
 logvol / --vgname=vg00  --fstype=xfs  --size=80000 --name=lv_root
-#part pv.02 --size=100000 --grow --ondisk=sdb
-#volgroup vg01 pv.02
 
-#firewall --disabled
+part raid.1 --size=1 --grow --ondisk=sdb
+part raid.2 --size=1 --grow --ondisk=sdc
+raid /var/lib/docker --level=1 --device=docker-storage raid.1 raid.2
 
 reboot
 
