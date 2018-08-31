@@ -16,4 +16,7 @@ interface vlan {{ internal_vlan }}
   description internal
   no shutdown
   ip address {{ internal_vlan_ip }}
+  vrrp-group {{ internal_vlan }}
+  priority {{ vrrp_priority }}
+  virtual-address {{ internal_vlan_vip }}
 {% endif %}
