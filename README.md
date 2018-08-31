@@ -8,9 +8,9 @@ Please, refer to [Reference Architecture document](https://tbd.pdf) for detailed
 
 ### Creating inventory
 The inventory file has to be filled manually.
-Refer to *hosts.example* for possible variables.
+Refer to *hosts.fv4* for possible variables.
 
-`cp hosts.example /etc/ansible/hosts;
+`cp hosts.fv4 /etc/ansible/hosts;
 vim /etc/ansible/hosts`
 
 ### Switch Configuration
@@ -20,7 +20,7 @@ The OS10 configuration role requires Ansible v2.5, which is available in a conta
 
 Update inventory.yaml and run:
 
-`docker run --rm -it -v $PWD:/playbooks ansible25 configure_dellos10.yaml`
+`docker run --rm -it -v $PWD/known_hosts:/root/.ssh/known_hosts -v $PWD:/playbooks ansible25 configure_dellos10.yaml`
 
 ### Server BIOS Configuration
 First, setup NFS share for Server Configuration Profile (SCP) environment that will be used to set BIOS settings on servers. Update inventory_scp_setup.yaml and run:
@@ -38,7 +38,7 @@ This will:
 - Enable PXE for addon NIC port 1
 - Setup boot order: 1) BOSS cards 2) NIC
 
-To setup one time boot from NIC, run:
+To setup one time boot from NIC:
 
 `ansible-playbook -i src/scp_configuration/inventory_scp_apply.yaml src/scp_configuration/one_time_boot.yaml`
 
