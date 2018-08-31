@@ -97,7 +97,8 @@ MASTER=bond0
 BOOTPROTO=none
 SLAVE=yes
 EOF
-{% else %}
+{% endif %}
+{% if hostvars[item]['interface1'] is not defined -%}
 cat << EOF > /etc/sysconfig/network-scripts/ifcfg-{{ interface1 }}
 DEVICE={{ interface1 }}
 ONBOOT=yes
@@ -115,7 +116,8 @@ MASTER=bond0
 BOOTPROTO=none
 SLAVE=yes
 EOF
-{% else %}
+{% endif %}
+{% if hostvars[item]['interface2'] is not defined -%}
 cat << EOF > /etc/sysconfig/network-scripts/ifcfg-{{ interface2 }}
 DEVICE={{ interface2 }}
 ONBOOT=yes
