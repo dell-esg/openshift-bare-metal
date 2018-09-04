@@ -18,9 +18,10 @@ The OS10 configuration role requires Ansible v2.5, which is available in a conta
 
 `cd src/os10-configuration; docker build -t ansible25 .`
 
-Update inventory.yaml and run:
+Update dellos10 section in main inventory file and copy to local directory:
 
-`docker run --rm -it -v $PWD/known_hosts:/root/.ssh/known_hosts -v $PWD:/playbooks ansible25 configure_dellos10.yaml`
+`cp ../../hosts.fv4 .
+docker run --rm -it -v $PWD:/playbooks ansible25 -i hosts.fv4 configure_dellos10.yaml`
 
 ### Server BIOS Configuration
 First, setup NFS share for Server Configuration Profile (SCP) environment that will be used to set BIOS settings on servers. Update inventory_scp_setup.yaml and run:
