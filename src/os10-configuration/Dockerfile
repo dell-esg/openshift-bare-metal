@@ -11,4 +11,4 @@ RUN yum-config-manager --enable rhel-7-server-ansible-2.5-rpms > /dev/null && \
 
 # Set running environment
 WORKDIR /playbooks
-ENTRYPOINT ["ansible-playbook", "-i", "inventory.yaml"]
+ENTRYPOINT ["ansible-playbook"]
