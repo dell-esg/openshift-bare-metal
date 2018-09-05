@@ -1,9 +1,4 @@
-# no need to repeat this
-# Used in setup_SCP_share
-# [bastion]
-# 192.168.8.11
-
-[bastion]
+[bastion_node]
 bastion   idrac_ip=192.168.8.11  user=root  password=1S0lut1on!
 
 [master]
@@ -16,7 +11,7 @@ infra1    idrac_ip=192.168.8.15  user=root  password=1S0lut1on!
 infra2    idrac_ip=192.168.8.16  user=root  password=1S0lut1on!
 infra3    idrac_ip=192.168.8.17  user=root  password=1S0lut1on!
 
-[apps]
+[app]
 app1      idrac_ip=192.168.8.18  user=root  password=1S0lut1on!
 app2      idrac_ip=192.168.8.19  user=root  password=1S0lut1on!
 app3      idrac_ip=192.168.8.20  user=root  password=1S0lut1on!
