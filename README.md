@@ -27,8 +27,9 @@ Then, update the dellos10 section in the inventory file with your IP addresses a
 
 ```
 $ cd src/os10-configuration
-$ vi ../../hosts.fv4
-$ cp ../../hosts.fv4 .
+$ vi ../../hosts.fv4			# update as needed
+$ cp ../../hosts.fv4 .			# copy to current directory (to be mounted)
+$ chcon -Rt container_file_t .		# fix SELinux context so we can mount inside container
 $ docker run --rm -it -v $PWD:/playbooks ansible25 -i hosts.fv4 configure_dellos10.yaml`
 ```
 
