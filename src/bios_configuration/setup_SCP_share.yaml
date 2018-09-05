@@ -18,7 +18,7 @@
   gather_facts: false
 
   roles:
-  - setup_scp_environment
+  - setup_SCP_share
   vars_files:
     - vars/all.yaml
 
