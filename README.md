@@ -16,7 +16,7 @@ $ vim /etc/ansible/hosts
 ```
 
 ### Switch Configuration
-The Dell OS10 configuration role requires Ansible v2.5, which we will use via a Docker container. First, build the container image (install Docker if not already installed):
+The Dell OS10 configuration role requires Ansible v2.5, which we will use via a Docker container. In the bastion node, build the container image (install Docker if not already installed):
 
 ```
 $ cd src/os10-configuration
@@ -59,6 +59,7 @@ $ ansible-playbook -i inventory.yaml configure_bios.yaml
 
 This will:
 
+- Enable IPMI
 - Disable PXE for embedded NIC port 1
 - Enable PXE for addon NIC port 1
 - Setup boot order: 1) BOSS cards 2) NIC
