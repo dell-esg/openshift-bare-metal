@@ -10,8 +10,6 @@ services --enabled="chronyd"
 firstboot --enable
 %include /tmp/clearpart
 zerombr
-part /boot --fstype ext4 --size=500
-part /boot/efi --fstype vfat --size=200
 %include /tmp/bootdrive
 volgroup vg00 pv.01
 logvol swap --vgname=vg00 --name=swapvol --fstype=swap --size=4000
@@ -21,7 +19,9 @@ reboot
 %pre
 bootdrive=`readlink -f /dev/disk/by-id/*BOSS*[0-9][0-9]`
 echo clearpart --all --initlabel --drives=$bootdrive > /tmp/clearpart
-echo part pv.01 --size=100000 --grow --ondisk=$bootdrive > /tmp/bootdrive
+echo part /boot --fstype ext4 --size=500 --ondisk=$bootdrive > /tmp/bootdrive
+echo part /boot/efi --fstype vfat --size=200 --ondisk=$bootdrive >> /tmp/bootdrive
+echo part pv.01 --size=100000 --grow --ondisk=$bootdrive >> /tmp/bootdrive
 %end
 
 %packages
