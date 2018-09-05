@@ -12,15 +12,20 @@ clearpart --all --initlabel
 zerombr
 part /boot --fstype ext4 --size=500
 part /boot/efi --fstype vfat --size=200
-part pv.01 --size=100000 --grow --ondisk=sdc
+%include /tmp/bootdrive
 volgroup vg00 pv.01
 logvol swap --vgname=vg00 --name=swapvol --fstype=swap --size=4000
 logvol / --vgname=vg00  --fstype=xfs  --size=80000 --name=lv_root
-part raid.1 --size=1 --grow --ondisk=sda
-part raid.2 --size=1 --grow --ondisk=sdb
-raid /var/lib/docker --level=1 --device=docker-storage raid.1 raid.2
-
+# let's do that during Ansible phase 
+#part raid.1 --size=1 --grow --ondisk=sda
+#part raid.2 --size=1 --grow --ondisk=sdb
+#raid /var/lib/docker --level=1 --device=docker-storage raid.1 raid.2
 reboot
+
+%pre
+bootdrive=`readlink -f /dev/disk/by-id/*BOSS*`
+echo part pv.01 --size=100000 --grow --ondisk=$bootdrive > /tmp/bootdrive
+%end
 
 %packages
 @^minimal
