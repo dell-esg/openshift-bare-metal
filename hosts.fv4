@@ -10,7 +10,7 @@ glusterfs_registry
 openshift_release=v3.10
 openshift_deployment_type=openshift-enterprise
 
-ansible_ssh_user=root
+ansible_ssh_user=openshift
 ansible_become=true
 
 openshift_master_cluster_method=native
@@ -58,9 +58,9 @@ dhcp_last_ip=192.168.20.150
 
 
 # new in 3.10
-openshift_node_groups=[{'name': 'node-config-master', 'labels': ['node-role.kubernetes.io/master=true']},
-                      {'name': 'node-config-infra', 'labels': ['node-role.kubernetes.io/infra=true',]},
-                      {'name': 'node-config-compute', 'labels': ['node-role.kubernetes.io/compute=true'], 'edits': [{ 'key': 'kubeletArguments.pods-per-core','value': ['20']}]}]
+#openshift_node_groups=[{'name': 'node-config-master', 'labels': ['node-role.kubernetes.io/master=true']},
+#                      {'name': 'node-config-infra', 'labels': ['node-role.kubernetes.io/infra=true',]},
+#                      {'name': 'node-config-compute', 'labels': ['node-role.kubernetes.io/compute=true'], 'edits': [{ 'key': 'kubeletArguments.pods-per-core','value': ['20']}]}]
 
 
 [local]
@@ -74,6 +74,10 @@ rhel0[2:4].ocp.fv4.lab
 
 [lb]
 rhel0[5:7].ocp.fv4.lab
+
+[glusterfs]
+rhel0[8:9] glusterfs_devices="[ "/dev/nvme01n1"]"
+rhel1[0:2] glusterfs_devices="[ "/dev/nvme01n1"]"
 
 [glusterfs_registry]
 rhel1[3:5].ocp.fv4.lab glusterfs_devices="[ '/dev/sdb', '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl', '/dev/sdm', '/dev/sdn', '/dev/sdo', '/dev/sdp', '/dev/sdq', '/dev/sdr', '/dev/sds', '/dev/sdt', '/dev/sdu', '/dev/sdx' ]"
