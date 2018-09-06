@@ -39,20 +39,20 @@ We need to configure settings in the server BIOS like enabling PXE booting from 
 In the bastion node, run as root:
 
 ```
-# subscription-manager repos --enable rhel-server-rhscl-7-rpms
-# yum -y install python27-python-pip -y
-# scl enable python27 bash
-# pip install omsdk
+# subscription-manager repos --enable rhel-server-rhscl-7-rpms   # enable Software Collections repo
+# yum -y install python27-python-pip -y                          # install pip
+# scl enable python27 bash                                       # setup pip from RHSCL
+# pip install omsdk                                              # install OpenManage SDK library
 # git clone https://github.com/dell/Dell-EMC-Ansible-Modules-for-iDRAC.git
 # cd Dell-EMC-Ansible-Modules-for-iDRAC
-# python install.py
+# python install.py                                              # install Ansible modules we'll use
 ```
 
 We need to setup an NFS share with a few SCP files, update *src/bios-configuration/vars/all.yaml* with IP address and network information although if you are using the same set of IP addresses recommended in this Reference Architecture then you can leave them as-is.
 
 ```
-$ export PYTHONPATH=/opt/rh/python27/root/usr/lib/python2.7/site-packages
-$ cd src/bios-configuration/
+$ export PYTHONPATH=/opt/rh/python27/root/usr/lib/python2.7/site-packages    # may want to put in .bashrc
+$ cd src/bios-configuration
 $ ansible-playbook -i inventory.yaml setup_SCP_share.yaml
 ```
 
