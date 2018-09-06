@@ -11,43 +11,47 @@ The inventory file has to be filled manually.
 Refer to *hosts.fv4* for possible variables.
 
 ```
-$ cp hosts.fv4 /etc/ansible/hosts
-$ vim /etc/ansible/hosts
+# cp hosts.fv4 /etc/ansible/hosts
+# vim /etc/ansible/hosts
 ```
 
 ### Switch Configuration
-The Dell OS10 configuration role requires Ansible v2.5, which we will use via a Docker container. In the bastion node, build the container image (install Docker if not already installed):
+The Dell OS10 configuration role requires Ansible v2.5, which we will use via a Docker container. In the bastion node, build the container image (install Docker if not already installed). Run as root:
 
 ```
-$ cd src/os10-configuration
-$ docker build -t ansible25 .
+# cd src/os10-configuration
+# docker build -t ansible25 .
 ```
 
-Then, update the dellos10 section in the inventory file with your IP addresses and credentials and copy to the current directory (since we are volume-mounting the current directory inside the container):
+Then, update the dellos10 section in the inventory file with your IP addresses and credentials and copy to the current directory (since we are volume-mounting the current directory inside the container). Run as root:
 
 ```
-$ cd src/os10-configuration
-$ vi ../../hosts.fv4			# update as needed
-$ cp ../../hosts.fv4 .			# copy to current directory (to be mounted)
-$ chcon -Rt container_file_t .		# fix SELinux context so we can mount inside container
-$ docker run --rm -it -v $PWD:/playbooks ansible25 -i hosts.fv4 configure_dellos10.yaml`
+# cd src/os10-configuration
+# vi ../../hosts.fv4			# update as needed
+# cp ../../hosts.fv4 .			# copy to current directory (to be mounted)
+# chcon -Rt container_file_t .		# fix SELinux context so we can mount inside container
+# docker run --rm -it -v $PWD:/playbooks ansible25 -i hosts.fv4 configure_dellos10.yaml`
 ```
 
 ### Server BIOS settings
-We need to configure settings in the servers' BIOS like enabling PXE booting from the correct NICs. We will do so using the Server Configuration Profile (SCP) via the Integrated Dell Remote Management Controller (iDRAC). We need to install the Ansible modules as well as additional python libraries to communicate with the iDRACs. 
+We need to configure settings in the server BIOS like enabling PXE booting from the correct NICs. We will do so using the [Server Configuration Profile (SCP)](https://dell.to/2NpRJ9a) via the Integrated Dell Remote Management Controller (iDRAC). We need to install the Ansible modules and additional python libraries to communicate with the iDRACs. 
 
-In the bastion node, run:
+In the bastion node, run as root:
 
 ```
-$ pip install omsdk
-$ git clone https://github.com/dell/Dell-EMC-Ansible-Modules-for-iDRAC.git
-$ cd Dell-EMC-Ansible-Modules-for-iDRAC
-$ python install.py
+# subscription-manager repos --enable rhel-server-rhscl-7-rpms
+# yum -y install python27-python-pip -y
+# scl enable python27 bash
+# pip install omsdk
+# git clone https://github.com/dell/Dell-EMC-Ansible-Modules-for-iDRAC.git
+# cd Dell-EMC-Ansible-Modules-for-iDRAC
+# python install.py
 ```
 
 We need to setup an NFS share with a few SCP files, update *src/bios-configuration/vars/all.yaml* with IP address and network information although if you are using the same set of IP addresses recommended in this Reference Architecture then you can leave them as-is.
 
 ```
+$ export PYTHONPATH=/opt/rh/python27/root/usr/lib/python2.7/site-packages
 $ cd src/bios-configuration/
 $ ansible-playbook -i inventory.yaml setup_SCP_share.yaml
 ```
@@ -84,7 +88,7 @@ $ env IPMI_PASSWORD=password /tftp/reboot.sh -b pxe -r -f /tftp/ipmi.list.txt
 switch user to *openshift* and then run:
 
 ```
-$ su - openshift
+# su - openshift
 $ ansible-playbook src/keepalived-multimaster/keepalived.yaml
 ```
 
