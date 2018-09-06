@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: all
+- hosts: bastion_node
   connection: local
   gather_facts: false
 
   roles:
-  - one_time_boot
+  - setup_SCP_share
   vars_files:
     - vars/all.yaml
 

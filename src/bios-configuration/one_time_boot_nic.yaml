@@ -13,12 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: bastion
+# Before running this role, make sure you have run the setup_SCP_share role
+# or this will fail.
+
+- hosts: all
   connection: local
   gather_facts: false
 
   roles:
-  - setup_scp_environment
+  - one_time_boot_nic
   vars_files:
     - vars/all.yaml
 
