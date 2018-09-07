@@ -26,15 +26,15 @@ The Dell OS10 configuration role requires Ansible v2.5, which we will use via a 
 Then, update the dellos10 section in the inventory file with your IP addresses and credentials and copy to the current directory (since we are volume-mounting the current directory inside the container). Run as root:
 
 ```
-# cd src/os10-configuration
-# vi ../../hosts.fv4			# update as needed
-# cp ../../hosts.fv4 .			# copy to current directory (to be mounted)
-# chcon -Rt container_file_t .		# fix SELinux context so we can mount inside container
-# docker run --rm -it -v $PWD:/playbooks ansible25 -i hosts.fv4 configure_dellos10.yaml`
+$ cd src/os10-configuration
+$ vi ../../hosts.fv4			# update as needed
+$ cp ../../hosts.fv4 .			# copy to current directory (to be mounted)
+$ chcon -Rt container_file_t .		# fix SELinux context so we can mount inside container
+$ docker run --rm -it -v $PWD:/playbooks ansible25 -i hosts.fv4 configure_dellos10.yaml`
 ```
 
-### Server BIOS settings
-We need to configure settings in the server BIOS like enabling PXE booting from the correct NICs. We will do so using the [Server Configuration Profile (SCP)](https://dell.to/2NpRJ9a) via the Integrated Dell Remote Management Controller (iDRAC). We need to install the Ansible modules and additional python libraries to communicate with the iDRACs. 
+### Server BIOS configuration
+Some settings in the BIOS need to be updated, like enabling PXE booting from the correct NIC and setting up the right boot order. A [Server Configuration Profile (SCP)](https://dell.to/2NpRJ9a) can be imported via the Integrated Dell Remote Management Controller (iDRAC) to achieve this in an automated way. The Dell OpenManage Ansible modules and required libraries need to be insallted. 
 
 In the bastion node, run as root:
 
@@ -48,7 +48,7 @@ In the bastion node, run as root:
 # python install.py                                              # install Ansible modules we'll use
 ```
 
-We need to setup an NFS share with a few SCP files, update *src/bios-configuration/vars/all.yaml* with IP address and network information although if you are using the same set of IP addresses recommended in this Reference Architecture then you can leave them as-is.
+After the Ansible modules have been installed, an NFS share has to be created where the required SCP files will be placed so that they be imported by iDRAC. Update *src/bios=configuration/inventory.yaml* and *src/bios-configuration/vars/all.yaml*, though if you are using the same set of IP addresses recommended in this Reference Architecture then you can leave them as-is.
 
 ```
 $ export PYTHONPATH=/opt/rh/python27/root/usr/lib/python2.7/site-packages    # may want to put in .bashrc
@@ -56,7 +56,7 @@ $ cd src/bios-configuration
 $ ansible-playbook -i inventory.yaml setup_SCP_share.yaml
 ```
 
-Now that the NFS share is ready and we have placed the proper SCP files, we can import them into the iDRACs and apply the BIOS settings we need:
+Now that the NFS share is ready and we have placed the SCP files, we can import them into the iDRACs and apply the BIOS settings we need:
 
 ```
 $ ansible-playbook -i inventory.yaml configure_bios.yaml
@@ -69,7 +69,9 @@ This will:
 - Enable PXE for addon NIC port 1
 - Setup boot order: 1) BOSS cards 2) NIC
 
-To do a one time boot from NIC:
+Please note that this will cause the servers to reboot.
+
+Once you are ready to provision the OS, you can do a one time PXE bootb:
 
 `$ ansible-playbook -i inventory.yaml one_time_boot_nic.yaml`
 
