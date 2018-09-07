@@ -6,11 +6,11 @@ Please refer to [Reference Architecture document](https://tbd.pdf) for detailed 
 ### Clone the repository
 `$ git clone https://github.com/dell/openshift-container-architecture.git`
 
-### Populating inventory file
+### Populating the inventory file
 The inventory file has to be filled manually.
 Refer to *hosts.fv4* for possible variables.
 
-```
+```bash
 # cp hosts.fv4 /etc/ansible/hosts
 # vim /etc/ansible/hosts
 ```
@@ -18,14 +18,14 @@ Refer to *hosts.fv4* for possible variables.
 ### Switch Configuration
 The Dell OS10 configuration role requires Ansible v2.5, which we will use via a Docker container. In the bastion node, build the container image (install Docker if not already installed). Run as root:
 
-```
+```bash
 # cd src/os10-configuration
 # docker build -t ansible25 .
 ```
 
 Then, update the dellos10 section in the inventory file with your IP addresses and credentials and copy to the current directory (since we are volume-mounting the current directory inside the container). Run as root:
 
-```
+```bash
 $ cd src/os10-configuration
 $ vi ../../hosts.fv4			# update as needed
 $ cp ../../hosts.fv4 .			# copy to current directory (to be mounted)
@@ -38,19 +38,19 @@ Some settings in the BIOS need to be updated, like enabling PXE booting from the
 
 In the bastion node, run as root:
 
-```
-# subscription-manager repos --enable rhel-server-rhscl-7-rpms   # enable Software Collections repo
-# yum -y install python27-python-pip -y                          # install pip
-# scl enable python27 bash                                       # setup pip from RHSCL
-# pip install omsdk                                              # install OpenManage SDK library
-# git clone https://github.com/dell/Dell-EMC-Ansible-Modules-for-iDRAC.git
-# cd Dell-EMC-Ansible-Modules-for-iDRAC
-# python install.py                                              # install Ansible modules we'll use
+```bash
+$ subscription-manager repos --enable rhel-server-rhscl-7-rpms   # enable Software Collections repo
+$ yum -y install python27-python-pip -y                          # install pip
+$ scl enable python27 bash                                       # setup pip from RHSCL
+$ pip install omsdk                                              # install OpenManage SDK library
+$ git clone https://github.com/dell/Dell-EMC-Ansible-Modules-for-iDRAC.git
+$ cd Dell-EMC-Ansible-Modules-for-iDRAC
+$ python install.py                                              # install Ansible modules we'll use
 ```
 
-After the Ansible modules have been installed, an NFS share has to be created where the required SCP files will be placed so that they be imported by iDRAC. Update *src/bios=configuration/inventory.yaml* and *src/bios-configuration/vars/all.yaml*, though if you are using the same set of IP addresses recommended in this Reference Architecture then you can leave them as-is.
+After the Ansible modules have been installed, an NFS share has to be created where the required SCP files will be placed so that they be imported by iDRAC. Update `src/bios-configuration/inventory.yaml` and `src/bios-configuration/vars/all.yaml`, though if you are using the same set of IP addresses recommended in this Reference Architecture then you can leave them as-is.
 
-```
+```bash
 $ export PYTHONPATH=/opt/rh/python27/root/usr/lib/python2.7/site-packages    # may want to put in .bashrc
 $ cd src/bios-configuration
 $ ansible-playbook -i inventory.yaml setup_SCP_share.yaml
@@ -58,7 +58,7 @@ $ ansible-playbook -i inventory.yaml setup_SCP_share.yaml
 
 Now that the NFS share is ready and we have placed the SCP files, we can import them into the iDRACs and apply the BIOS settings we need:
 
-```
+```bash
 $ ansible-playbook -i inventory.yaml configure_bios.yaml
 ```
 
@@ -77,7 +77,7 @@ Once you are ready to provision the OS, you can do a one time PXE bootb:
 
 ### Provisioning system setup
 
-```
+```bash
 $ ansible-playbook ipxe-deployer/ipxe.yml
 $ env IPMI_PASSWORD=password /tftp/reboot.sh -b pxe -r -f /tftp/ipmi.list.txt
 ```
@@ -89,7 +89,7 @@ $ env IPMI_PASSWORD=password /tftp/reboot.sh -b pxe -r -f /tftp/ipmi.list.txt
 ### Setting up multimaster HA
 switch user to *openshift* and then run:
 
-```
+```bash
 # su - openshift
 $ ansible-playbook src/keepalived-multimaster/keepalived.yaml
 ```
