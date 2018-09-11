@@ -1,27 +1,30 @@
+# Temporary inventory file, will be merged with main one soon
+# Used for power management and BIOS configuration playbooks
+
 [bastion_node]
-bastion   idrac_ip=192.168.8.11  user=root  password=1S0lut1on!
+rhel01.ocp.fv4.lab   idrac_ip=192.168.8.11
 
 [master]
-master1   idrac_ip=192.168.8.12  user=root  password=1S0lut1on!
-master2   idrac_ip=192.168.8.13  user=root  password=1S0lut1on!
-master3   idrac_ip=192.168.8.14  user=root  password=1S0lut1on!
+rhel02.ocp.fv4.lab   idrac_ip=192.168.8.12
+rhel03.ocp.fv4.lab   idrac_ip=192.168.8.13
+rhel04.ocp.fv4.lab   idrac_ip=192.168.8.14
 
 [infra]
-infra1    idrac_ip=192.168.8.15  user=root  password=1S0lut1on!
-infra2    idrac_ip=192.168.8.16  user=root  password=1S0lut1on!
-infra3    idrac_ip=192.168.8.17  user=root  password=1S0lut1on!
+rhel05.ocp.fv4.lab   idrac_ip=192.168.8.15
+rhel06.ocp.fv4.lab   idrac_ip=192.168.8.16
+rhel07.ocp.fv4.lab   idrac_ip=192.168.8.17
 
 [app]
-app1      idrac_ip=192.168.8.18  user=root  password=1S0lut1on!
-app2      idrac_ip=192.168.8.19  user=root  password=1S0lut1on!
-app3      idrac_ip=192.168.8.20  user=root  password=1S0lut1on!
-app4      idrac_ip=192.168.8.21  user=root  password=1S0lut1on!
-app5      idrac_ip=192.168.8.22  user=root  password=1S0lut1on!
+rhel08.ocp.fv4.lab   idrac_ip=192.168.8.18
+rhel09.ocp.fv4.lab   idrac_ip=192.168.8.19
+rhel10.ocp.fv4.lab   idrac_ip=192.168.8.20
+rhel11.ocp.fv4.lab   idrac_ip=192.168.8.21
+rhel12.ocp.fv4.lab   idrac_ip=192.168.8.22
 
 [storage]
-storage1  idrac_ip=192.168.8.23  user=root  password=1S0lut1on!
-storage2  idrac_ip=192.168.8.24  user=root  password=1S0lut1on!
-storage3  idrac_ip=192.168.8.25  user=root  password=1S0lut1on!
+rhel13.ocp.fv4.lab   idrac_ip=192.168.8.23
+rhel14.ocp.fv4.lab   idrac_ip=192.168.8.24
+rhel15.ocp.fv4.lab   idrac_ip=192.168.8.25
 
 [all:children]
 master
@@ -29,3 +32,6 @@ infra
 app
 storage
 
+[all:vars]
+user=root
+password=1S0lut1on!
