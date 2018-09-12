@@ -51,9 +51,9 @@ $ python install.py                                              # install Ansib
 After the Ansible modules have been installed, an NFS share has to be created where the required SCP files will be placed so that they be imported by iDRAC.
 
 ```bash
-$ vi /etc/ansible/hosts					# update as needed
 $ export PYTHONPATH=/opt/rh/python27/root/usr/lib/python2.7/site-packages    # may want to put in .bashrc
 $ cd src/bios-configuration
+$ vi /etc/ansible/hosts						# update as needed
 $ ansible-playbook setup_SCP_share.yaml
 ```
 
@@ -70,15 +70,15 @@ This will:
 - Enable PXE for addon NIC port 1
 - Setup boot order: 1) BOSS cards 2) NIC
 
-Please note that this will cause the servers to reboot.
+**Please note that this will cause the servers to reboot so the new BIOS settings can take effect.**
 
-Once you are ready to provision the OS, you can do a one time PXE boot:
+Once you are ready to provision the OS, do a one-time PXE boot:
 
 ```bash
 $ ansible-playbook one_time_boot_nic.yaml
 ```
 
-### Power management
+### Power Management
 
 We have provided playbooks to manage your servers' power as needed:
 
@@ -91,12 +91,12 @@ $ ansible-playbook reboot_servers.yml
 
 To power off servers:
 ```bash
-$ ansible-playbook power_off_server.yml
+$ ansible-playbook power_off_servers.yml
 ```
 
 To power on servers:
 ```bash
-$ ansible-playbook power_on_server.yml
+$ ansible-playbook power_on_servers.yml
 ```
 
 ### Provisioning system setup
