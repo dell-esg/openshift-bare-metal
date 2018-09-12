@@ -1,7 +1,7 @@
 # Deploying Red Hat OpenShift® Container Platform 3.10 with Container-Native Storage
 
 ## Instructions
-Please refer to [Reference Architecture document](https://tbd.pdf) for detailed instructions.
+Please refer to the [Reference Architecture document](https://tbd.pdf) for actual instructions.
 
 ### Clone the repository
 `$ git clone https://github.com/dell/openshift-container-architecture.git`
@@ -23,14 +23,14 @@ The Dell OS10 configuration role requires Ansible v2.5, which we will use via a 
 # docker build -t ansible25 .
 ```
 
-Then, update the dellos10 section in the inventory file with your IP addresses and credentials and copy to the current directory (since we are volume-mounting the current directory inside the container). Run as root:
+Then, update the inventory group *[dellos10]* with your IP addresses and credentials and copy to the current directory (since we will volume-mount the current directory inside the container). Run as root:
 
 ```bash
 $ cd src/os10-configuration
-$ vi ../../hosts.fv4			# update as needed
-$ cp ../../hosts.fv4 .			# copy to current directory (to be mounted)
-$ chcon -Rt container_file_t .		# fix SELinux context so we can mount inside container
-$ docker run --rm -it -v $PWD:/playbooks ansible25 -i hosts.fv4 configure_dellos10.yaml`
+$ vi /etc/ansible/hosts			# update as needed
+$ cp /etc/ansible/hosts .		# copy to current directory
+$ chcon -Rt container_file_t .		# fix SELinux context so we can mount in container
+$ docker run --rm -it -v $PWD:/playbooks ansible25 -i hosts configure_dellos10.yaml
 ```
 
 ### Server BIOS configuration
@@ -42,24 +42,25 @@ In the bastion node, run as root:
 $ subscription-manager repos --enable rhel-server-rhscl-7-rpms   # enable Software Collections repo
 $ yum -y install python27-python-pip -y                          # install pip
 $ scl enable python27 bash                                       # setup pip from RHSCL
-$ pip install omsdk                                              # install OpenManage SDK library
+$ pip install omsdk                                              # install OpenManage SDK
 $ git clone https://github.com/dell/Dell-EMC-Ansible-Modules-for-iDRAC.git
 $ cd Dell-EMC-Ansible-Modules-for-iDRAC
-$ python install.py                                              # install Ansible modules we'll use
+$ python install.py                                              # install Ansible modules
 ```
 
-After the Ansible modules have been installed, an NFS share has to be created where the required SCP files will be placed so that they be imported by iDRAC. Update `src/bios-configuration/inventory.yaml` and `src/bios-configuration/vars/all.yaml`, though if you are using the same set of IP addresses recommended in this Reference Architecture then you can leave them as-is.
+After the Ansible modules have been installed, an NFS share has to be created where the required SCP files will be placed so that they be imported by iDRAC.
 
 ```bash
+$ vi /etc/ansible/hosts					# update as needed
 $ export PYTHONPATH=/opt/rh/python27/root/usr/lib/python2.7/site-packages    # may want to put in .bashrc
 $ cd src/bios-configuration
-$ ansible-playbook -i inventory.yaml setup_SCP_share.yaml
+$ ansible-playbook setup_SCP_share.yaml
 ```
 
 Now that the NFS share is ready and we have placed the SCP files, we can import them into the iDRACs and apply the BIOS settings we need:
 
 ```bash
-$ ansible-playbook -i inventory.yaml configure_bios.yaml
+$ ansible-playbook configure_bios.yaml
 ```
 
 This will:
@@ -71,9 +72,32 @@ This will:
 
 Please note that this will cause the servers to reboot.
 
-Once you are ready to provision the OS, you can do a one time PXE bootb:
+Once you are ready to provision the OS, you can do a one time PXE boot:
 
-`$ ansible-playbook -i inventory.yaml one_time_boot_nic.yaml`
+```bash
+$ ansible-playbook one_time_boot_nic.yaml
+```
+
+### Power management
+
+We have provided playbooks to manage your servers' power as needed:
+
+To reboot servers:
+
+```bash
+$ cd src/power-management
+$ ansible-playbook reboot_servers.yml
+```
+
+To power off servers:
+```bash
+$ ansible-playbook power_off_server.yml
+```
+
+To power on servers:
+```bash
+$ ansible-playbook power_on_server.yml
+```
 
 ### Provisioning system setup
 
@@ -84,7 +108,9 @@ $ env IPMI_PASSWORD=password /tftp/reboot.sh -b pxe -r -f /tftp/ipmi.list.txt
 
 ### Preparing the nodes for OpenShift Container Platform
 
-`$ ansible-playbook src/prerequisites/nodes_setup.yaml -k`
+```bash
+$ ansible-playbook src/prerequisites/nodes_setup.yaml -k
+```
 
 ### Setting up multimaster HA
 switch user to *openshift* and then run:
@@ -97,4 +123,6 @@ $ ansible-playbook src/keepalived-multimaster/keepalived.yaml
 ### Deploying OpenShift cluster
 As user *openshift* run:
 
-`$ ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml`
+```bash
+$ ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml
+```
