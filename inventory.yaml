@@ -1,0 +1,37 @@
+# Temporary inventory file, will be merged with main one soon
+# Used for power management and BIOS configuration playbooks
+
+[bastion_node]
+rhel01.ocp.fv4.lab   idrac_ip=192.168.8.11
+
+[master]
+rhel02.ocp.fv4.lab   idrac_ip=192.168.8.12
+rhel03.ocp.fv4.lab   idrac_ip=192.168.8.13
+rhel04.ocp.fv4.lab   idrac_ip=192.168.8.14
+
+[infra]
+rhel05.ocp.fv4.lab   idrac_ip=192.168.8.15
+rhel06.ocp.fv4.lab   idrac_ip=192.168.8.16
+rhel07.ocp.fv4.lab   idrac_ip=192.168.8.17
+
+[app]
+rhel08.ocp.fv4.lab   idrac_ip=192.168.8.18
+rhel09.ocp.fv4.lab   idrac_ip=192.168.8.19
+rhel10.ocp.fv4.lab   idrac_ip=192.168.8.20
+rhel11.ocp.fv4.lab   idrac_ip=192.168.8.21
+rhel12.ocp.fv4.lab   idrac_ip=192.168.8.22
+
+[storage]
+rhel13.ocp.fv4.lab   idrac_ip=192.168.8.23
+rhel14.ocp.fv4.lab   idrac_ip=192.168.8.24
+rhel15.ocp.fv4.lab   idrac_ip=192.168.8.25
+
+[all:children]
+master
+infra
+app
+storage
+
+[all:vars]
+user=root
+password=1S0lut1on!

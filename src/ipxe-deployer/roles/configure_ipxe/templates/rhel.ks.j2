@@ -58,7 +58,7 @@ DNS1={{ dns_local }}
 {% endif %}
 BOOTPROTO=none
 USERCTL=no
-BONDING_OPTS="mode=802.3ad miimon=100 xmit_hash_policy=0 use_carrier=1"
+BONDING_OPTS="mode=802.3ad miimon=100"
 EOF
 
 {% if internal_vlan is defined %}
