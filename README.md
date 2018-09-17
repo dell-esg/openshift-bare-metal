@@ -15,7 +15,7 @@ The inventory file has to be filled manually.
 Refer to `hosts.fv4` for possible variables.
 
 ```bash
-$ cd ra-openshift-dellemc
+$ cd openshift-container-architecture
 $ cp hosts.fv4 /etc/ansible/hosts
 $ vim /etc/ansible/hosts
 ```
@@ -71,9 +71,9 @@ $ ansible-playbook configure_bios.yaml
 This will:
 
 - Enable IPMI
+- Enable PXE for addon 25Gb NIC port 1
 - Disable PXE for embedded NIC port 1
-- Enable PXE for addon NIC port 1
-- Setup boot order: 1) BOSS cards 2) NIC
+- Setup boot order: 1) BOSS card 2) 25Gb NIC port 1
 
 **Please note that this will cause the servers to reboot so the new BIOS settings can take effect.**
 
@@ -85,7 +85,7 @@ $ ansible-playbook one_time_boot_nic.yaml
 
 ### Power Management
 
-We have provided playbooks to manage your servers' power as needed:
+We have provided playbooks to manage power in your servers:
 
 To reboot servers:
 
