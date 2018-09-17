@@ -2,7 +2,7 @@ interface port-channel1
  no shutdown
  switchport mode trunk
  switchport access vlan {{ internal_vlan }}
- switchport trunk allowed vlan {{ mgmt_vlan }}, {{ external_vlan }}
+ switchport trunk allowed vlan {{ mgmt_vlan }},{{ external_vlan }}
  vlt-port-channel 1
  lacp fallback enable
  spanning-tree port type edge
@@ -140,8 +140,7 @@ interface port-channel15
 interface port-channel48
  no shutdown
  switchport mode trunk
- switchport access vlan 1
- switchport trunk allowed vlan {{ mgmt_vlan }}, {{ internal_vlan }}, {{ external_vlan }}
+ switchport trunk allowed vlan {{ mgmt_vlan }},{{ internal_vlan }},{{ external_vlan }}
  vlt-port-channel 48
 !
 interface ethernet1/1/1

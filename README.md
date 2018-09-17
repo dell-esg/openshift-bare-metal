@@ -36,6 +36,31 @@ $ vi /etc/ansible/hosts			# update as needed
 $ cp /etc/ansible/hosts .		# copy to current directory
 $ chcon -Rt container_file_t .		# fix SELinux context so we can mount in container
 $ docker run --rm -it -v $PWD:/playbooks ansible25 -i hosts configure_dellos10.yaml
+PLAY [dellos10] *********************************************************************************************************
+
+TASK [networking_setup : Configuring top level settings] ****************************************************************
+changed: [dellos10_sw1]
+changed: [dellos10_sw2]
+
+TASK [networking_setup : Applying stp configuration] ********************************************************************
+changed: [dellos10_sw1]
+changed: [dellos10_sw2]
+
+TASK [networking_setup : Applying vlt configuration] ********************************************************************
+changed: [dellos10_sw2]
+changed: [dellos10_sw1]
+
+TASK [networking_setup : Applying vlans configuration] ******************************************************************
+changed: [dellos10_sw1]
+changed: [dellos10_sw2]
+
+TASK [networking_setup : Applying interfaces configuration] *************************************************************
+changed: [dellos10_sw1]
+changed: [dellos10_sw2]
+
+PLAY RECAP **************************************************************************************************************
+dellos10_sw1               : ok=5    changed=5    unreachable=0    failed=0
+dellos10_sw2               : ok=5    changed=5    unreachable=0    failed=0
 ```
 
 ### Server BIOS configuration
