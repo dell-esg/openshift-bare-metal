@@ -1,29 +1,34 @@
 # Deploying Red Hat OpenShift® Container Platform 3.10 with Container-Native Storage
 
 ## Instructions
-Please refer to the [Reference Architecture document](https://tbd.pdf) for actual instructions.
+Please refer to the [Reference Architecture document](https://tbd.pdf) for network diagrams and detailed server information.
+
+Though some of these commands can be run as non-root users, it is assumed they are being run as root unless stated otherwise.
 
 ### Clone the repository
-`$ git clone https://github.com/dell/openshift-container-architecture.git`
+```bash
+$ git clone https://github.com/dell/openshift-container-architecture.git
+```
 
 ### Populating the inventory file
 The inventory file has to be filled manually.
-Refer to *hosts.fv4* for possible variables.
+Refer to `hosts.fv4` for possible variables.
 
 ```bash
-# cp hosts.fv4 /etc/ansible/hosts
-# vim /etc/ansible/hosts
+$ cd ra-openshift-dellemc
+$ cp hosts.fv4 /etc/ansible/hosts
+$ vim /etc/ansible/hosts
 ```
 
 ### Switch Configuration
-The Dell OS10 configuration role requires Ansible v2.5, which we will use via a Docker container. In the bastion node, build the container image (install Docker if not already installed). Run as root:
+The dellos10 configuration role requires Ansible v2.5, which we will use via a Docker container. In the bastion node, build the container image (install Docker if not already installed). Run as root:
 
 ```bash
-# cd src/os10-configuration
-# docker build -t ansible25 .
+$ cd src/os10-configuration
+$ docker build -t ansible25 .
 ```
 
-Then, update the inventory group *[dellos10]* with your IP addresses and credentials and copy to the current directory (since we will volume-mount the current directory inside the container). Run as root:
+Then, update the inventory group `[dellos10]` with your IP addresses and credentials and copy to the current directory (since we will volume-mount the current directory inside the container). Run as root:
 
 ```bash
 $ cd src/os10-configuration
@@ -116,7 +121,7 @@ $ ansible-playbook src/prerequisites/nodes_setup.yaml -k
 switch user to *openshift* and then run:
 
 ```bash
-# su - openshift
+$ su - openshift
 $ ansible-playbook src/keepalived-multimaster/keepalived.yaml
 ```
 
