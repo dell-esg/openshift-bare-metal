@@ -30,7 +30,6 @@ openshift_storage_glusterfs_registry_storageclass_default=true
 
 os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
 
-
 # XXX do we have subscription account?
 # subscription-manager register --org=7386116 --activationkey=openshift-storage
 rhel_subscription_user=RHSM_USER
@@ -54,7 +53,6 @@ internal_gateway={{ bastion_ip }}
 bastion_ip=192.168.20.11
 dhcp_first_ip=192.168.20.100
 dhcp_last_ip=192.168.20.150
-
 
 [local]
 127.0.0.1
