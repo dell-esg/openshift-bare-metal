@@ -8,6 +8,6 @@
   - name: Configure Server Power Setting
     dellemc_change_power_state:
        idrac_ip:   "{{ idrac_ip }}"
-       idrac_user: "{{ user }}"
-       idrac_pwd:  "{{ password }}"
+       idrac_user: "{{ idrac_user }}"
+       idrac_pwd:  "{{ idrac_password }}"
        change_power: "GracefulShutdown"

@@ -16,8 +16,8 @@
   - name: Import SCP to set one-time-boot
     dellemc_import_server_config_profile:
        idrac_ip: "{{ idrac_ip }}"
-       idrac_user: "{{ user }}"
-       idrac_pwd: "{{ password }}"
+       idrac_user: "{{ idrac_user }}"
+       idrac_pwd: "{{ idrac_password }}"
        share_name: "{{ nfs_server }}:{{ nfs_share }}"
        scp_file: "{{ SCP_one_time_boot }}"
        scp_components: "ALL"

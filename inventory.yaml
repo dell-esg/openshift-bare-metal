@@ -33,5 +33,5 @@ app
 storage
 
 [all:vars]
-user=root
-password=1S0lut1on!
+idrac_user=root
+idrac_password=1S0lut1on!
