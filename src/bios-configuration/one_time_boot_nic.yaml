@@ -16,7 +16,7 @@
 # Before running this role, make sure you have run the setup_SCP_share role
 # or this will fail.
 
-- hosts: all
+- hosts: nodes
   connection: local
   gather_facts: false
 

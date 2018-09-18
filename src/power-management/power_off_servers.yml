@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: nodes
   connection: local
   name: Power servers off
   gather_facts: False
