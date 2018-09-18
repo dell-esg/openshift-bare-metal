@@ -34,9 +34,10 @@ Then, update the inventory group `[dellos10]` with your IP addresses and credent
 
 ```bash
 $ cd src/os10-configuration
-$ vim /etc/ansible/hosts		# update as needed
-$ cp /etc/ansible/hosts .		# copy to current directory
-$ chcon -Rt container_file_t .		# fix SELinux context so we can mount in container
+$ vim /etc/ansible/hosts                      # update as needed
+$ cp /etc/ansible/hosts .                     # copy to current directory
+$ vim vars/all.yaml                           # update as needed
+$ chcon -Rt container_file_t .                # fix SELinux context so we can mount in container
 $ docker run --rm -it -v $PWD:/playbooks ansible25 -i hosts configure_dellos10.yaml
 PLAY [dellos10] ******************************************************************************************
 
@@ -88,6 +89,7 @@ After the Ansible modules have been installed, an NFS share has to be created in
 $ export PYTHONPATH=/opt/rh/python27/root/usr/lib/python2.7/site-packages   # may want to put in .bashrc
 $ cd src/bios-configuration
 $ vim /etc/ansible/hosts                                                    # update as needed
+$ vim vars/all.yaml                                                         # update as needed
 $ ansible-playbook setup_SCP_share.yaml
 ```
 
