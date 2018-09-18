@@ -38,13 +38,13 @@
 
     - block:
       - ipmi_boot:
-          name: "{{ ipmi }}"
+          name: "{{ idrac_ip }}"
           user: root
           password: "{{ local_ipmi_password }}"
           bootdev: network
 
       - ipmi_power:
-          name: "{{ ipmi }}"
+          name: "{{ idrac_ip }}"
           user: root
           password: "{{ local_ipmi_password }}"
           state: boot

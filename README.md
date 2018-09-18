@@ -21,7 +21,9 @@ $ vim /etc/ansible/hosts
 ```
 
 ### Switch Configuration
-The dellos10 configuration role requires Ansible v2.5, which we will use via a Docker container. In the bastion node, build the container image (install Docker if not already installed). Run as root:
+The dellos10 configuration role requires Ansible v2.5, which we will use via a container. Since your network switches are not configured yet, you will have to run these steps in an auxiliary system that has connectivity to the management ports in both OS10 switches.
+
+Build the container image (install Docker if not already installed). Run as root:
 
 ```bash
 $ cd src/os10-configuration
@@ -32,7 +34,7 @@ Then, update the inventory group `[dellos10]` with your IP addresses and credent
 
 ```bash
 $ cd src/os10-configuration
-$ vim /etc/ansible/hosts			# update as needed
+$ vim /etc/ansible/hosts		# update as needed
 $ cp /etc/ansible/hosts .		# copy to current directory
 $ chcon -Rt container_file_t .		# fix SELinux context so we can mount in container
 $ docker run --rm -it -v $PWD:/playbooks ansible25 -i hosts configure_dellos10.yaml
@@ -64,7 +66,9 @@ dellos10_sw2               : ok=5    changed=5    unreachable=0    failed=0
 ```
 
 ### Server BIOS configuration
-Some settings in the BIOS need to be updated, like enabling PXE booting from the correct NIC and setting up the right boot order. A [Server Configuration Profile (SCP)](https://dell.to/2NpRJ9a) can be imported via the Integrated Dell Remote Management Controller (iDRAC) to achieve this in an automated way. The Dell OpenManage Ansible modules and required libraries need to be insallted. 
+Now that your switches are configured and you have presumably installed the OS on the bastion node, you can run the rest of these commands from there.
+
+Some settings in the BIOS need to be updated in all the servers, like enabling PXE booting from the correct NIC and setting up the right boot order. A [Server Configuration Profile (SCP)](https://dell.to/2NpRJ9a) can be imported via the Integrated Dell Remote Management Controller (iDRAC) to achieve this in an automated way. The Dell OpenManage Ansible modules and required libraries need to be insallted. 
 
 In the bastion node, run as root:
 
@@ -78,12 +82,12 @@ $ cd Dell-EMC-Ansible-Modules-for-iDRAC
 $ python install.py                                              # install Ansible modules
 ```
 
-After the Ansible modules have been installed, an NFS share has to be created where the required SCP files will be placed so that they be imported by iDRAC.
+After the Ansible modules have been installed, an NFS share has to be created in the bastion node where the needed SCP files will be placed so that they be imported by iDRAC.
 
 ```bash
-$ export PYTHONPATH=/opt/rh/python27/root/usr/lib/python2.7/site-packages    # may want to put in .bashrc
+$ export PYTHONPATH=/opt/rh/python27/root/usr/lib/python2.7/site-packages   # may want to put in .bashrc
 $ cd src/bios-configuration
-$ vim /etc/ansible/hosts						# update as needed
+$ vim /etc/ansible/hosts                                                    # update as needed
 $ ansible-playbook setup_SCP_share.yaml
 ```
 
