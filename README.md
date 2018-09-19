@@ -1,4 +1,4 @@
-# Deploying Red Hat OpenShift® Container Platform 3.10 with Container-Native Storage
+# Deploying Red Hat OpenShift® Container Platform 3.10 with OpenShift Container Storage
 
 ## Instructions
 Please refer to the [Reference Architecture document](https://tbd.pdf) for network diagrams and detailed server information.
@@ -69,12 +69,12 @@ dellos10_sw2               : ok=5    changed=5    unreachable=0    failed=0
 ### Server BIOS configuration
 Now that your switches are configured and you have presumably installed the OS on the bastion node, you can run the rest of these commands from there.
 
-Some settings in the BIOS need to be updated in all the servers, like enabling PXE booting from the correct NIC and setting up the right boot order. A [Server Configuration Profile (SCP)](https://dell.to/2NpRJ9a) can be imported via the Integrated Dell Remote Management Controller (iDRAC) to achieve this in an automated way. The Dell OpenManage Ansible modules and required libraries need to be insallted. 
+Some settings in the BIOS need to be updated in all the servers, like enabling PxE booting from the correct NIC and setting up the right boot order. A [Server Configuration Profile (SCP)](https://dell.to/2NpRJ9a) can be imported via the Integrated Dell Remote Management Controller (iDRAC) to achieve this in an automated way. The Dell OpenManage Ansible modules and required libraries need to be insallted. 
 
 In the bastion node, run as root:
 
 ```bash
-$ subscription-manager repos --enable rhel-server-rhscl-7-rpms   # enable Software Collections repo
+$ subscription-manager repos --enable=rhel-server-rhscl-7-rpms   # enable Software Collections repo
 $ yum -y install python27-python-pip -y                          # install pip
 $ scl enable python27 bash                                       # setup pip from RHSCL
 $ pip install omsdk                                              # install OpenManage SDK
@@ -102,13 +102,13 @@ $ ansible-playbook configure_bios.yaml
 This will:
 
 - Enable IPMI
-- Enable PXE for addon 25Gb NIC port 1
-- Disable PXE for embedded NIC port 1
+- Enable PxE for addon 25Gb NIC port 1
+- Disable PxE for embedded NIC port 1
 - Setup boot order: 1) BOSS card 2) 25Gb NIC port 1
 
 **Please note that this will cause the servers to reboot so the new BIOS settings can take effect.**
 
-Once you are ready to provision the OS, do a one-time PXE boot:
+Once you are ready to provision the Operating System, do a one-time PXE boot:
 
 ```bash
 $ ansible-playbook one_time_boot_nic.yaml
