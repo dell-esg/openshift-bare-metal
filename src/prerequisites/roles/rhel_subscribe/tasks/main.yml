@@ -29,4 +29,5 @@
     - rhel-7-server-ose-{{ openshift_release[1:] }}-rpms
     - rhel-7-fast-datapath-rpms
     - rhel-7-server-ansible-2.4-rpms
+    - rh-gluster-3-client-for-rhel-7-server-rpms
   when: os_version != 'atomic'
