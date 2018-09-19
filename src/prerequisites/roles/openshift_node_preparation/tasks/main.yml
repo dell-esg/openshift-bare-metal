@@ -25,9 +25,9 @@
      - iptables-services
      - bridge-utils
      - bash-completion
-     - httpd-tools 
-     - kexec-tools 
-     - sos 
+     - httpd-tools
+     - kexec-tools
+     - sos
      - psacct
   when: os_version != 'atomic'
 - name: yum update
