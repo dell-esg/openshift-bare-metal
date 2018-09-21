@@ -115,6 +115,10 @@ This will:
 We have provided playbooks to manage power in your servers.
 Before running any of these playooks, be sure `PYTHONPATH` is defined:
 
+```
+$ export PYTHONPATH=/opt/rh/python27/root/usr/lib/python2.7/site-packages   # may want to put in .bashrc
+```
+
 To do a one-time PxE boot:
 ```bash
 $ ansible-playbook one_time_boot_nic.yaml
