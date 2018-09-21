@@ -69,7 +69,9 @@ dellos10_sw2               : ok=5    changed=5    unreachable=0    failed=0
 ### Server BIOS configuration
 Now that your switches are configured and you have presumably installed the OS on the bastion node, you can run the rest of these commands from there.
 
-Some settings in the BIOS need to be updated in all the servers, like enabling PxE booting from the correct NIC and setting up the right boot order. A [Server Configuration Profile (SCP)](https://dell.to/2NpRJ9a) can be imported via the Integrated Dell Remote Management Controller (iDRAC) to achieve this in an automated way. The Dell OpenManage Ansible modules and required libraries need to be insallted. 
+Some settings in the BIOS need to be updated in all the servers, like enabling PxE booting from the correct NIC and setting up the right boot order.
+A [Server Configuration Profile (SCP)](https://dell.to/2NpRJ9a) can be imported via the Integrated Dell Remote Management Controller (iDRAC) to achieve this in an automated way.
+The Dell OpenManage Ansible modules and required libraries need to be insallted. 
 
 In the bastion node, run as root:
 
@@ -108,29 +110,29 @@ This will:
 
 **Please note that this will cause the servers to reboot so the new BIOS settings can take effect.**
 
-Once you are ready to provision the Operating System, do a one-time PXE boot:
+### Power Management
 
+We have provided playbooks to manage power in your servers.
+Before running any of these playooks, be sure `PYTHONPATH` is defined:
+
+To do a one-time PxE boot:
 ```bash
 $ ansible-playbook one_time_boot_nic.yaml
 ```
 
-### Power Management
-
-We have provided playbooks to manage power in your servers:
-
-To reboot servers:
+To reboot:
 
 ```bash
 $ cd src/power-management
 $ ansible-playbook reboot_servers.yml
 ```
 
-To power off servers:
+To power off:
 ```bash
 $ ansible-playbook power_off_servers.yml
 ```
 
-To power on servers:
+To power on:
 ```bash
 $ ansible-playbook power_on_servers.yml
 ```
