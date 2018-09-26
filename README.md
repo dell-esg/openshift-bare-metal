@@ -21,9 +21,10 @@ $ vim /etc/ansible/hosts
 ```
 
 ### Switch Configuration
-The dellos10 configuration role requires Ansible v2.5, which we will use via a container. Since your network switches are not configured yet, you will have to run these steps in an auxiliary system that has connectivity to the management ports in both OS10 switches.
+The dellos10 configuration role requires Ansible v2.5, which we will use via a container.
+As instructed in the RA whitepaper, connect one of the 1Gb LOM ports in the bastion node to VLAN 7 in the S4048 switch (which also has the S5048F-ON switches management ports connected to it) so you can connect and configure the S5048F-ON switches via Ansible. 
 
-Build the container image (install Docker if not already installed). Run as root:
+In the bastion node, build the container image (install the docker engine if not already installed). Run as root:
 
 ```bash
 $ cd src/os10-configuration
@@ -67,11 +68,9 @@ dellos10_sw2               : ok=5    changed=5    unreachable=0    failed=0
 ```
 
 ### Server BIOS configuration
-Now that your switches are configured and you have presumably installed the OS on the bastion node, you can run the rest of these commands from there.
-
 Some settings in the BIOS need to be updated in all the servers, like enabling PxE booting from the correct NIC and setting up the right boot order.
 A [Server Configuration Profile (SCP)](https://dell.to/2NpRJ9a) can be imported via the Integrated Dell Remote Management Controller (iDRAC) to achieve this in an automated way.
-The Dell OpenManage Ansible modules and required libraries need to be insallted. 
+The Dell OpenManage Ansible modules and required libraries need to be installed. 
 
 In the bastion node, run as root:
 
