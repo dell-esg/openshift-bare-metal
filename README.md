@@ -22,7 +22,7 @@ $ vim /etc/ansible/hosts
 
 ### Switch Configuration
 The dellos10 configuration role requires Ansible v2.5, which we will use via a container.
-As instructed in the RA whitepaper, connect one of the 1Gb LOM ports in the bastion node to VLAN 7 in the S4048 switch (which also has the S5048F-ON switches management ports connected to it) so you can connect and configure the S5048F-ON switches via Ansible. 
+As indicated in the RA whitepaper, connect one of the 1Gb LOM ports in the bastion node to VLAN 7 in the S3048-ON switch (which also has the S5048F-ON management ports connected to it) so you can connect and manage the S5048F-ON switches via Ansible. 
 
 In the bastion node, build the container image (install the docker engine if not already installed). Run as root:
 
@@ -70,7 +70,7 @@ dellos10_sw2               : ok=5    changed=5    unreachable=0    failed=0
 ### Server BIOS configuration
 Some settings in the BIOS need to be updated in all the servers, like enabling PxE booting from the correct NIC and setting up the right boot order.
 A [Server Configuration Profile (SCP)](https://dell.to/2NpRJ9a) can be imported via the Integrated Dell Remote Management Controller (iDRAC) to achieve this in an automated way.
-The Dell OpenManage Ansible modules and required libraries need to be installed. 
+The Dell OpenManage Ansible modules and required libraries need to be installed.
 
 In the bastion node, run as root:
 
@@ -84,7 +84,7 @@ $ cd Dell-EMC-Ansible-Modules-for-iDRAC
 $ python install.py                                              # install Ansible modules
 ```
 
-After the Ansible modules have been installed, an NFS share has to be created in the bastion node where the needed SCP files will be placed so that they be imported by iDRAC.
+After the Ansible modules have been installed, an NFS share has to be created in the bastion node where the SCP files will be placed so that they can be later imported.
 
 ```bash
 $ export PYTHONPATH=/opt/rh/python27/root/usr/lib/python2.7/site-packages   # may want to put in .bashrc
