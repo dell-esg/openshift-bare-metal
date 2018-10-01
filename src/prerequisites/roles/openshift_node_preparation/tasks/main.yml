@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 - include: os_definition.yml
-- name: install packagges 
+- name: install required packages 
   yum:
     name: "{{ item }}"
     state: latest
@@ -25,18 +25,18 @@
      - iptables-services
      - bridge-utils
      - bash-completion
+     - openshift-ansible
   when: os_version != 'atomic'
 - name: yum update
   yum:
     name: '*'
     state: latest
   when: os_version != 'atomic'
-- name: atomic-openshift-utils
+- name: install additional packages
   yum:
     name: "{{ item }}"
     state: latest
   with_items:
-    - atomic-openshift-utils
     - atomic-openshift-excluder
     - atomic-openshift-docker-excluder
     - docker
