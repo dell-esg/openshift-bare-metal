@@ -12,7 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-- include: os_definition.yml
 - name: install required packages 
   yum:
     name: "{{ item }}"
@@ -25,20 +24,15 @@
      - iptables-services
      - bridge-utils
      - bash-completion
-<<<<<<< HEAD
      - openshift-ansible
-=======
      - httpd-tools
      - kexec-tools
      - sos
      - psacct
->>>>>>> dd01116adb52b0b0a75ef94ef7608a9edfccc25d
-  when: os_version != 'atomic'
 - name: yum update
   yum:
     name: '*'
     state: latest
-  when: os_version != 'atomic'
 - name: install additional packages
   yum:
     name: "{{ item }}"
@@ -47,7 +41,6 @@
     - atomic-openshift-excluder
     - atomic-openshift-docker-excluder
     - docker
-  when: os_version != 'atomic'
 - name: Workaround for docker 1.12
   lineinfile:
     dest: /etc/yum.conf

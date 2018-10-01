@@ -12,8 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#- include: os_definition.yml
-
 - name: Register using RHSM and attach OpenShift License with user and passwd variables
   redhat_subscription:
     username: "{{ rhel_subscription_user }}"
@@ -30,7 +28,6 @@
     pool: 'OpenShift'
   when: activationkey is defined and org_id is defined
 
-- include: os_definition.yml
 
 - name: enable the repositories
   command: subscription-manager repos --enable={{ item }}
@@ -41,4 +38,3 @@
     - rhel-7-fast-datapath-rpms
     - rhel-7-server-ansible-2.4-rpms
     - rh-gluster-3-client-for-rhel-7-server-rpms
-  when: os_version != 'atomic'
