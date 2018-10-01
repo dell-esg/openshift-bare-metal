@@ -12,6 +12,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+- name: Start docker service
+  systemd:
+    name: docker
+    enabled: yes
+    state: started
+
 - name: Create a local temp directory for docker build
   file:
     path: /tmp/keepalived_build/
@@ -71,6 +77,7 @@
     chain: INPUT
     protocol: vrrp
     jump: ACCEPT
+    action: insert
     comment: Keepalived connectivity
 
 - lineinfile:
