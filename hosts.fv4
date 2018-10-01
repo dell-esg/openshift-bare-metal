@@ -12,9 +12,7 @@ openshift_release=v3.10
 openshift_deployment_type=openshift-enterprise
 
 ansible_ssh_user=root
-
-# temporary:
-openshift_disable_check=docker_storage
+root_password="PROVISIONING_ROOT_PASSWORD"
 
 openshift_master_cluster_method=native
 openshift_master_cluster_hostname=ocp.fv4.lab
@@ -26,11 +24,8 @@ openshift_master_portal_net=10.0.0.0/16
 openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
 openshift_master_htpasswd_users={'admin': '$apr1$vC6GcVUP$AHZDU5BAFF6dDMfk.IFzG1'}
 openshift_clock_enabled=true
-
-
-
+os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
 openshift_master_dynamic_provisioning_enabled=True
-
 openshift_hosted_registry_storage_kind=glusterfs
 openshift_hosted_registry_storage_volume_size=200Gi
 openshift_hosted_registry_selector="node-role.kubernetes.io/infra=true"
@@ -54,7 +49,6 @@ openshift_metrics_hawkular_nodeselector={"node-role.kubernetes.io/infra": "true"
 openshift_metrics_cassandra_nodeselector={"node-role.kubernetes.io/infra": "true"}
 openshift_metrics_heapster_nodeselector={"node-role.kubernetes.io/infra": "true"}
  
-   
 # OCS storage cluster
 openshift_storage_glusterfs_namespace=app-storage
 openshift_storage_glusterfs_storageclass=true
@@ -68,46 +62,31 @@ openshift_storage_glusterfs_block_deploy=false
 # OCS storage for OpenShift infrastructure
 openshift_storage_glusterfs_registry_namespace=infra-storage
 openshift_storage_glusterfs_registry_storageclass=false
-# doc says `false`, Dave said `true`:
 openshift_storage_glusterfs_registry_block_deploy=false
 openshift_storage_glusterfs_registry_block_host_vol_create=false
 openshift_storage_glusterfs_registry_block_host_vol_size=182
 openshift_storage_glusterfs_registry_block_storageclass=false
 openshift_storage_glusterfs_registry_block_storageclass_default=false
  
+# Red Hat Subscription registration. Use user and password or activation key and organization id.
+rhel_subscription_user=RHSM_USER
+rhel_subscription_pass=RHSM_PASS
+activationkey=ACTIVATION_KEY
+org_id=123456
 
-
-#openshift_node_bootstrap=False
-os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
-
-
-# XXX do we have subscription account?
-# subscription-manager register --org=7386116 --activationkey=openshift-storage
-#rhel_subscription_user=RHSM_USER
-#rhel_subscription_pass=RHSM_PASS
-activationkey=openshift-storage
-org_id=7386116
-
-root_password="1S0lut1on!"
-
+# Network settings. Required for OS provisioning. 
 dns_local=192.168.20.11
 dns_upstream=8.8.8.8
-
-# XXX assuming it's not native
 external_interface=bond0
 external_vlan=25
 external_netmask=255.255.250.0
 external_gateway=192.168.253.1
-
 internal_interface=bond0
-# internal_vlan=
 internal_netmask=255.255.255.0
 internal_gateway={{ bastion_ip }}
-
 bastion_ip=192.168.20.11
 dhcp_first_ip=192.168.20.100
 dhcp_last_ip=192.168.20.150
-
 
 
 [local]
@@ -123,14 +102,9 @@ rhel0[2:4].ocp.fv4.lab
 rhel0[5:7].ocp.fv4.lab
 
 [glusterfs]
-#rhel0[8:9].ocp.fv4.lab glusterfs_devices="[ '/dev/nvme0n1' ]"
-#rhel1[0:2].ocp.fv4.lab glusterfs_devices="[ '/dev/nvme0n1' ]"
-
 rhel1[3:5].ocp.fv4.lab glusterfs_devices="[ '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl', '/dev/sdm', '/dev/sdn', '/dev/sdo', '/dev/sdp', '/dev/sdq', '/dev/sdr', '/dev/sds', '/dev/sdt', '/dev/sdu', '/dev/sdx' ]"
 
 [glusterfs_registry]
-#rhel1[3:5].ocp.fv4.lab glusterfs_devices="[ '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl', '/dev/sdm', '/dev/sdn', '/dev/sdo', '/dev/sdp', '/dev/sdq', '/dev/sdr', '/dev/sds', '/dev/sdt', '/dev/sdu', '/dev/sdx' ]"
-
 rhel0[5:7].ocp.fv4.lab glusterfs_zone=1 glusterfs_devices='["/dev/sdd", "/dev/sdc"]'
 
 [nodes]
@@ -142,8 +116,7 @@ rhel05.ocp.fv4.lab openshift_ip=192.168.20.15 openshift_hostname=infra1.ocp.fv4.
 rhel06.ocp.fv4.lab openshift_ip=192.168.20.16 openshift_hostname=infra2.ocp.fv4.lab idrac_ip=192.168.8.16 serial=6NRKBM2 openshift_node_group_name='node-config-infra' openshift_public_ip=192.168.253.16
 rhel07.ocp.fv4.lab openshift_ip=192.168.20.17 openshift_hostname=infra3.ocp.fv4.lab idrac_ip=192.168.8.17 serial=6NTFBM2 openshift_node_group_name='node-config-infra' openshift_public_ip=192.168.253.17
 
-# Dominika is testing docker-engine storage
-#rhel08.ocp.fv4.lab openshift_ip=192.168.20.18 openshift_hostname=app1.ocp.fv4.lab idrac_ip=192.168.8.18 serial=6NTHBM2 openshift_node_group_name='node-config-compute'
+rhel08.ocp.fv4.lab openshift_ip=192.168.20.18 openshift_hostname=app1.ocp.fv4.lab idrac_ip=192.168.8.18 serial=6NTHBM2 openshift_node_group_name='node-config-compute'
 rhel09.ocp.fv4.lab openshift_ip=192.168.20.19 openshift_hostname=app2.ocp.fv4.lab idrac_ip=192.168.8.19 serial=6NTDBM2 openshift_node_group_name='node-config-compute'
 rhel10.ocp.fv4.lab openshift_ip=192.168.20.20 openshift_hostname=app3.ocp.fv4.lab idrac_ip=192.168.8.20 serial=6NTGBM2 openshift_node_group_name='node-config-compute'
 rhel11.ocp.fv4.lab openshift_ip=192.168.20.21 openshift_hostname=app4.ocp.fv4.lab idrac_ip=192.168.8.21 serial=6NSKBM2 openshift_node_group_name='node-config-compute'
