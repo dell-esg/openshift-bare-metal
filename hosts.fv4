@@ -28,6 +28,7 @@ os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
 openshift_master_dynamic_provisioning_enabled=True
 openshift_hosted_registry_storage_kind=glusterfs
 openshift_hosted_registry_storage_volume_size=200Gi
+<<<<<<< HEAD
 openshift_hosted_registry_selector="node-role.kubernetes.io/infra=true"
  
 # logging
@@ -65,6 +66,15 @@ openshift_storage_glusterfs_registry_block_storageclass=false
 openshift_storage_glusterfs_registry_block_storageclass_default=false
  
 # Red Hat Subscription registration. Use user and password or activation key and organization id.
+=======
+openshift_storage_glusterfs_registry_storageclass=True
+openshift_storage_glusterfs_registry_storageclass_default=true
+
+os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
+
+# XXX do we have subscription account?
+# subscription-manager register --org=7386116 --activationkey=openshift-storage
+>>>>>>> dd01116adb52b0b0a75ef94ef7608a9edfccc25d
 rhel_subscription_user=RHSM_USER
 rhel_subscription_pass=RHSM_PASS
 activationkey=ACTIVATION_KEY
@@ -84,7 +94,10 @@ bastion_ip=192.168.20.11
 dhcp_first_ip=192.168.20.100
 dhcp_last_ip=192.168.20.150
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> dd01116adb52b0b0a75ef94ef7608a9edfccc25d
 [local]
 127.0.0.1
 
@@ -122,6 +135,7 @@ rhel13.ocp.fv4.lab openshift_ip=192.168.20.23 openshift_hostname=stor1.ocp.fv4.l
 rhel14.ocp.fv4.lab openshift_ip=192.168.20.24 openshift_hostname=stor2.ocp.fv4.lab idrac_ip=192.168.8.24 serial=5B99RP2 openshift_node_group_name='node-config-compute' interface1='p1p1' interface2='p1p2'
 rhel15.ocp.fv4.lab openshift_ip=192.168.20.25 openshift_hostname=stor3.ocp.fv4.lab idrac_ip=192.168.8.25 serial=5BB4RP2 openshift_node_group_name='node-config-compute' interface1='p1p1' interface2='p1p2'
 
+<<<<<<< HEAD
 #[dellos10]
 #dellos10_sw1 ansible_host=192.168.7.2 host_name="S5148-1" internal_vlan_ip=192.168.20.2/24 external_vlan_ip=192.168.253.2/24 peer_ip=192.168.7.3 bridge_priority=20480 vlt_priority=32768 lacp_port_priorty=1 vrrp_priority=100
 #dellos10_sw2 ansible_host=192.168.7.3 host_name="S5148-2" internal_vlan_ip=192.168.20.3/24 external_vlan_ip=192.168.253.3/24 peer_ip=192.168.7.2 bridge_priority=24576 vlt_priority=65535 lacp_port_priorty=32768 vrrp_priority=200
@@ -133,3 +147,20 @@ rhel15.ocp.fv4.lab openshift_ip=192.168.20.25 openshift_hostname=stor3.ocp.fv4.l
 #external_vlan = 25
 #mtu = 9216
 #vlt_peer_routing_timeout = 30
+=======
+[nodes:vars]
+idrac_user=root
+idrac_password=1S0lut1on!
+
+[dellos10]
+dellos10_sw1 ansible_host=192.168.7.2 host_name="S5148-1" internal_vlan_ip=192.168.20.2/24 external_vlan_ip=192.168.253.2/24 peer_ip=192.168.7.3 bridge_priority=20480 vlt_priority=32768 lacp_port_priorty=1 vrrp_priority=100
+dellos10_sw2 ansible_host=192.168.7.3 host_name="S5148-2" internal_vlan_ip=192.168.20.3/24 external_vlan_ip=192.168.253.3/24 peer_ip=192.168.7.2 bridge_priority=24576 vlt_priority=65535 lacp_port_priorty=32768 vrrp_priority=200
+
+[dellos10:vars]
+mgmt_vlan = 8
+internal_vlan_vip = 192.168.20.1
+internal_vlan = 20
+external_vlan = 25
+mtu = 9216
+vlt_peer_routing_timeout = 30
+>>>>>>> dd01116adb52b0b0a75ef94ef7608a9edfccc25d

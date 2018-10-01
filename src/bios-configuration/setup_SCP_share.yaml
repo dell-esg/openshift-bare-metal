@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: bastion_node
+- hosts: local
   connection: local
   gather_facts: false
 

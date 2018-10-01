@@ -15,3 +15,5 @@ SCP_R640_bios: SCP_R640_bios.json
 SCP_R740xd_bios: SCP_R740xd_bios.json
 SCP_one_time_boot: SCP_one_time_boot.json
 
+user: root
+password: "1S0lut1on!"

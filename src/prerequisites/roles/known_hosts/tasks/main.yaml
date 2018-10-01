@@ -31,14 +31,14 @@
 
 - name: Create {{ ansible_ssh_user }} SSH dir
   file:
-    path: "/home/{{ ansible_ssh_user }}/.ssh"
+    path: "e_env.HOME }}/.ssh"
     state: directory
     mode: 0700
     owner: "{{ ansible_ssh_user }}"
 
 - name: Copy known_hosts file to openshift's home directory
   copy:
-    dest: "/home/{{ ansible_ssh_user }}/.ssh/"
+    dest: "{{ ansible_env.HOME }}/.ssh/"
     owner: "{{ ansible_ssh_user }}"
     mode: 0600
     src: "{{ ansible_env.HOME }}/.ssh/known_hosts"

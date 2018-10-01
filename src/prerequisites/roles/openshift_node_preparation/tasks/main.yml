@@ -25,7 +25,14 @@
      - iptables-services
      - bridge-utils
      - bash-completion
+<<<<<<< HEAD
      - openshift-ansible
+=======
+     - httpd-tools
+     - kexec-tools
+     - sos
+     - psacct
+>>>>>>> dd01116adb52b0b0a75ef94ef7608a9edfccc25d
   when: os_version != 'atomic'
 - name: yum update
   yum:

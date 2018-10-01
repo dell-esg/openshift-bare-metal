@@ -12,17 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-- name: Create ipmi.list.txt
-  template:
-    src: ipmi.list.txt.j2
-    dest: /tftp/ipmi.list.txt
-
-- name: Create Atomic kickstarts
-  template:
-    src: atomic.ks.j2
-    dest: /tftp/atomic/media/atomic-{{ item }}.ks
-  with_items: "{{ groups.nodes }}"
-  when: (hostvars[item]['os'] is defined) and (hostvars[item]['os'] == "atomic")
 
 - name: Create RHEL kickstarts
   template:
@@ -30,13 +19,6 @@
     dest: /tftp/rhel/media/rhel-{{ item }}.ks
   with_items: "{{ groups.nodes }}"
   when: hostvars[item]['os'] is undefined
-
-- name: Create iPXE configs for Atomic
-  template:
-    src: serial.atomic.ipxe.j2
-    dest: /tftp/ipxe/serial/{{ hostvars[item]['serial'] }}.ipxe
-  with_items: "{{ groups.nodes }}"
-  when: (hostvars[item]['os'] is defined) and (hostvars[item]['os'] == "atomic")
 
 - name: Create iPXE configs for RHEL
   template:

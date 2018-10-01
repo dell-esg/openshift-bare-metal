@@ -16,8 +16,8 @@
   - name: Import SCP to set R640 BIOS settings
     dellemc_import_server_config_profile:
        idrac_ip: "{{ idrac_ip }}"
-       idrac_user: "{{ user }}"
-       idrac_pwd: "{{ password }}"
+       idrac_user: "{{ idrac_user }}"
+       idrac_pwd: "{{ idrac_password }}"
        share_name: "{{ nfs_server }}:{{ nfs_share }}"
        scp_file: "{{ SCP_R640_bios }]"
        scp_components: "ALL"
@@ -30,8 +30,8 @@
   - name: Import SCP to set R740xd BIOS settings
     dellemc_import_server_config_profile:
        idrac_ip: "{{ idrac_ip }}"
-       idrac_user: "{{ user }}"
-       idrac_pwd: "{{ password }}"
+       idrac_user: "{{ idrac_user }}"
+       idrac_pwd: "{{ idrac_password }}"
        share_name: "{{ nfs_server }}:{{ nfs_share }}"
        scp_file: "{{ SCP_R740xd_bios }}"
        scp_components: "ALL"
