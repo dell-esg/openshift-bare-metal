@@ -16,8 +16,8 @@ root_password="PROVISIONING_ROOT_PASSWORD"
 
 openshift_master_cluster_method=native
 openshift_master_cluster_hostname=ocp.fv4.lab
-openshift_master_cluster_public_hostname=ocp.example.com
-openshift_master_default_subdomain=apps.ocp.example.com
+openshift_master_cluster_public_hostname=ocp.fv4.lab
+openshift_master_default_subdomain=apps.ocp.fv4.lab
 openshift_master_cluster_ip=192.168.20.30
 openshift_master_cluster_public_ip=192.168.253.26
 openshift_master_portal_net=10.0.0.0/16
