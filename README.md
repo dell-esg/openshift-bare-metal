@@ -154,7 +154,7 @@ $ ansible-playbook src/prerequisites/nodes_setup.yaml -k
 ```
 
 ### Setting up multimaster HA
-switch user to *openshift* and then run:
+Switch user to *openshift* and then run:
 
 ```bash
 $ su - openshift
@@ -167,3 +167,9 @@ As user *openshift* run:
 ```bash
 $ ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml
 ```
+
+### Contributing
+If you would like to contribute code, before submitting a Pull Request please refer to the Wiki page.
+
+### Support
+Please note that this code is provided as-is and is supported by the community. If you have specific support questions, please use our [Linux-PowerEdge mailing list](http://lists.us.dell.com/mailman/listinfo/linux-poweredge). 
