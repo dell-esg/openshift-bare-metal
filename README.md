@@ -169,7 +169,7 @@ $ ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml
 ```
 
 ### Contributing
-If you would like to contribute code, before submitting a Pull Request please refer to the Wiki page.
+If you would like to contribute code, before submitting a Pull Request please refer to the [Contributor Agreement](https://github.com/dell/openshift-container-architecture/wiki/Contributor-Agreement) page.
 
 ### Support
 Please note that this code is provided as-is and is supported by the community. If you have specific support questions, please use our [Linux-PowerEdge mailing list](http://lists.us.dell.com/mailman/listinfo/linux-poweredge). 
