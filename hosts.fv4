@@ -4,8 +4,8 @@ nodes
 etcd
 lb
 local
-glusterfs_registry
 glusterfs
+glusterfs_registry
 
 [OSEv3:vars]
 openshift_release=v3.10
@@ -25,15 +25,11 @@ openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 
 openshift_master_htpasswd_users={'admin': '$apr1$vC6GcVUP$AHZDU5BAFF6dDMfk.IFzG1'}
 openshift_clock_enabled=true
 os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
-openshift_master_dynamic_provisioning_enabled=True
-openshift_hosted_registry_storage_kind=glusterfs
-openshift_hosted_registry_storage_volume_size=200Gi
-openshift_hosted_registry_selector="node-role.kubernetes.io/infra=true"
  
 # logging
 openshift_logging_install_logging=true
 openshift_logging_es_pvc_dynamic=true 
-openshift_logging_es_pvc_size=40Gi
+openshift_logging_es_pvc_size=100Gi
 openshift_logging_es_cluster_size=3
 openshift_logging_es_pvc_storage_class_name='glusterfs-registry-block'
 openshift_logging_kibana_nodeselector={"node-role.kubernetes.io/infra": "true"}
@@ -43,13 +39,19 @@ openshift_logging_es_nodeselector={"node-role.kubernetes.io/infra": "true"}
 # metrics
 openshift_metrics_install_metrics=true 
 openshift_metrics_storage_kind=dynamic
-openshift_metrics_storage_volume_size=20Gi
+openshift_metrics_storage_volume_size=100Gi
 openshift_metrics_cassandra_pvc_storage_class_name='glusterfs-registry-block'
 openshift_metrics_hawkular_nodeselector={"node-role.kubernetes.io/infra": "true"}
 openshift_metrics_cassandra_nodeselector={"node-role.kubernetes.io/infra": "true"}
 openshift_metrics_heapster_nodeselector={"node-role.kubernetes.io/infra": "true"}
+
+# registry
+openshift_master_dynamic_provisioning_enabled=True
+openshift_hosted_registry_storage_kind=glusterfs
+openshift_hosted_registry_storage_volume_size=200Gi
+openshift_hosted_registry_selector="node-role.kubernetes.io/infra=true"
  
-# OCS storage cluster
+# OCS storage cluster for applications
 openshift_storage_glusterfs_namespace=app-storage
 openshift_storage_glusterfs_storageclass=true
 openshift_storage_glusterfs_storageclass_default=false
@@ -58,13 +60,13 @@ openshift_storage_glusterfs_block_deploy=false
 # OCS storage for OpenShift infrastructure
 openshift_storage_glusterfs_registry_namespace=infra-storage
 openshift_storage_glusterfs_registry_storageclass=false
-openshift_storage_glusterfs_registry_block_deploy=false
-openshift_storage_glusterfs_registry_block_host_vol_create=false
-openshift_storage_glusterfs_registry_block_host_vol_size=182
-openshift_storage_glusterfs_registry_block_storageclass=false
+openshift_storage_glusterfs_registry_block_deploy=true
+openshift_storage_glusterfs_registry_block_host_vol_create=true
+openshift_storage_glusterfs_registry_block_host_vol_size=500
+openshift_storage_glusterfs_registry_block_storageclass=true
 openshift_storage_glusterfs_registry_block_storageclass_default=false
  
-# Red Hat Subscription registration. Use user and password or activation key and organization id.
+# Red Hat Subscription information. Use user and password OR activation key and organization id.
 rhel_subscription_user=RHSM_USER
 rhel_subscription_pass=RHSM_PASS
 activationkey=ACTIVATION_KEY
@@ -88,42 +90,57 @@ dhcp_last_ip=192.168.20.150
 127.0.0.1
 
 [masters]
-rhel0[2:4].ocp.fv4.lab
+master1.ocp.fv4.lab
+master2.ocp.fv4.lab
+master3.ocp.fv4.lab
 
 [etcd]
-rhel0[2:4].ocp.fv4.lab
+master1.ocp.fv4.lab
+master2.ocp.fv4.lab
+master3.ocp.fv4.lab
 
 [lb]
-rhel0[5:7].ocp.fv4.lab
+infra1.ocp.fv4.lab
+infra2.ocp.fv4.lab
+infra3.ocp.fv4.lab
 
 [glusterfs]
-rhel1[3:5].ocp.fv4.lab glusterfs_devices="[ '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl', '/dev/sdm', '/dev/sdn', '/dev/sdo', '/dev/sdp', '/dev/sdq', '/dev/sdr', '/dev/sds', '/dev/sdt', '/dev/sdu', '/dev/sdx' ]"
+app1.ocp.fv4.lab glusterfs_cluster=2 glusterfs_devices='[ "/dev/nvme0n1" ]'
+app2.ocp.fv4.lab glusterfs_cluster=2 glusterfs_devices='[ "/dev/nvme0n1" ]'
+app3.ocp.fv4.lab glusterfs_cluster=2 glusterfs_devices='[ "/dev/nvme0n1" ]'
+app4.ocp.fv4.lab glusterfs_cluster=2 glusterfs_devices='[ "/dev/nvme0n1" ]'
+app5.ocp.fv4.lab glusterfs_cluster=2 glusterfs_devices='[ "/dev/nvme0n1" ]'
+stor1.ocp.fv4.lab glusterfs_cluster=1 glusterfs_devices='[ "/dev/sdc", "/dev/sdd", "/dev/sde", "/dev/sdf", "/dev/sdg", "/dev/sdh", "/dev/sdi", "/dev/sdj", "/dev/sdk", "/dev/sdl", "/dev/sdm", "/dev/sdn", "/dev/sdo", "/dev/sdp", "/dev/sdq", "/dev/sdr", "/dev/sds", "/dev/sdt", "/dev/sdu", "/dev/sdx" ]'
+stor2.ocp.fv4.lab glusterfs_cluster=1 glusterfs_devices='[ "/dev/sdc", "/dev/sdd", "/dev/sde", "/dev/sdf", "/dev/sdg", "/dev/sdh", "/dev/sdi", "/dev/sdj", "/dev/sdk", "/dev/sdl", "/dev/sdm", "/dev/sdn", "/dev/sdo", "/dev/sdp", "/dev/sdq", "/dev/sdr", "/dev/sds", "/dev/sdt", "/dev/sdu", "/dev/sdx" ]'
+stor3.ocp.fv4.lab glusterfs_cluster=1 glusterfs_devices='[ "/dev/sdc", "/dev/sdd", "/dev/sde", "/dev/sdf", "/dev/sdg", "/dev/sdh", "/dev/sdi", "/dev/sdj", "/dev/sdk", "/dev/sdl", "/dev/sdm", "/dev/sdn", "/dev/sdo", "/dev/sdp", "/dev/sdq", "/dev/sdr", "/dev/sds", "/dev/sdt", "/dev/sdu", "/dev/sdx" ]'
 
 [glusterfs_registry]
-rhel0[5:7].ocp.fv4.lab glusterfs_zone=1 glusterfs_devices='["/dev/sdd", "/dev/sdc"]'
+infra1.ocp.fv4.lab glusterfs_devices='["/dev/sdd", "/dev/sdc"]'
+infra2.ocp.fv4.lab glusterfs_devices='["/dev/sdd", "/dev/sdc"]'
+infra3.ocp.fv4.lab glusterfs_devices='["/dev/sdd", "/dev/sdc"]'
 
 [nodes]
-rhel02.ocp.fv4.lab openshift_ip=192.168.20.12 openshift_hostname=master1.ocp.fv4.lab idrac_ip=192.168.8.12 serial=6NSHBM2 openshift_node_group_name='node-config-master'
-rhel03.ocp.fv4.lab openshift_ip=192.168.20.13 openshift_hostname=master2.ocp.fv4.lab idrac_ip=192.168.8.13 serial=6NSDBM2 openshift_node_group_name='node-config-master'
-rhel04.ocp.fv4.lab openshift_ip=192.168.20.14 openshift_hostname=master3.ocp.fv4.lab idrac_ip=192.168.8.14 serial=6NSFBM2 openshift_node_group_name='node-config-master'
+master1.ocp.fv4.lab openshift_ip=192.168.20.12 openshift_hostname=master1.ocp.fv4.lab idrac_ip=192.168.8.12 serial=6NSHBM2 openshift_node_group_name='node-config-master'
+master2.ocp.fv4.lab openshift_ip=192.168.20.13 openshift_hostname=master2.ocp.fv4.lab idrac_ip=192.168.8.13 serial=6NSDBM2 openshift_node_group_name='node-config-master'
+master3.ocp.fv4.lab openshift_ip=192.168.20.14 openshift_hostname=master3.ocp.fv4.lab idrac_ip=192.168.8.14 serial=6NSFBM2 openshift_node_group_name='node-config-master'
 
-rhel05.ocp.fv4.lab openshift_ip=192.168.20.15 openshift_hostname=infra1.ocp.fv4.lab idrac_ip=192.168.8.15 serial=6NSGBM2 openshift_node_group_name='node-config-infra' openshift_public_ip=192.168.253.15
-rhel06.ocp.fv4.lab openshift_ip=192.168.20.16 openshift_hostname=infra2.ocp.fv4.lab idrac_ip=192.168.8.16 serial=6NRKBM2 openshift_node_group_name='node-config-infra' openshift_public_ip=192.168.253.16
-rhel07.ocp.fv4.lab openshift_ip=192.168.20.17 openshift_hostname=infra3.ocp.fv4.lab idrac_ip=192.168.8.17 serial=6NTFBM2 openshift_node_group_name='node-config-infra' openshift_public_ip=192.168.253.17
+infra1.ocp.fv4.lab openshift_ip=192.168.20.15 openshift_hostname=infra1.ocp.fv4.lab idrac_ip=192.168.8.15 serial=6NSGBM2 openshift_node_group_name='node-config-infra' openshift_public_ip=192.168.253.15
+infra2.ocp.fv4.lab openshift_ip=192.168.20.16 openshift_hostname=infra2.ocp.fv4.lab idrac_ip=192.168.8.16 serial=6NRKBM2 openshift_node_group_name='node-config-infra' openshift_public_ip=192.168.253.16
+infra3.ocp.fv4.lab openshift_ip=192.168.20.17 openshift_hostname=infra3.ocp.fv4.lab idrac_ip=192.168.8.17 serial=6NTFBM2 openshift_node_group_name='node-config-infra' openshift_public_ip=192.168.253.17
 
-rhel08.ocp.fv4.lab openshift_ip=192.168.20.18 openshift_hostname=app1.ocp.fv4.lab idrac_ip=192.168.8.18 serial=6NTHBM2 openshift_node_group_name='node-config-compute'
-rhel09.ocp.fv4.lab openshift_ip=192.168.20.19 openshift_hostname=app2.ocp.fv4.lab idrac_ip=192.168.8.19 serial=6NTDBM2 openshift_node_group_name='node-config-compute'
-rhel10.ocp.fv4.lab openshift_ip=192.168.20.20 openshift_hostname=app3.ocp.fv4.lab idrac_ip=192.168.8.20 serial=6NTGBM2 openshift_node_group_name='node-config-compute'
-rhel11.ocp.fv4.lab openshift_ip=192.168.20.21 openshift_hostname=app4.ocp.fv4.lab idrac_ip=192.168.8.21 serial=6NSKBM2 openshift_node_group_name='node-config-compute'
-rhel12.ocp.fv4.lab openshift_ip=192.168.20.22 openshift_hostname=app5.ocp.fv4.lab idrac_ip=192.168.8.22 serial=6NTJBM2 openshift_node_group_name='node-config-compute'
+app1.ocp.fv4.lab openshift_ip=192.168.20.18 openshift_hostname=app1.ocp.fv4.lab idrac_ip=192.168.8.18 serial=6NTHBM2 openshift_node_group_name='node-config-compute'
+app2.ocp.fv4.lab openshift_ip=192.168.20.19 openshift_hostname=app2.ocp.fv4.lab idrac_ip=192.168.8.19 serial=6NTDBM2 openshift_node_group_name='node-config-compute'
+app3.ocp.fv4.lab openshift_ip=192.168.20.20 openshift_hostname=app3.ocp.fv4.lab idrac_ip=192.168.8.20 serial=6NTGBM2 openshift_node_group_name='node-config-compute'
+app4.ocp.fv4.lab openshift_ip=192.168.20.21 openshift_hostname=app4.ocp.fv4.lab idrac_ip=192.168.8.21 serial=6NSKBM2 openshift_node_group_name='node-config-compute'
+app5.ocp.fv4.lab openshift_ip=192.168.20.22 openshift_hostname=app5.ocp.fv4.lab idrac_ip=192.168.8.22 serial=6NTJBM2 openshift_node_group_name='node-config-compute'
 
-rhel13.ocp.fv4.lab openshift_ip=192.168.20.23 openshift_hostname=stor1.ocp.fv4.lab idrac_ip=192.168.8.23 serial=5B98RP2 openshift_node_group_name='node-config-compute' interface1='p1p1' interface2='p1p2'
-rhel14.ocp.fv4.lab openshift_ip=192.168.20.24 openshift_hostname=stor2.ocp.fv4.lab idrac_ip=192.168.8.24 serial=5B99RP2 openshift_node_group_name='node-config-compute' interface1='p1p1' interface2='p1p2'
-rhel15.ocp.fv4.lab openshift_ip=192.168.20.25 openshift_hostname=stor3.ocp.fv4.lab idrac_ip=192.168.8.25 serial=5BB4RP2 openshift_node_group_name='node-config-compute' interface1='p1p1' interface2='p1p2'
+stor1.ocp.fv4.lab openshift_ip=192.168.20.23 openshift_hostname=stor1.ocp.fv4.lab idrac_ip=192.168.8.23 serial=5B98RP2 openshift_node_group_name='node-config-compute' interface1='p1p1' interface2='p1p2'
+stor2.ocp.fv4.lab openshift_ip=192.168.20.24 openshift_hostname=stor2.ocp.fv4.lab idrac_ip=192.168.8.24 serial=5B99RP2 openshift_node_group_name='node-config-compute' interface1='p1p1' interface2='p1p2'
+stor3.ocp.fv4.lab openshift_ip=192.168.20.25 openshift_hostname=stor3.ocp.fv4.lab idrac_ip=192.168.8.25 serial=5BB4RP2 openshift_node_group_name='node-config-compute' interface1='p1p1' interface2='p1p2'
 
 [nodes:vars]
 idrac_user=root
-idrac_password=1S0lut1on!
+idrac_password=IDRAC_PASSWORD
 
 [dellos10]
 dellos10_sw1 ansible_host=192.168.7.2 host_name="S5148-1" internal_vlan_ip=192.168.20.2/24 external_vlan_ip=192.168.253.2/24 peer_ip=192.168.7.3 bridge_priority=20480 vlt_priority=32768 lacp_port_priorty=1 vrrp_priority=100

@@ -161,15 +161,16 @@ $ su - openshift
 $ ansible-playbook src/keepalived-multimaster/keepalived.yaml
 ```
 
-### Deploying OpenShift cluster
-As user *openshift* run:
+### Deploying Red Hat OpenShift Container Platform cluster
+As user *openshift* run the following two playbooks:
 
 ```bash
-$ ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml
+$ ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
+$ ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
 ```
 
 ### Contributing
 If you would like to contribute code, before submitting a Pull Request please refer to the [Contributor Agreement](https://github.com/dell/openshift-container-architecture/wiki/Contributor-Agreement) page.
 
 ### Support
-Please note that this code is provided as-is and is supported by the community. If you have specific support questions, please use our [Linux-PowerEdge mailing list](http://lists.us.dell.com/mailman/listinfo/linux-poweredge). 
+Please note that this code is provided as-is and is supported by the community. If you have specific support questions, please e-mail openshift@dell.com.  Alternatively, use our [Linux-PowerEdge mailing list](http://lists.us.dell.com/mailman/listinfo/linux-poweredge). 
