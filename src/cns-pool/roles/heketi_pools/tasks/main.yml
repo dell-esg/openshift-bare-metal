@@ -37,9 +37,9 @@
     oc -n app-storage rsh {{ heketi_pod_name }} heketi-cli -s http://localhost:8080 --user admin --secret {{ heketi_admin_key }} topology info --json
   register: topology_info
 
-- set_fact: topology_json={{ topology_info.stdout | from_json }}
-- set_fact: nvme_cluster_id='{{ topology_json.clusters.0.id }}'
-- set_fact: sata_cluster_id='{{ topology_json.clusters.1.id }}'
+- set_fact: topology_json="{{ topology_info.stdout | from_json }}"
+- set_fact: nvme_cluster_id="{{ topology_json.clusters.1.id }}"
+- set_fact: sata_cluster_id="{{ topology_json.clusters.0.id }}"
 
 - name: Create SATA SSD StorageClass
   template:
