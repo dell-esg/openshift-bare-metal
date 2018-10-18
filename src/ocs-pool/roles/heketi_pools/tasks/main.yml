@@ -27,40 +27,27 @@
     selector: "glusterfs=heketi-storage-pod"
   register: heketi_pod_check
 
-- set_fact:
-  heketi_pod_name: "{{ heketi_pod_check.results.results[0]['items'][0].metadata.name }}"
+- set_fact: heketi_pod_name={{ heketi_pod_check.results.results[0]['items'][0].metadata.name }}
 
-- set_fact:
-  heketi_admin_key: "{{ heketi_pod_check.results.results[0]['items'][0].spec.containers[0]['env'][1].value }}"
+- set_fact: heketi_admin_key={{ heketi_pod_check.results.results[0]['items'][0].spec.containers[0]['env'][1].value }}
 
 - command: >
     oc -n app-storage rsh {{ heketi_pod_name }} heketi-cli -s http://localhost:8080 --user admin --secret {{ heketi_admin_key }} topology info --json
   register: topology_info
 
-- set_fact: topology_json="{{ topology_info.stdout | from_json }}"
-- set_fact: nvme_cluster_id="{{ topology_json.clusters.1.id }}"
-- set_fact: sata_cluster_id="{{ topology_json.clusters.0.id }}"
+- set_fact: topology_json={{ topology_info.stdout | from_json }}
+- set_fact: nvme_cluster_id={{ topology_json.clusters.1.id }}
+- set_fact: sata_cluster_id={{ topology_json.clusters.0.id }}
 
-- name: Create SATA SSD StorageClass
+- name: Create SATA SSD StorageClass template
   template:
-    src: storage-sata.yaml.j2
+    src: "storage-sata.yaml.j2"
     dest: "{{ tmp_dir }}/storage-sata.yaml"
-  oc_obj:
-    state: preset
-    kind: StorageClass
-    name: glusterfs-sata
-    files:
-      - "{{ tmp_dir }}/storage_sata.yaml"
-    delete_after: true
+- shell: "oc apply -f {{ tmp_dir }}/storage-sata.yaml"
 
 - name: Create NVMe SSD StorageClass
   template:
-    src: storage-nvme.yaml.j2
+    src: "storage-nvme.yaml.j2"
     dest: "{{ tmp_dir }}/storage-nvme.yaml"
-  oc_obj:
-    state: preset
-    kind: StorageClass
-    name: glusterfs-nvme
-    files:
-      - "{{ tmp_dir }}/storage_nvme.yaml"
-    delete_after: true
+- shell: "oc apply -f {{ tmp_dir }}/storage-nvme.yaml"
+
