@@ -12,9 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-- hosts: local
-  connection: local
+- hosts: masters[0]
   roles:
-    - {role: deploy_ipxe, tags: ['run']}
-    - {role: configure_ipxe, tags: ['config']}
-    - {role: firewall, tags: ['firewall']}
+    - heketi_pools
