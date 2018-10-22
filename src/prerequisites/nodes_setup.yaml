@@ -15,28 +15,20 @@
 - hosts: local
   connection: local
   roles:
-#    - check_ansible_version
-#    - rhel_unsubscribe
-#    - rhel_subscribe
-#    - openshift_remote_access_master
+    - check_ansible_version
+    - rhel_subscribe
+    - openshift_remote_access_master
     - known_hosts
-#  post_tasks:
-#    - name: Install openshift-ansible
-#      yum: name={{ item }} state=latest
-#      with_items:
-#        - openshift-ansible
+  post_tasks:
+    - name: Install openshift-ansible
+      yum: name={{ item }} state=latest
+      with_items:
+        - openshift-ansible
 
 - hosts: nodes
   vars:
     ansible_ssh_user: root
   roles:
     - openshift_remote_access_slaves
-#    - rhel_unsubscribe
-#    - rhel_subscribe
-#    - openshift_node_preparation
-
-#- hosts: glusterfs, glusterfs_registry
-#  vars:
-#    ansible_ssh_user: root
-#  roles:
-#    - gluster_subscribe
+    - rhel_subscribe
+    - openshift_node_preparation
