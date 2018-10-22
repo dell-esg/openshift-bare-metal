@@ -22,7 +22,7 @@ $ vim /etc/ansible/hosts
 
 ### Switch Configuration
 The dellos10 configuration role requires Ansible v2.5, which we will use via a container.
-As indicated in the RA whitepaper, connect one of the 1Gb LOM ports in the bastion node to VLAN 7 in the S3048-ON switch (which also has the S5048F-ON management ports connected to it) so you can connect and manage the S5048F-ON switches via Ansible. 
+As indicated in the RA whitepaper, connect one of the 1Gb LOM ports in the bastion node to VLAN 7 in the S3048-ON switch (which also has the S5048F-ON management ports connected to it) so you can connect and manage the S5048F-ON switches via Ansible.
 
 In the bastion node, build the container image (install the docker engine if not already installed). Run as root:
 
@@ -141,32 +141,27 @@ $ ansible-playbook power_on_servers.yml
 ```
 
 ### Provisioning system setup
-
-```bash
-$ ansible-playbook ipxe-deployer/ipxe.yml
-$ env IPMI_PASSWORD=password /tftp/reboot.sh -b pxe -r -f /tftp/ipmi.list.txt
+Following script builds OS provisioning framework and templates according to an inventory file:
 ```
+# ansible-playbook src/ipxe-deployer/ipxe.yml
+```
+Servers need to boot from PXE.
+Refer to playbooks from section **Power Management**.
 
 ### Preparing the nodes for OpenShift Container Platform
-
 ```bash
-$ ansible-playbook src/prerequisites/nodes_setup.yaml -k
+# ansible-playbook src/prerequisites/nodes_setup.yaml -k
 ```
 
 ### Setting up multimaster HA
-Switch user to *openshift* and then run:
-
 ```bash
-$ su - openshift
-$ ansible-playbook src/keepalived-multimaster/keepalived.yaml
+# ansible-playbook src/keepalived-multimaster/keepalived.yaml
 ```
 
 ### Deploying Red Hat OpenShift Container Platform cluster
-As user *openshift* run the following two playbooks:
-
 ```bash
-$ ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
-$ ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
+# ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
+# ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
 ```
 
 ### Contributing
