@@ -14,12 +14,13 @@
 # limitations under the License.
 - name: Make sure the known_hosts file and path exist
   file:
-    path: "{{ ansible_env.HOME }}/.ssh"
+    path: "/root/.ssh"
     state: directory
     mode: 0700
+    owner: "root"
 
 - name: Generate known_hosts content
-  shell: ssh-keyscan -H -T 10 {{ item }} >> "{{ ansible_env.HOME }}/.ssh/known_hosts"
+  shell: ssh-keyscan -H -T 10 {{ item }} >> "/root/.ssh/known_hosts"
   with_items:
   - "{{ groups['masters'] }}"
   - "{{ groups['nodes'] }}"
@@ -28,17 +29,3 @@
   - "{{ groups['glusterfs'] }}"
   - "{{ groups['glusterfs_registry'] }}"
   - "127.0.0.1"
-
-- name: Create {{ ansible_ssh_user }} SSH dir
-  file:
-    path: "e_env.HOME }}/.ssh"
-    state: directory
-    mode: 0700
-    owner: "{{ ansible_ssh_user }}"
-
-- name: Copy known_hosts file to openshift's home directory
-  copy:
-    dest: "{{ ansible_env.HOME }}/.ssh/"
-    owner: "{{ ansible_ssh_user }}"
-    mode: 0600
-    src: "{{ ansible_env.HOME }}/.ssh/known_hosts"
