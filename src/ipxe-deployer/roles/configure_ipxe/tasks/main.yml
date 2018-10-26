@@ -20,9 +20,11 @@
   with_items: "{{ groups.nodes }}"
   when: hostvars[item]['os'] is undefined
 
-- name: Create iPXE configs for RHEL
+- name: Create iPXE configs for master nodes
   template:
-    src: serial.rhel.ipxe.j2
+    src: serial.rhel.master.ipxe.j2
     dest: /tftp/ipxe/serial/{{ hostvars[item]['serial'] }}.ipxe
   with_items: "{{ groups.nodes }}"
-  when: hostvars[item]['os'] is undefined
+  when: hostvars[item]['openshift_node_group_name'] is 'node-config-master'
+
+- command: chcon -Rt container_file_t /tftp/rhel/media
