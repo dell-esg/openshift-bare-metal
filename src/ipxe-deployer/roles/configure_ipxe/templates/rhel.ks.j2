@@ -14,6 +14,7 @@ zerombr
 volgroup vg00 pv.01
 logvol swap --vgname=vg00 --name=swapvol --fstype=swap --size=4000
 logvol / --vgname=vg00  --fstype=xfs  --size=80000 --name=lv_root
+%include /tmp/dockerstorage
 reboot
 
 %pre
@@ -22,6 +23,22 @@ echo clearpart --all --initlabel --drives=$bootdrive > /tmp/clearpart
 echo part /boot --fstype ext4 --size=500 --ondisk=$bootdrive > /tmp/bootdrive
 echo part /boot/efi --fstype vfat --size=200 --ondisk=$bootdrive >> /tmp/bootdrive
 echo part pv.01 --size=100000 --grow --ondisk=$bootdrive >> /tmp/bootdrive
+
+{% if hostvars[item]['openshift_node_group_name'] =='node-config-master' or hostvars[item]['openshift_node_group_name'] =='node-config-compute' %}
+disk_id=SSDSC2KG960G7R > /tmp/dockerstorage
+dockerdisk=`readlink -f /dev/disk/by-id/*${disk_id}*[1-0][0-9]` >> /tmp/dockerstorage
+mdadm --create /dev/md0 --metadata=0.90 --level=1 --raid-devices=2 $dockerdisk >> /tmp/dockerstorage
+{% elif hostvars[item]['openshift_node_group_name'] == 'node-config-infra' %}
+disk_id=SSDSC2KG240G7R > /tmp/dockerstorage
+dockerdisk=`readlink -f /dev/disk/by-id/*${disk_id}*[0-0][0-9]` >> /tmp/dockerstorage
+mdadm --create /dev/md0 --metadata=0.90 --level=1 --raid-devices=2 $dockerdisk >> /tmp/dockerstorage
+{% else %} {# storage nodes #}
+mdadm --create /dev/md0 --metadata=0.90 --level=1 --raid-devices=2 /dev/sda /dev/sdb > /tmp/dockerstorage
+{% endif %}
+
+sed -i s/"md_component_detection = 1"/"md_component_detection = 0"/ /etc/lvm/lvm.conf >> /tmp/dockerstorage
+pvcreate /dev/md0 >> /tmp/dockerstorage
+vgcreate docker-vg /dev/md0 >> /tmp/dockerstorage
 %end
 
 %packages
@@ -133,4 +150,9 @@ cat << EOF > /etc/hostname
 {{ hostvars[item]['openshift_hostname'] }}
 EOF
 
+cat << EOF > /etc/sysconfig/docker-storage-setup
+VG=docker-vg
+EOF
+
+mdadm -Es >> /etc/mdadm.conf
 %end

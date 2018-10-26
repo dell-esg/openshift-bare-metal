@@ -20,9 +20,10 @@
   with_items: "{{ groups.nodes }}"
   when: hostvars[item]['os'] is undefined
 
-- name: Create iPXE configs for RHEL
+- name: Create iPXE configs for nodes
   template:
     src: serial.rhel.ipxe.j2
     dest: /tftp/ipxe/serial/{{ hostvars[item]['serial'] }}.ipxe
   with_items: "{{ groups.nodes }}"
-  when: hostvars[item]['os'] is undefined
+
+- command: chcon -Rt container_file_t /tftp/rhel/media
