@@ -18,19 +18,18 @@ logvol / --vgname=vg00  --fstype=xfs  --size=80000 --name=lv_root
 reboot
 
 %pre
-bootdrive=`readlink -f /dev/disk/by-id/*BOSS*[0-9][0-9]`
+bootdrive=`readlink -f /dev/disk/by-id/*BOSS*[A-Z0-9][A-Z0-9]`
 echo clearpart --all --initlabel --drives=$bootdrive > /tmp/clearpart
 echo part /boot --fstype ext4 --size=500 --ondisk=$bootdrive > /tmp/bootdrive
 echo part /boot/efi --fstype vfat --size=200 --ondisk=$bootdrive >> /tmp/bootdrive
 echo part pv.01 --size=100000 --grow --ondisk=$bootdrive >> /tmp/bootdrive
-
-{% if hostvars[item]['openshift_node_group_name'] =='node-config-master' or hostvars[item]['openshift_node_group_name'] =='node-config-compute' %}
+{% if hostvars[item]['openshift_node_group_name'] =='node-config-master' or "app" in hostvars[item]['openshift_hostname'] %}
 disk_id=SSDSC2KG960G7R > /tmp/dockerstorage
-dockerdisk=`readlink -f /dev/disk/by-id/*${disk_id}*[1-0][0-9]` >> /tmp/dockerstorage
+dockerdisk=`readlink -f /dev/disk/by-id/*${disk_id}*[A-Z0-9][A-Z0-9]` >> /tmp/dockerstorage
 mdadm --create /dev/md0 --metadata=0.90 --level=1 --raid-devices=2 $dockerdisk >> /tmp/dockerstorage
 {% elif hostvars[item]['openshift_node_group_name'] == 'node-config-infra' %}
 disk_id=SSDSC2KG240G7R > /tmp/dockerstorage
-dockerdisk=`readlink -f /dev/disk/by-id/*${disk_id}*[0-0][0-9]` >> /tmp/dockerstorage
+dockerdisk=`readlink -f /dev/disk/by-id/*${disk_id}*[A-Z0-9][A-Z0-9]` >> /tmp/dockerstorage
 mdadm --create /dev/md0 --metadata=0.90 --level=1 --raid-devices=2 $dockerdisk >> /tmp/dockerstorage
 {% else %} {# storage nodes #}
 mdadm --create /dev/md0 --metadata=0.90 --level=1 --raid-devices=2 /dev/sda /dev/sdb > /tmp/dockerstorage
