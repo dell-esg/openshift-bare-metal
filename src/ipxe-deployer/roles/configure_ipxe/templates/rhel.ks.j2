@@ -26,7 +26,7 @@ echo part pv.01 --size=100000 --grow --ondisk=$bootdrive >> /tmp/bootdrive
 
 {% if hostvars[item]['openshift_node_group_name'] =='node-config-master' or hostvars[item]['openshift_node_group_name'] =='node-config-compute' %}
 disk_id=SSDSC2KG960G7R > /tmp/dockerstorage
-dockerdisk=`readlink -f /dev/disk/by-id/*${disk_id}*[0-0][0-9]` >> /tmp/dockerstorage
+dockerdisk=`readlink -f /dev/disk/by-id/*${disk_id}*[1-0][0-9]` >> /tmp/dockerstorage
 mdadm --create /dev/md0 --metadata=0.90 --level=1 --raid-devices=2 $dockerdisk >> /tmp/dockerstorage
 {% elif hostvars[item]['openshift_node_group_name'] == 'node-config-infra' %}
 disk_id=SSDSC2KG240G7R > /tmp/dockerstorage
@@ -154,4 +154,5 @@ cat << EOF > /etc/sysconfig/docker-storage-setup
 VG=docker-vg
 EOF
 
+mdadm -Es >> /etc/mdadm.conf
 %end
