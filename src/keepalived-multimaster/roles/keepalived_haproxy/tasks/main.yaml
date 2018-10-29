@@ -18,6 +18,11 @@
     enabled: yes
     state: started
 
+- name: Install docker-python module
+  yum:
+    name: docker-python
+    state: present
+
 - name: Create a local temp directory for docker build
   file:
     path: /tmp/keepalived_build/
@@ -96,4 +101,3 @@
     state: restarted
     enabled: yes
     daemon_reload: yes
-
