@@ -6,8 +6,8 @@
 
 # The bastion node will serve as NFS server but need to define the IP
 # address in the _management_ network.
-nfs_server: 192.168.8.31
-nfs_subnet: 192.168.8.0/24
+nfs_server: 192.168.10.31
+nfs_subnet: 192.168.10.0/24
 nfs_share: /nfs_share
 
 # Don't edit values below
@@ -16,4 +16,4 @@ SCP_R740xd_bios: SCP_R740xd_bios.json
 SCP_one_time_boot: SCP_one_time_boot.json
 
 user: root
-password: "1S0lut1on!"
+password: "Dell0SS!"
