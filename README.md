@@ -42,5 +42,12 @@ $ ansible-playbook src/keepalived-multimaster/keepalived.yaml
 $ ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
 $ ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
 ```
+### Deploy NVMe Storage Class (requires an openshift user login with "cluster-admin" role) 
+##  Run Ansible playbook to modify StorageClass objects to expose NVMe storage classes and make it default Storage Class and available to Red Hat OpenShift users.
+$ ansible-playbook src/ocs-pool/storage-class.yml
+
+## run oc get sc to see the storage class
+$ oc get sc 
+```
 ### Support
 Please note that this code is provided as-is and is supported by the community. If you have specific support questions, please e-mail openshift@dell.com.
