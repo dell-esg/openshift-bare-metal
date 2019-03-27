@@ -36,18 +36,8 @@
   register: topology_info
 
 - set_fact: topology_json={{ topology_info.stdout | from_json }}
-- set_fact: nvme_cluster_id={{ topology_json.clusters.1.id }}
-- set_fact: sata_cluster_id={{ topology_json.clusters.0.id }}
-
-- name: Create SATA SSD StorageClass template
-  template:
-    src: "storage-sata.yaml.j2"
-    dest: "{{ tmp_dir }}/storage-sata.yaml"
-- shell: "oc apply -f {{ tmp_dir }}/storage-sata.yaml"
-
 - name: Create NVMe SSD StorageClass
   template:
     src: "storage-nvme.yaml.j2"
     dest: "{{ tmp_dir }}/storage-nvme.yaml"
 - shell: "oc apply -f {{ tmp_dir }}/storage-nvme.yaml"
-
