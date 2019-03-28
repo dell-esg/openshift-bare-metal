@@ -16,7 +16,7 @@ interface breakout 1/1/13 map 100g-1x
 interface breakout 1/1/14 map 100g-1x
 interface breakout 1/1/15 map 100g-1x
 interface breakout 1/1/16 map 100g-1x
-interface breakout 1/1/17 map 25g-4x
+interface breakout 1/1/17 map 100g-1x
 interface breakout 1/1/18 map 100g-1x
 interface breakout 1/1/19 map 100g-1x
 interface breakout 1/1/20 map 100g-1x
@@ -594,3 +594,6 @@ vlt-domain 100
  primary-priority 65535
  vlt-mac 00:11:22:33:55:aa
 snmp-server contact "Contact Support"
+
+
+
