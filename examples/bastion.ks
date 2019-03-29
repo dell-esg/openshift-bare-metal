@@ -5,7 +5,7 @@ cdrom
 lang en_US.UTF-8
 keyboard --vckeymap=us --xlayouts='us'
 timezone Etc/UTC --isUtc
-rootpw CHANGEME_OS_PASSWORD
+rootpw Dell0SS!
 auth --enableshadow --passalgo=sha512
 services --enabled="chronyd"
 firstboot --enable
@@ -18,7 +18,7 @@ logvol / --vgname=vg00  --fstype=xfs  --size=80000 --name=lv_root
 reboot
 
 %pre
-bootdrive=`readlink -f /dev/disk/by-id/*BOSS*[A-Z0-9][A-Z0-9]`
+bootdrive=`readlink -f /dev/disk/by-id/*BOSS* | head -n 1`
 echo clearpart --all --initlabel --drives=$bootdrive > /tmp/clearpart
 echo part /boot --fstype ext4 --size=500 --ondisk=$bootdrive > /tmp/bootdrive
 echo part /boot/efi --fstype vfat --size=200 --ondisk=$bootdrive >> /tmp/bootdrive
@@ -44,6 +44,8 @@ cat << EOF > /etc/sysconfig/network-scripts/ifcfg-bond0
 DEVICE=bond0
 ONBOOT=yes
 BOOTPROTO=none
+IPADDR=192.168.20.11
+NETMASK=255.255.255.0
 USERCTL=no
 NM_CONTROLLED=yes
 PEERDNS=yes
@@ -52,7 +54,7 @@ EOF
 
 cat << EOF > /etc/sysconfig/network-scripts/ifcfg-bond0.421
 DEVICE=bond0.421
-IPADDR=100.82.42.12
+IPADDR=100.82.42.11
 NETMASK=255.255.255.0
 GATEWAY=100.82.42.1
 DNS1=100.82.42.8
