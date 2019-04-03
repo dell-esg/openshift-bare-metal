@@ -24,11 +24,11 @@ echo part /boot --fstype ext4 --size=500 --ondisk=$bootdrive > /tmp/bootdrive
 echo part /boot/efi --fstype vfat --size=200 --ondisk=$bootdrive >> /tmp/bootdrive
 echo part pv.01 --size=100000 --grow --ondisk=$bootdrive >> /tmp/bootdrive
 {% if hostvars[item]['openshift_node_group_name'] =='node-config-master' or "app" in hostvars[item]['openshift_hostname'] %}
-mdadm --create /dev/md0 --metadata=0.90 --level=1 --raid-devices=2 /dev/nvme0n1 /dev/nvme1n1 >> /tmp/dockerstorage
+mdadm --create -R /dev/md0 --metadata=0.90 --level=1 --raid-devices=2 /dev/nvme0n1 /dev/nvme1n1 >> /tmp/dockerstorage
 {% elif hostvars[item]['openshift_node_group_name'] == 'node-config-infra' %}
-mdadm --create /dev/md0 --metadata=0.90 --level=1 --raid-devices=2 /dev/nvme0n1 /dev/nvme1n1 >> /tmp/dockerstorage
+mdadm --create -R /dev/md0 --metadata=0.90 --level=1 --raid-devices=2 /dev/nvme0n1 /dev/nvme1n1 >> /tmp/dockerstorage
 {% else %} {# storage nodes #}
-mdadm --create /dev/md0 --metadata=0.90 --level=1 --raid-devices=2 /dev/nvme0n1 /dev/nvme1n1 >> /tmp/dockerstorage
+mdadm --create -R /dev/md0 --metadata=0.90 --level=1 --raid-devices=2 /dev/nvme0n1 /dev/nvme1n1 >> /tmp/dockerstorage
 {% endif %}
 
 sed -i s/"md_component_detection = 1"/"md_component_detection = 0"/ /etc/lvm/lvm.conf >> /tmp/dockerstorage
