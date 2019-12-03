@@ -1,0 +1,90 @@
+---
+# tasks file for pxe
+- name: install tftp-server package
+  yum:
+    name: tftp-server
+    state: latest
+
+- name: install xinetd package
+  yum: 
+    name: xinetd
+    state: latest
+
+- name: enable and start xinetd service
+  systemd:
+    name: xinetd
+    enabled: yes
+    state: started
+
+- name: enable and start tftp service
+  systemd:
+    name: tftp
+    enabled: yes
+    state: started
+
+- name: add firewalld service for tftp
+  firewalld:
+    service: tftp
+    permanent: yes
+    immediate: yes
+    state: enabled
+
+- name: update dhcpd config file with pxe details
+  blockinfile:
+    path: /etc/dhcp/dhcpd.conf
+    insertafter: "subnet"
+    block: "{{ lookup('template', 'pxe.config.j2') }}"
+  notify: "restart dhcp"
+
+- name: create directory for {{ os }} kernel and initramfs
+  file:
+    path: /var/lib/tftpboot/{{ os }}/{{ version }}
+    state: directory 
+  register: tftp_dir
+
+- name: copy {{ os }} kernel file to {{ tftp_dir.path }}
+  copy:
+    src: "{{ software_src }}/{{ kernel_file }}"
+    dest: "{{ tftp_dir.path }}/{{ kernel_file }}"
+  
+- name: copy {{ initramfs }} file to {{ tftp_dir.path }}
+  copy:
+    src: "{{ software_src }}/{{ initramfs }}"
+    dest: "{{ tftp_dir.path }}/{{ initramfs }}"
+
+- name: create uefi dir under tftp root dir
+  file:
+    path: /var/lib/tftpboot/uefi
+    state: directory
+  register: tftp_uefi
+
+- name: copy files from rhel8 /boot to {{ tftp_uefi.path }}
+  copy:
+    src: "/boot/efi/EFI/redhat/{{ item.src }}"
+    dest: "{{ tftp_uefi.path }}/{{ item.dest }}"
+    remote_src: yes
+  with_items:
+    - { src: shimx64.efi, dest: shim.efi }
+    - { src: grubx64.efi, dest: grubx64.efi }
+
+- name: generate pxe menu grub.cfg file
+  template:
+    src: menu.j2
+    dest: /var/lib/tftpboot/uefi/grub.cfg
+    mode: 0755
+
+- name: create tftp file under /etc/xinetd.d
+  copy: 
+    dest: "/etc/xinetd.d/tftp"
+    content: |
+      service tftp
+      {
+         socket_type     = dgram
+         protocol        = udp
+         wait            = yes
+         user            = root
+         server          = /usr/sbin/in.tftpd
+         server_args     = -s /var/lib/tftpboot
+         disable         = no
+      }
+  notify: "restart xinetd"

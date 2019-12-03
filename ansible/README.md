@@ -1,8 +1,8 @@
 ## Execute Playbook by following steps as below
 
-- Follow Chapter 3 Setup CSAH node in OCP 42 Dell Deployment Guide < Link to Deployment Guide > to run ansible playbook
+- Follow Chapter 3 Setup CSAH node in OCP 42 Dell Deployment Guide < Refer to Guide location > to run ansible playbook
 
-- Gather the IP address and NIC mac address of bootstrap, master(s), worker(s) nodes
+- Gather the IP address and NIC mac address of bootstrap, master(s), worker(s) nodes 
 
 - Update the hosts file located in repository home directory
 
@@ -21,9 +21,3 @@
   e) [kernel_file](https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.2/4.2.0/rhcos-4.2.0-x86_64-installer-kernel)
 
   f) [pull_secret_file](https://cloud.redhat.com/openshift/install/metal/user-provisioned)
-
-## Switch Config Setup 
-
-- Follow Chapter 2 Switch Configuration in OCP 42 Dell Deployment Guide < Link to Deployment Guide > to configure Switches
-
-- Sample example switch config files are placed in examples directory for reference.

@@ -1,0 +1,23 @@
+apiVersion: v1
+baseDomain: {{ base_domain }}
+compute:
+- hyperthreading: Enabled
+  name: worker
+  replicas: {{ number_of_workers }}
+controlPlane:
+  hyperthreading: Enabled
+  name: master
+  replicas: {{ number_of_masters }}
+metadata:
+  name: {{ cluster }}
+networking:
+  clusterNetworks:
+  - cidr: {{ cluster_network_cidr }}
+    hostPrefix: {{ host_prefix }}
+  networkType: OpenShiftSDN
+  serviceNetwork:
+  - {{ service_network_cidr }}
+platform:
+  none: {}
+pullSecret: '{{ pull_secret.stdout }}'
+sshkey: '{{ ssh_key.stdout }}'

@@ -1,8 +1,0 @@
-- assert:
-    that: ansible_version.full >= '2.4.4.0'
-    msg: "Ansible version must be 2.4.4.0 or higher"
-
-- file:
-    path: /root/ansible
-    owner: root
-    state: directory

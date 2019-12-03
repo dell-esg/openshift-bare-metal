@@ -1,0 +1,23 @@
+{% if bootstrap_node is defined %}
+{% for node in bootstrap_node %}
+menuentry '{{ node.name }}' --class fedora --class gnu-linux --class gnu --class os {
+  linux {{ os }}/{{ version }}/{{ kernel_file }} nomodeset rd.neednet=1 coreos.inst=yes coreos.inst.install_dev={{ bootstrap_install_device }} coreos.inst.image_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ os }}/{{ version }}/{{ uefi_file }} coreos.inst.ignition_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ http_ignition }}/bootstrap.ign
+  initrd {{ os }}/{{ version }}/{{ initramfs }}
+}
+{% endfor %}
+{% endif %}
+
+{% for node in master_nodes %}
+menuentry '{{ node.name }}' --class fedora --class gnu-linux --class gnu --class os {
+  linux {{ os }}/{{ version }}/{{ kernel_file }} nomodeset rd.neednet=1 coreos.inst=yes coreos.inst.install_dev={{ master_install_device }} coreos.inst.image_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ os }}/{{ version }}/{{ uefi_file }} coreos.inst.ignition_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ http_ignition }}/master.ign
+  initrd {{ os }}/{{ version }}/{{ initramfs }}
+}
+{% endfor %}
+
+
+{% for node in worker_nodes %}
+menuentry '{{ node.name }}' --class fedora --class gnu-linux --class gnu --class os {
+  linux {{ os }}/{{ version }}/{{ kernel_file }} nomodeset rd.neednet=1 coreos.inst=yes coreos.inst.install_dev={{ worker_install_device }} coreos.inst.image_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ os }}/{{ version }}/{{ uefi_file }} coreos.inst.ignition_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ http_ignition }}/worker.ign
+  initrd {{ os }}/{{ version }}/{{ initramfs }}
+}
+{% endfor %}
