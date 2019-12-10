@@ -1,6 +1,6 @@
 ## Execute Playbook by following steps as below
 
-- Follow Chapter 3 Setup CSAH node in OCP 42 Dell Deployment Guide < Link to Deployment Guide > to run ansible playbook
+- Follow Chapter 3 Setup CSAH node in [OCP 42 Dell Deployment Guide](https://www.dellemc.com/resources/en-us/asset/technical-guides-support-information/solutions/h18022-ocp4.2-dpg.pdf) to run ansible playbook
 
 - Gather the IP address and NIC mac address of bootstrap, master(s), worker(s) nodes
 
@@ -24,6 +24,6 @@
 
 ## Switch Config Setup 
 
-- Follow Chapter 2 Switch Configuration in OCP 42 Dell Deployment Guide < Link to Deployment Guide > to configure Switches
+- Follow Chapter 2 Switch Configuration in [OCP 42 Dell Deployment Guide](https://www.dellemc.com/resources/en-us/asset/technical-guides-support-information/solutions/h18022-ocp4.2-dpg.pdf) to configure Switches
 
 - Sample example switch config files are placed in examples directory for reference.
