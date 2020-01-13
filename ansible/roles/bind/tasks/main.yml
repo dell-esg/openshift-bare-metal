@@ -30,7 +30,7 @@
 - name: generate zone config 
   template:
     src: zones.j2
-    dest: /var/named/ocp.zones
+    dest: "{{ default_zone_file }}"
 
 - name: generate forward zone file   
   template: 
