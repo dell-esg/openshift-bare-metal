@@ -1,0 +1,48 @@
+---
+# tasks file for http
+- name: install http
+  yum: 
+    name: httpd 
+    state: latest
+
+- name: allow http to listen on port {{ http_port }}
+  seport:
+    ports: "{{ http_port }}"
+    proto: tcp
+    setype: http_port_t
+    state: present
+
+- name: allow {{ http_port }} through firewall
+  firewalld:
+    port: "{{ http_port }}/tcp"
+    permanent: yes
+    immediate: yes
+    state: enabled
+
+- name: generate httpd config
+  template:
+    src: httpd.conf.j2
+    dest: /etc/httpd/conf/httpd.conf
+  notify: "restart httpd"
+
+- name: enable and start service
+  systemd:
+    name: httpd
+    enabled: yes
+    state: started
+
+- name: create directory for rhcos software
+  file: 
+    path: /var/www/html/{{ os }}/{{ version }}
+    state: directory
+  register: http_os_dir
+
+- name: create directory for ignition files
+  file:
+    path: /var/www/html/{{ http_ignition }}
+    state: directory
+
+- name: copy rhcos bare metal uefi file to http location
+  copy:
+    src: "{{ software_src }}/{{ uefi_file }}"
+    dest: "{{ http_os_dir.path }}/{{ uefi_file }}"

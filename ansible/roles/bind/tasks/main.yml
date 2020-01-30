@@ -1,0 +1,51 @@
+---
+# tasks file for bind
+- name: install bind package
+  yum:
+    name: bind
+    state: latest
+
+- name: enable firewalld bind service
+  firewalld:
+    service: dns
+    permanent: yes
+    immediate: yes
+    state: enabled
+
+- name: generate dns config
+  template:
+    src: named.conf.j2
+    dest: /etc/named.conf
+  notify: "restart bind"
+
+- name: strip last octect from subnet
+  shell: echo '{{ subnet }}' | awk -F . '{print $3"."$2"."$1".in-addr.arpa"}' 
+  check_mode: no
+  register: dns_ptr_record_output
+ 
+- name: set dns reverse zone name
+  set_fact:
+    arpa_name: "{{ dns_ptr_record_output.stdout }}"
+
+- name: generate zone config 
+  template:
+    src: zones.j2
+    dest: "{{ default_zone_file }}"
+
+- name: generate forward zone file   
+  template: 
+    src: forward.dns.j2
+    dest: /var/named/{{ cluster }}.{{ base_domain }}
+  notify: "restart bind"
+
+- name: generate reverse zone file   
+  template: 
+    src: reverse.dns.j2
+    dest: /var/named/{{ arpa_name }}
+  notify: "restart bind"
+    
+- name: enable and start bind service
+  systemd:
+    name: named
+    enabled: yes
+    state: started

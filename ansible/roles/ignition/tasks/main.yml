@@ -1,0 +1,135 @@
+---
+# tasks file for ignition
+- name: create openshift installer user - {{ install_user }}
+  user:
+    name: "{{ install_user }}"
+    state: present
+    shell: /bin/bash
+    createhome: yes
+
+- name: check if ssh-keygen already exists for user - {{ install_user }}
+  stat: 
+    path: /home/{{ install_user }}/.ssh/id_rsa
+  register: ssh_keygen_result
+
+- name: start ssh-agent as user {{ install_user }}
+  shell: |
+    ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa
+    eval "$(ssh-agent -s)"
+    ssh-add ~/.ssh/id_rsa
+  become: yes
+  become_user: "{{ install_user }}"
+  when: ssh_keygen_result.stat.exists  == false
+
+- name: create openshift install directory under /home/{{ install_user }}
+  file:
+    path: /home/{{ install_user }}/{{ install_dir }}
+    state: directory
+    mode: '0755'
+    owner: "{{ install_user }}"
+    group: "{{ install_user }}"
+  register: ocp_install_dir
+
+- name: check oc client tool in /home/{{ install_user }}
+  stat:
+    path: /home/{{ install_user }}/oc
+  register: oc
+
+- name: check kubectl client tool in /home/{{ install_user }}
+  stat:
+    path: /home/{{ install_user }}/kubectl
+  register: kubectl
+
+- name: copy openshift client tools to /home/{{ install_user }}
+  unarchive:
+    src: "{{ software_src }}/{{ openshift_client }}"
+    dest: /home/{{ install_user }}
+    remote_src: yes
+    owner: "{{ install_user }}"
+    group: "{{ install_user }}"
+  when: not oc.stat.exists or not kubectl.stat.exists
+
+- name: check openshift-install tool in /home/{{ install_user }}
+  stat:
+    path: /home/{{ install_user }}/openshift-install
+  register: openshiftinstaller
+
+- name: copy openshift-install tool to /home/{{ install_user }}
+  unarchive:
+    src: "{{ software_src }}/{{ openshift_installer }}"
+    dest: /home/{{ install_user }}
+    remote_src: yes
+    owner: "{{ install_user }}"
+    group: "{{ install_user }}"
+  when: not openshiftinstaller.stat.exists
+
+- name: read contents of pull secret key 
+  shell: cat "{{ software_src }}/{{ pull_secret_file }}"
+  register: pull_secret
+
+- name: read contents of ssh key file for user {{ install_user }}
+  shell: cat /home/{{ install_user }}/.ssh/id_rsa.pub
+  register: ssh_key
+
+- name: generate install config file
+  template:
+    src: install-config.j2
+    dest: "/home/{{ install_user }}/install-config.yaml"
+    owner: "{{ install_user }}"
+    group: "{{ install_user }}"
+
+- name: copy install-config yaml file to installation directory
+  copy:
+    src: "/home/{{ install_user }}/install-config.yaml"
+    dest: "{{ ocp_install_dir.path }}"
+    remote_src: yes
+    owner: "{{ install_user }}"
+    group: "{{ install_user }}"
+
+- name: check ignition files in {{ ocp_install_dir.path }}
+  stat:
+    path: "{{ ocp_install_dir.path }}/{{ item }}"
+  loop:
+    - master.ign
+    - worker.ign
+    - bootstrap.ign
+  register: ign
+
+- name: check manifest directory in {{ ocp_install_dir.path }}
+  stat:
+    path: "{{ ocp_install_dir.path }}/manifests"
+  register: manifest
+
+- name: generate manifests directory in {{ ocp_install_dir.path }}
+  become: yes
+  become_user: "{{ install_user }}"
+  shell: |
+    cd {{ ocp_install_dir.path }}
+    /home/{{ install_user }}/openshift-install create manifests --dir={{ ocp_install_dir.path }}
+  when: not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
+
+- name: modify cluster-scheduler-02-config.yml file in manifests dir
+  lineinfile:
+    path: "{{ ocp_install_dir.path }}/manifests/cluster-scheduler-02-config.yml"
+    regexp: 'mastersSchedulable'
+    line: '  mastersSchedulable: False'
+  when: not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
+
+- name: generate ignition config files
+  become: yes
+  become_user: "{{ install_user }}"
+  shell: |
+    cd {{ ocp_install_dir.path }}
+    /home/{{ install_user }}/openshift-install create ignition-configs --dir={{ ocp_install_dir.path }}
+  when: not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
+  register: create_ignition
+
+- name: copy ignition config files to /var/www/html/{{http_ignition}}
+  copy:
+    src: "{{ ocp_install_dir.path }}/{{ item }}"
+    dest: /var/www/html/{{ http_ignition }}
+    remote_src: yes
+  loop:
+    - master.ign
+    - worker.ign
+    - bootstrap.ign

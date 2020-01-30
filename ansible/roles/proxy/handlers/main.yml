@@ -1,0 +1,7 @@
+---
+# handlers file for proxy
+- name: restart HAPROXY
+  systemd:
+    name: haproxy
+    state: restarted
+  listen: "haproxy restart"
