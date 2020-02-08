@@ -1,0 +1,31 @@
+---
+# tasks file for bind
+- name: identify number of '255' in {{ ansible_default_ipv4.netmask }}
+  set_fact:
+    striped_netmask: "{{ ansible_default_ipv4.netmask | regex_findall('(255)') |length }}" 
+
+- debug:
+    msg: custom netmask is {{ striped_netmask|int }}
+
+- name: number of octets to remove
+  set_fact:
+    strip_last_octets: "{{ 4 - striped_netmask|int }}"
+
+- debug:
+    msg: last {{ strip_last_octets }} octet(s) will be added in reverse zone file for {{ ansible_default_ipv4.network }}
+
+- name: generate dns config
+  template:
+    src: named.conf.j2
+    dest: /tmp/named.conf
+
+- name: set reverse zone name prefix
+  set_fact:
+    arpa_name_prefix: "{{ ansible_default_ipv4.network.split('.')[:striped_netmask|int][::-1] }}"
+
+- name: set reverse zone file name
+  set_fact:
+    arpa_name: "{{ arpa_name_prefix | join('.') }}.in-addr.arpa"
+
+- debug:
+    msg: reverse zone name is {{ arpa_name }}

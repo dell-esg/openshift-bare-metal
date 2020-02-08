@@ -1,19 +1,19 @@
 csah:
   hosts:
     # specify hostname (FQDN)
-    r5acsah.r5a.oss.labs
+    r3csah.oss.labs
 
 children:
   hosts:
     # specify hostname (FQDN)
-    r5acsah.r5a.oss.labs
+    r3csah.oss.labs
 
   vars:
     ## used by multiple roles
 
     # specify the location for access to ocp tools
     # software_src is location where the following files are copied
-    software_src: /home/ansible/files
+    software_src: /home/ansible/containers/ansible/files
 
     # Refer to read me file for URLs to download below files
     uefi_file: rhcos-4.3.0-x86_64-metal.raw.gz
@@ -27,34 +27,28 @@ children:
     # Provide bootstrap node details below
     bootstrap_node:
       - name: bootstrap
-        mac: 98:03:9B:58:AD:62
         ip: 100.82.42.16
 
     # Provide master nodes details below. Below example is for 3 master nodes.
     master_nodes:
       - name: etcd-0
-        mac: 98:03:9B:58:AE:D2
         ip: 100.82.42.11
       - name: etcd-1
-        mac: 98:03:9B:58:AD:92
         ip: 100.82.42.12
       - name: etcd-2
-        mac: 98:03:9B:58:AE:12
         ip: 100.82.42.13
 
     # Provide worker nodes details below. Below example is for 2 worker nodes.
     worker_nodes:
       - name: worker1
-        mac: 98:03:9B:58:A9:22
         ip: 100.82.42.14
       - name: worker2
-        mac: 98:03:9B:58:AD:C2
         ip: 100.82.42.15
     ##
 
     # Provide Network Interfaces used for bonding and bond options
     bond_name: bond0
-    bond_interfaces: eno1,eno2,ens2f0,ens2f1
+    bond_interfaces: ens2f0,ens2f1
     bond_options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
 
     ## - DNS role
@@ -62,17 +56,17 @@ children:
     dns_allow_query: any
 
     # specify cluster zone file. 
-    default_zone_file: /var/named/r5a.zones
+    default_zone_file: /var/named/r3.zones
 
     # provide cluster name. This cluster name should be in sync with hostname
     # ex: csah.ocp.example.lab - ocp is the cluster name
-    cluster: r5a
+    cluster: r3
 
     ## - HTTP role
 
     # specify the http port. DONOT USE THE PORTS USED BY LOAD BALANCER.
     # PORTS 80,6443,22623,443 are used by LB.
-    http_port: 8892
+    http_port: 8080
 
     # OS used for master/worker nodes is rhcos. This is default. 
     os: rhcos
@@ -91,11 +85,8 @@ children:
     base_domain: oss.labs
     default_lease_time: 800
     max_lease_time: 7200
-    subnet: 100.82.42.0
+    subnet: 192.168.20.0
     netmask: 255.255.255.0
-    broadcast: 100.82.42.255
-    router: 100.82.42.1
-    dns: "{{ ansible_default_ipv4.address }}"
 
     ##
 

@@ -9,7 +9,7 @@ from urllib3.exceptions import InsecureRequestWarning
 
 def get_network_devices_info(idrac_user, idrac_pass, base_api_url):
     
-    requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
+    #requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
     try:
         response = requests.get(base_api_url, verify=False, auth=(idrac_user,idrac_pass))
     except requests.exceptions.ConnectTimeout:

@@ -2,9 +2,4 @@
 - hosts: csah
   become: yes
   roles:
-    - http
-    - dhcp
-    - bind
-    - proxy
-    - ignition
-    - pxe
+    - dns

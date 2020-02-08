@@ -1,0 +1,49 @@
+$ORIGIN {{ ansible_domain }}.
+$TTL 8600
+@       IN        SOA      {{ ansible_hostname }}.{{ ansible_domain }}. {{ ansible_domain }}. (
+                  50         ;  serial
+                  604800     ;  Refresh after 1 week
+                  3600       ;  Retry after 1 hour
+                  604800     ;  Expire after 1 week
+                  86400      ;  Minimum TTL of 1 day
+         )
+         IN        NS        {{ ansible_hostname }}.{{ ansible_domain}}.
+
+{{ ansible_hostname }}    IN     A      {{ ansible_default_ipv4.address }}
+
+{% if bootstrap_node is defined %}
+{% for node in bootstrap_node %}
+{{ node.name }}   IN     A   {{ node.ip }}
+{% endfor %}
+{% endif %}
+
+{% for node in master_nodes %}
+{{ node.name }}  IN    A    {{ node.ip }}
+{% endfor %}
+
+{% for node in worker_nodes %}
+{{ node.name }}  IN    A    {{ node.ip }}
+{% endfor %}
+
+{% if bootstrap_node is defined %}
+{% for node in bootstrap_node %}
+{{ node.name }}.{{ cluster }}    IN   CNAME   {{ node.name }}.{{ ansible_domain }}.
+{% endfor %}
+{% endif %}
+
+{% for node in master_nodes %}
+{{ node.name }}.{{ cluster }}    IN   CNAME   {{ node.name }}.{{ ansible_domain }}.
+{% endfor %}
+
+{% for node in worker_nodes %}
+{{ node.name }}.{{ cluster }}    IN   CNAME   {{ node.name }}.{{ ansible_domain }}.
+{% endfor %}
+
+
+*.apps.{{ cluster }}    IN     A   {{ ansible_default_ipv4.address }}
+api.{{ cluster }}       IN     A   {{ ansible_default_ipv4.address }}
+api-int.{{ cluster }}   IN     A   {{ ansible_default_ipv4.address }}
+
+{% for node in master_nodes %}
+_etcd-server-ssl._tcp.{{ cluster }}.{{ ansible_domain }} 86400  IN   SRV   0   10 2380  {{ node.name }}.{{ cluster }}.{{ ansible_domain }}.
+{% endfor %}

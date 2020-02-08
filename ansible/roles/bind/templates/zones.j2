@@ -1,9 +1,0 @@
-zone "{{ cluster }}.{{ base_domain }}" IN {
-type master;
-file "{{ cluster }}.{{ base_domain }}";
-};
-
-zone "{{ arpa_name }}" {
-type master;
-file "{{ arpa_name }}";
-};
