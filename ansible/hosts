@@ -1,19 +1,12 @@
 csah:
-  hosts:
-    # specify hostname (FQDN)
-    r3csah.oss.labs
-
-children:
-  hosts:
-    # specify hostname (FQDN)
-    r3csah.oss.labs
+  hosts: r3csah.oss.labs
 
   vars:
     ## used by multiple roles
 
     # specify the location for access to ocp tools
     # software_src is location where the following files are copied
-    software_src: /home/ansible/containers/ansible/files
+    software_src: /home/ansible/files
 
     # Refer to read me file for URLs to download below files
     uefi_file: rhcos-4.3.0-x86_64-metal.raw.gz
@@ -25,35 +18,44 @@ children:
     
 
     # Provide bootstrap node details below
-    bootstrap_node:
-      - name: bootstrap
-        ip: 100.82.42.16
+    #bootstrap_node:
+    #  - name: r3bootstrap
+    #    ip: 100.82.46.26
+    #    mac: B8:59:9F:C0:35:86
 
     # Provide master nodes details below. Below example is for 3 master nodes.
     master_nodes:
-      - name: etcd-0
-        ip: 100.82.42.11
-      - name: etcd-1
-        ip: 100.82.42.12
-      - name: etcd-2
-        ip: 100.82.42.13
+    - name: r3etcd-0
+      ip: 100.82.46.21
+      mac: B8:59:9F:C0:36:46
+    - name: r3etcd-1
+      ip: 100.82.46.22
+      mac: B8:59:9F:C0:35:66
+    - name: r3etcd-2
+      ip: 100.82.46.23
+      mac: B8:59:9F:C0:34:C6
 
     # Provide worker nodes details below. Below example is for 2 worker nodes.
     worker_nodes:
-      - name: worker1
-        ip: 100.82.42.14
-      - name: worker2
-        ip: 100.82.42.15
+      - name: r3worker1
+        ip: 100.82.46.24
+        mac: B8:59:9F:C0:36:3E
+      - name: r3worker2
+        ip: 100.82.46.25
+        mac: B8:59:9F:C0:35:E6
+      - name: r3worker3
+        ip: 100.82.46.26
+        mac: B8:59:9F:C0:35:86
     ##
 
     # Provide Network Interfaces used for bonding and bond options
     bond_name: bond0
     bond_interfaces: ens2f0,ens2f1
-    bond_options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
+    bond_options: mode=active-backup,miimon=100
 
     ## - DNS role
     # allow dns query from different subnets. Default is 'any'
-    dns_allow_query: any
+    # dns_allow_query: any
 
     # specify cluster zone file. 
     default_zone_file: /var/named/r3.zones

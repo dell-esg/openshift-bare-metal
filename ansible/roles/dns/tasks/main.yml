@@ -30,6 +30,13 @@
     name: bind
     state: latest
 
+- name: enable firewalld bind service
+  firewalld:
+    service: dns
+    permanent: yes
+    immediate: yes
+    state: enabled
+
 - name: generate dns config
   template:
     src: named.conf.j2

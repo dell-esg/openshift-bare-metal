@@ -15,6 +15,33 @@ option domain-name "{{ ansible_domain }}, {{ cluster }}.{{ ansible_domain }}";
 default-lease-time {{ default_lease_time }};
 max-lease-time {{ max_lease_time }};
 
+{% if bootstrap_node is defined %}
+{% for node in bootstrap_node %}
+host {{ node.name }}{
+   hardware ethernet {{ node.mac }};
+   fixed-address {{ node.ip }};
+}
+
+{% endfor %}
+{% endif %}
+
+{% for node in master_nodes %}
+host {{ node.name }}{
+   hardware ethernet {{ node.mac }};
+   fixed-address {{ node.ip }};
+}
+
+{% endfor %}
+
+{% for node in worker_nodes %}
+host {{ node.name }}{
+   hardware ethernet {{ node.mac }};
+   fixed-address {{ node.ip }};
+}
+
+{% endfor %}
+
+
 subnet {{ ansible_default_ipv4.network }} netmask {{ ansible_default_ipv4.netmask}} {
   option broadcast-address {{ ansible_default_ipv4.broadcast }};
   option routers {{ ansible_default_ipv4.gateway }};
