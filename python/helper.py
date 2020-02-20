@@ -4,6 +4,7 @@ import os
 import re
 import requests
 import sys
+import time
 
 from urllib.request import urlopen
 from urllib3.exceptions import InsecureRequestWarning
@@ -29,6 +30,12 @@ def validate_url(url):
     url_verify = urlopen(url)
 
     return True if url_verify.code == 200 else False
+
+def check_user_input_if_integer(user_input):
+    try:
+        return int(user_input)
+    except ValueError:
+        pass
 
 def get_ip(node_type='', ip_type=''):
     
@@ -76,17 +83,20 @@ def validate_port(port):
     invalid_ports = [80, 443, 6443, 22623]
     while True:
         try:
-            integer_check = port.isdigit()
-            if integer_check:
-                invalid_ports.index(int(port))
-            else:
+            print('1st while loop')
+            check_for_string = port.isdigit()
+            if not check_for_string:
                 print('port has to be an integer')
+            else:
+                print('in else loop')
+                invalid_ports.index(int(port))
             print('ports {} are not allowed'.format(invalid_ports))
             port = input('enter a port: ')
         except AttributeError:
-            print('ports {} are not allowed'.format(invalid_ports))
-            port = input('enter a port: ')
+            print('in attribute error')
+            break 
         except ValueError:
+            print('in value error')
             break
 
     return port
@@ -95,6 +105,7 @@ def validate_network_cidr(network_cidr):
     while True:
         try:
             ipaddress.ip_network(network_cidr)
+            break
         except ValueError:
             print('input should be in format x.x.x.x/x')
             network_cidr = input('enter the network cidr: ')
@@ -103,14 +114,17 @@ def validate_network_cidr(network_cidr):
     
 
 def validate_cidr(cidr):
-    while True:
-        integer_check = cidr.isdigit()
-        if integer_check and int(cidr) < 32:
-            break
-        else:
-            print('cidr has to be an integer and less than 32')
-            cidr = input('enter the cidr notation for ips in each host: ')
-
+    check_integer = ''
+    while not check_integer:
+         print('enter while')
+         check_integer = check_user_input_if_integer(cidr)     
+         print('after check integer')
+         if check_integer and check_integer < 32:
+             print('all good')
+             pass
+         else:
+             cidr = input('user input has to be an integer and less than 32: ')
+             
     return cidr
             
 
@@ -224,6 +238,8 @@ def get_network_device_mac(node_type='', ip_type=''):
     
 def main():
     #get_network_device_mac(node_type='bootstrap')
+    #get_integer_user_input()
+    validate_cidr('str')
     pass
 
 if __name__ == "__main__":

@@ -69,8 +69,8 @@ class InventoryFile:
     def get_bootstrap_node(self):
         self.clear_screen()
         default = 'bootstrap'
-        bootstrap_name = input('enter the master {} node name\n' 
-                               'default [bootstrap]:'.format(num))
+        bootstrap_name = input('enter the bootstrap node name\n' 
+                               'default [bootstrap]: ')
         bootstrap_name = set_values(bootstrap_name, default)
         bootstrap_ip = get_ip(node_type='bootstrap', ip_type='os')
         bootstrap_ip = validate_ip(bootstrap_ip)
@@ -200,18 +200,19 @@ class InventoryFile:
         self.clear_screen()
         default = 'core'
         install_user = input('enter the user used to install openshift\n '
-                             'DONOT CHANGE THIS VALUE'
+                             'DONOT CHANGE THIS VALUE\n '
                              'default [core]: ')
         install_user = set_values(install_user, default)
         default = 'openshift'
         install_dir = input('enter the directory where openshift installs\n '
-                            'directory will be created under /home/core'
+                            'directory will be created under /home/core\n '
                             'default [openshift]: ')
         install_dir = set_values(install_dir, default)
         default = '10.128.0.0/14'
         pod_network_cidr = input('enter the pod network cidr\n '
                                  'default [10.128.0.0/14]: ')
         pod_network_cidr = set_values(pod_network_cidr, default)
+        print('pod network cidr: {}'.format(pod_network_cidr))
         pod_network_cidr = validate_network_cidr(pod_network_cidr)
         default = 23
         host_prefix = input('specify cidr notation for number of ips in each node: \n '
@@ -227,12 +228,15 @@ class InventoryFile:
         self.inventory_dict['csah']['vars']['install_user'] = install_user
         self.inventory_dict['csah']['vars']['install_dir'] = install_dir
         self.inventory_dict['csah']['vars']['cluster_network_cidr'] = pod_network_cidr
-        self.inventory_dict['csah']['vars']['host_prefix'] = host_prefix
+        self.inventory_dict['csah']['vars']['host_prefix'] = int(host_prefix)
         self.inventory_dict['csah']['vars']['service_network_cidr'] = service_network_cidr
             
     def yaml_inventory(self):
         ansible_inventory = [self.inventory_dict]
-        print(yaml.dump(ansible_inventory[0], sort_keys=False))
+        inventory_file = self.software_dir + '/' + 'inventory'
+        with open(inventory_file, 'w') as invfile:
+            yaml.dump(ansible_inventory[0], invfile)
+        #print(yaml.dump(ansible_inventory[0], sort_keys=False))
 
     def run(self):
         self.set_keys()
