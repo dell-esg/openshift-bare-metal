@@ -1,4 +1,5 @@
 import ipaddress
+import getpass
 import json
 import os
 import re
@@ -21,8 +22,10 @@ def check_path(path, isfile=False, isdir=False):
     
     return os.path.isfile(path) if isfile else os.path.isdir(path)
 
-def set_values(user_input, default):
-    
+def set_values(user_input, default, check=''):
+    if check == 'integer' and user_input != '':
+        user_input = check_user_input_if_integer(user_input)
+        
     return default if not user_input else user_input
 
 def validate_url(url):
@@ -32,16 +35,21 @@ def validate_url(url):
     return True if url_verify.code == 200 else False
 
 def check_user_input_if_integer(user_input):
-    try:
-        return int(user_input)
-    except ValueError:
-        pass
+    integer_input = ''
+    while not integer_input:
+         try:
+             integer_input = int(user_input)
+         except ValueError:
+             print('only integer number accepted')
+             user_input = input('enter a number: ')
 
-def get_ip(node_type='', ip_type=''):
+    return integer_input
+
+def get_ip(node_name='', ip_type=''):
     
     ip = ''
     while True:
-        ip = input('ip address for {} in {} node: '.format(ip_type, node_type))
+        ip = input('ip address for {} in {} node: '.format(ip_type, node_name))
         ip_check = validate_ip(ip)
         if ip_check:
             break
@@ -50,11 +58,11 @@ def get_ip(node_type='', ip_type=''):
     
     return ip  
 
-def get_mac(node_type=''):
+def get_mac(node_name=''):
 
     mac=''
     while True:
-        mac = input('mac address for {} node: '.format(node_type))
+        mac = input('mac address for {} node: '.format(node_name))
         mac_check = validate_mac(mac)
         if mac_check:
             break
@@ -130,10 +138,10 @@ def validate_cidr(cidr):
 
 def connect_to_idrac(user, passwd, base_api_url):
     requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
-    
     response = ''
     try:
-        response = requests.get(base_api_url, verify=False, auth=(user, passwd))
+        response = requests.get(base_api_url, verify=False, auth=(user, passwd),
+                                timeout=5) 
     except requests.exceptions.ConnectTimeout:
         print('failed to establish connection to base api url')
     except Exception as e:
@@ -154,7 +162,6 @@ def get_network_devices(user, passwd, base_api_url):
 
     return network_devices
         
-
 def generate_network_devices_menu(devices):
     menu = {}
     i = 1
@@ -181,10 +188,10 @@ def generate_network_devices_menu(devices):
 def get_mac_address(selected_network_device, base_api_url, user, passwd):
 
     url = '{}/{}'.format(base_api_url, selected_network_device)
-    print(url)
     device_mac_address = ''
     try:
-        response = requests.get(url,verify=False,auth=(user, passwd))
+        response = requests.get(url, verify=False, auth=(user, passwd),
+                                timeout=5)
     except requests.exceptions.ConnectionTimeout:
         print('failed to establish connection to get mac address')
 
@@ -202,17 +209,16 @@ def get_mac_address(selected_network_device, base_api_url, user, passwd):
 
     return device_mac_address
 
-def get_network_device_mac(node_type='', ip_type=''):
+def get_network_device_mac(node_name='', ip_type=''):
     devices = []
     network_device_mac_address = ''
     #base_api_url = 'https://100.82.34.20/redfish/v1/Systems/System.Embedded.1/EthernetInterfaces'
     
-    ip = get_ip(node_type=node_type, ip_type=ip_type)
-    user = input('enter the idrac user for {}: '.format(node_type))
-    passwd = input('enter the idrac password for {}: '.format(node_type))
+    ip = get_ip(node_name=node_name, ip_type=ip_type)
+    user = input('enter the idrac user for {}: '.format(node_name))
+    #passwd = input('enter the idrac password for {}: '.format(node_name))
+    passwd = getpass.getpass('enter idrac password for {}: '.format(node_name))
     base_api_url = 'https://{}/redfish/v1/Systems/System.Embedded.1/EthernetInterfaces'.format(ip)
-    #network_devices = get_network_devices(user, passwd, base_api_url)
-    #network_devices = get_network_devices('root', 'Dell0SS!', base_api_url)
     network_devices = get_network_devices(user, passwd, base_api_url)
     if network_devices:
         for network_device in network_devices:
@@ -223,23 +229,15 @@ def get_network_device_mac(node_type='', ip_type=''):
                 print('Did not find any network devices')
 
     if devices:
-        print(devices)
         selected_network_device = generate_network_devices_menu(devices)
-        print(selected_network_device)
-        print(type(selected_network_device))
         network_device_mac_address = get_mac_address(selected_network_device, base_api_url, user, passwd)
 
     if network_device_mac_address:
-        print(network_device_mac_address)
-        print(type(network_device_mac_address))
         print('device {} mac address is {}'.format(selected_network_device, network_device_mac_address))
  
     return network_device_mac_address
-    
+
 def main():
-    #get_network_device_mac(node_type='bootstrap')
-    #get_integer_user_input()
-    validate_cidr('str')
     pass
 
 if __name__ == "__main__":
