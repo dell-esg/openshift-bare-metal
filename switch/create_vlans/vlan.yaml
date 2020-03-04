@@ -1,4 +1,0 @@
-- hosts: dellos10
-  connection: network_cli
-  roles:
-     - dell-networking.dellos-vlan

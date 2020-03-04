@@ -91,20 +91,16 @@ def validate_port(port):
     invalid_ports = [80, 443, 6443, 22623]
     while True:
         try:
-            print('1st while loop')
             check_for_string = port.isdigit()
             if not check_for_string:
                 print('port has to be an integer')
             else:
-                print('in else loop')
                 invalid_ports.index(int(port))
             print('ports {} are not allowed'.format(invalid_ports))
             port = input('enter a port: ')
         except AttributeError:
-            print('in attribute error')
             break 
         except ValueError:
-            print('in value error')
             break
 
     return port
@@ -124,11 +120,8 @@ def validate_network_cidr(network_cidr):
 def validate_cidr(cidr):
     check_integer = ''
     while not check_integer:
-         print('enter while')
          check_integer = check_user_input_if_integer(cidr)     
-         print('after check integer')
          if check_integer and check_integer < 32:
-             print('all good')
              pass
          else:
              cidr = input('user input has to be an integer and less than 32: ')
@@ -212,11 +205,9 @@ def get_mac_address(selected_network_device, base_api_url, user, passwd):
 def get_network_device_mac(node_name='', ip_type=''):
     devices = []
     network_device_mac_address = ''
-    #base_api_url = 'https://100.82.34.20/redfish/v1/Systems/System.Embedded.1/EthernetInterfaces'
     
     ip = get_ip(node_name=node_name, ip_type=ip_type)
     user = input('enter the idrac user for {}: '.format(node_name))
-    #passwd = input('enter the idrac password for {}: '.format(node_name))
     passwd = getpass.getpass('enter idrac password for {}: '.format(node_name))
     base_api_url = 'https://{}/redfish/v1/Systems/System.Embedded.1/EthernetInterfaces'.format(ip)
     network_devices = get_network_devices(user, passwd, base_api_url)

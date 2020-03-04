@@ -172,7 +172,7 @@ class InventoryFile:
             worker_values = []
             default = 'worker-{}'.format(num)
             worker_name = input('enter the worker {} node name\n'
-                                'default [{}]'.format(num, default))
+                                'default [{}]: '.format(num, default))
             worker_name = set_values(worker_name, default)
             worker_ip = get_ip(node_name=worker_name, ip_type='os')
             worker_mac = get_network_device_mac(node_name=worker_name, ip_type='idrac')
@@ -319,6 +319,7 @@ class InventoryFile:
 
     def run(self):
         self.set_keys()
+        self.set_haproxy()
         self.generate_inputs_menu()
 
 
