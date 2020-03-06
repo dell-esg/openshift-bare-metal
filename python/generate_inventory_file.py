@@ -1,4 +1,5 @@
 import os
+import logging
 import socket
 import sys
 import yaml
@@ -6,6 +7,7 @@ import yaml
 from urllib.request import urlopen
 from urllib.request import urlretrieve
 
+from log_config import log_setup
 from helper import create_dir, check_path, get_ip, get_network_device_mac, \
                    set_values, validate_cidr, validate_ip, \
                    validate_network_cidr, validate_port, validate_url, \
@@ -18,46 +20,66 @@ class InventoryFile:
         self.input_choice = ''
         self.ocp43_client_base_url = 'https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-4.3'
         self.ocp43_rhcos_base_url = 'https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/4.3.0'
-        self.ocp_urls = {'openshift_client': '{}/openshift-client-linux-4.3.1.tar.gz'.format(self.ocp43_client_base_url),
-                         'openshift_installer': '{}/openshift-install-linux-4.3.1.tar.gz'.format(self.ocp43_client_base_url),
+        self.ocp_urls = {'openshift_client': '{}/openshift-client-linux.tar.gz'.format(self.ocp43_client_base_url),
+                         'openshift_installer': '{}/openshift-install-linux.tar.gz'.format(self.ocp43_client_base_url),
                          'initramfs': '{}/rhcos-4.3.0-x86_64-installer-initramfs.img'.format(self.ocp43_rhcos_base_url),
                          'kernel_file': '{}/rhcos-4.3.0-x86_64-installer-kernel'.format(self.ocp43_rhcos_base_url),
                          'uefi_file': '{}/rhcos-4.3.0-x86_64-metal.raw.gz'.format(self.ocp43_rhcos_base_url)}
-        self.task_inputs = {1: 'download ocp 4.3 software',
-                            2: 'bootstrap node details',
-                            3: 'master node details',
-                            4: 'worker node details',
-                            5: 'network setup',
-                            6: 'disk info',
-                            7: 'bind dns',
-                            8: 'http webserver',
-                            9: 'dhcp',
-                            10: 'ignition config',
-                            11: 'print inventory',
-                            12: 'generate inventory file',
-                            13: 'Exit'}
-                            
+        self.task_inputs = """
+1: 'download ocp 4.3 software',
+2: 'bootstrap node details',
+3: 'master node details',
+4: 'worker node details',
+5: 'network setup',
+6: 'disk info',
+7: 'bind dns',
+8: 'http webserver',
+9: 'dhcp',
+10: 'ignition config',
+11: 'print inventory',
+12: 'generate inventory file',
+13: 'Exit'
+"""                 
 
     def clear_screen(self):
+        """ 
+        performs clean screen
+
+        """
         os.system('clear')
 
     def set_keys(self):
+        """ 
+        sets the initial keys for the inventory file
+
+        """
         self.inventory_dict['csah'] = {'hosts': '{}'.format(socket.getfqdn()), 'vars': {}}
 
     def generate_inputs_menu(self):
+        """
+        generates a menu of tasks for user input for each task
+ 
+        """
         self.clear_screen()
         self.input_choice = ''
-        valid_choices = self.task_inputs.keys()
+        valid_choices = range(1,14)
         while self.input_choice not in valid_choices:
-             for choice in valid_choices:
-                 print('{} -> {}'.format(choice, self.task_inputs[choice]))
+             logging.info('{}'.format(self.task_inputs))
              try:
                  self.input_choice = int(input('task choice for necessary inputs: '))
+                 if self.input_choice not in valid_choices:
+                     logging.warn('Invalid choice. Valid choice is an integer from 1-13')
              except ValueError:
-                 print('Invalid choice. Try again')
-        self.get_user_inputs_for_task()
+                 logging.error('Strings not a valid choice')
 
+        logging.info('user choice is {}'.format(self.input_choice))
+        self.get_user_inputs_for_task()
+            
     def get_user_inputs_for_task(self):
+        """ 
+        performs tasks based on user input
+
+        """
         if self.input_choice == 13:
             sys.exit()
         elif self.input_choice == 1:
@@ -89,6 +111,10 @@ class InventoryFile:
         self.generate_inputs_menu()
 
     def get_software_download_dir(self):
+        """ 
+        get software download directory to download OCP 4.3 software bits
+  
+        """
         self.clear_screen()
         default = '/home/ansible/files'
         self.software_dir = input('provide complete path of directory to download OCP 4.3 software bits\n'
@@ -96,15 +122,21 @@ class InventoryFile:
         self.software_dir = set_values(self.software_dir, default)
         dest_path_exist = check_path(self.software_dir, isdir=True)
         if dest_path_exist:
-            print('directory {} already exists'.format(self.software_dir))
+            logging.info('directory {} already exists'.format(self.software_dir))
         else:
-            print('Creating directory {}'.format(self.software_dir))
+            logging.info('Creating directory {}'.format(self.software_dir))
             create_dir(self.software_dir)
 
         self.inventory_dict['csah']['vars']['software_src'] = self.software_dir
 
     def get_software(self):
+        """ 
+        performs OCP 4.3 software bits download from the base urls
+        specified in the class __init__ 
+   
+        """
 
+        logging.info('downloading OCP 4.3 software bits into {}'.format(self.software_dir))
         for url_key in self.ocp_urls.keys():
             url = self.ocp_urls[url_key]
             dest_name = url.split('/')[-1]
@@ -112,21 +144,24 @@ class InventoryFile:
             dest_path_exist = check_path(dest_path, isfile=True)
             url_check = ''
             if dest_path_exist:
-                print('file {} already exists in {}'.format(dest_name, self.software_dir))
+                logging.info('file {} already exists in {}'.format(dest_name, self.software_dir))
                 self.inventory_dict['csah']['vars'][url_key] = dest_name
-
             else:
-                url_check = urlopen(url)
+                url_check = validate_url(url)
+                if url_check == '':
+                    logging.error('file {} in {} is not available'.format(dest_name, url_key))
+                    self.inventory_dict['csah']['vars'][url_key] = ''
 
             if url_check != '' and url_check.code == 200:
-                print('downloading {}'.format(dest_name))
+                logging.info('downloading {}'.format(dest_name))
                 urlretrieve('{}'.format(url),'{}/{}'.format(self.software_dir, dest_name))
                 self.inventory_dict['csah']['vars'][url_key] = dest_name
 
-            if url_check != '' and url_check.code != 200:
-                print('url validation error {}'.format(dest_name))
-
     def get_bootstrap_node(self):
+        """ 
+        get details about bootstrap node
+
+        """
         self.clear_screen()
         default = 'bootstrap'
         bootstrap_name = input('enter the bootstrap node name\n'
@@ -135,11 +170,17 @@ class InventoryFile:
         bootstrap_ip = get_ip(node_name=bootstrap_name, ip_type='os')
         bootstrap_ip = validate_ip(bootstrap_ip)
         bootstrap_mac = get_network_device_mac(node_name=bootstrap_name, ip_type='idrac')
+        logging.info('adding bootstrap_node values as name: {} ip: {} mac: {}'.format(bootstrap_name, bootstrap_ip,
+                                                                                      bootstrap_mac)) 
         self.inventory_dict['csah']['vars']['bootstrap_node'] = [{'name': '{}'.format(bootstrap_name),
                                                                   'ip': '{}'.format(bootstrap_ip),
                                                                   'mac': '{}'.format(bootstrap_mac)}]
 
     def get_master_nodes(self):
+        """ 
+        get details about master node
+
+        """
         default = 3
         master_nodes_count = input('enter number of master nodes\n'
                                    'default [3]: ')
@@ -150,7 +191,7 @@ class InventoryFile:
             master_values = []
             default = 'etcd-{}'.format(num)
             master_name = input('enter the master {} node name \n'
-                                'default [{}]:'.format(num, default))
+                                'default [{}]: '.format(num, default))
             master_name = set_values(master_name, default)
             master_ip = get_ip(node_name=master_name, ip_type='os')
             master_mac = get_network_device_mac(node_name=master_name, ip_type='idrac')
@@ -158,10 +199,17 @@ class InventoryFile:
             master_values.append(master_ip)
             master_values.append(master_mac)
             master_node_dict_pairs = dict(zip(master_keys, master_values))
+            logging.info('adding {} values as name: {} ip: {} mac: {}'.format(master_name, master_name,
+                                                                              master_ip, master_mac)) 
             self.inventory_dict['csah']['vars']['master_nodes'].append(master_node_dict_pairs)
+            self.clear_screen()
         self.inventory_dict['csah']['vars']['number_of_masters'] = master_nodes_count
 
     def get_worker_nodes(self):
+        """ 
+        get details about worker node
+
+        """
         worker_nodes_count = input('enter number of worker nodes\n'
                                    'default [2]: ')
         default = 2
@@ -180,10 +228,17 @@ class InventoryFile:
             worker_values.append(worker_ip)
             worker_values.append(worker_mac)
             worker_node_dict_pairs = dict(zip(worker_keys, worker_values))
+            logging.info('adding {} values as name: {} ip: {} mac: {}'.format(worker_name, worker_name,
+                                                                              worker_ip, worker_mac)) 
             self.inventory_dict['csah']['vars']['worker_nodes'].append(worker_node_dict_pairs)
+            self.clear_screen()
         self.inventory_dict['csah']['vars']['number_of_workers'] = worker_nodes_count
 
     def dhcp_lease_times(self):
+        """ 
+        get dhcp lease times 
+        
+        """
         default_lease_time = input('enter a default lease time for dhcp\n'
                                    'default [800]: ')
         default = 800
@@ -192,10 +247,16 @@ class InventoryFile:
                                'default [7200]: ')
         default = 7200
         max_lease_time = set_values(max_lease_time, default, check='integer')
+        logging.info('adding default_lease_time: {} max_lease_time: {}'.format(default_lease_time,
+                                                                               max_lease_time))
         self.inventory_dict['csah']['vars']['default_lease_time'] = default_lease_time
         self.inventory_dict['csah']['vars']['max_lease_time'] = max_lease_time
 
     def set_bond_network_details(self):
+        """ 
+        get bond details and user interfaces used for bond
+
+        """
         self.clear_screen()
         default = 'bond0'
         name = input('enter bond name\n'
@@ -209,11 +270,16 @@ class InventoryFile:
         options = input('enter bond options \n'
                         'default [mode=active-backup,miimon=100,primary=ens2f0]: ')
         options = set_values(options, default)
+        logging.info('adding bond_name: {} interfaces: {} bond_options: {}'.format(name, interfaces, options))
         self.inventory_dict['csah']['vars']['bond_name'] = name
         self.inventory_dict['csah']['vars']['bond_interfaces'] = interfaces
         self.inventory_dict['csah']['vars']['bond_options'] = options
 
     def get_dns_details(self):
+        """ 
+        get zone config file and cluster name used by DNS
+
+        """
         self.clear_screen()
         zone_file = input('specify zone file \n'
                           'default [/var/named/ocp.zones]: ')
@@ -223,17 +289,22 @@ class InventoryFile:
                              'default [ocp]: ')
         default = 'ocp'
         cluster_name = set_values(cluster_name, default)
+        logging.info('adding zone_file: {} cluster: {}'.format(zone_file, cluster_name))
         self.inventory_dict['csah']['vars']['default_zone_file'] = zone_file
         self.inventory_dict['csah']['vars']['cluster'] = cluster_name
 
     def get_http_details(self):
+        """ 
+        get http details and directories names created under /var/www/html
+
+        """
         self.clear_screen()
         port = input('enter http port \n'
                      'default [8080]: ')
         default = 8080
         port = set_values(port, default)
         port = validate_port(port)
-        ignition_dir = input('specify dir where ignition files will be placed \n '
+        ignition_dir = input('specify dir where ignition files will be placed \n'
                              'directory will be created under /var/www/html \n'
                              'default [ignition]: ')
         default = 'ignition'
@@ -242,15 +313,20 @@ class InventoryFile:
                             'default [4.3]: ')
         default = 4.3
         ocp_version = set_values(ocp_version, default)
+        logging.info('adding http_port: {} http_ignition: {} version: {}'.format(port, ignition_dir, ocp_version))
         self.inventory_dict['csah']['vars']['http_port'] = int(port)
         self.inventory_dict['csah']['vars']['os'] = 'rhcos'
         self.inventory_dict['csah']['vars']['http_ignition'] = ignition_dir
         self.inventory_dict['csah']['vars']['version'] = ocp_version
 
     def get_disk_name(self):
+        """ 
+        disknames used for each node type. 
+
+        """
         self.clear_screen()
         default = 'nvme0n1'
-        print('ensure disknames are absolutely available. Otherwise OpenShift install fails')
+        logging.info('ensure disknames are absolutely available. Otherwise OpenShift install fails')
         master_install_device = input('specify the master device that will be installed\n'
                                       'default [nvme0n1]: ')
         master_install_device = set_values(master_install_device, default)
@@ -260,12 +336,19 @@ class InventoryFile:
         worker_install_device = input('specify the worker device that will be installed\n'
                                       'default [nvme0n1]: ')
         worker_install_device = set_values(worker_install_device, default)
+        logging.info('adding master_install_device: {} bootstrap_install_device: {}\
+                      worker_install_device: {}'.format(master_install_device, bootstrap_install_device,
+                                                        worker_install_device))
         self.inventory_dict['csah']['vars']['master_install_device'] = master_install_device
         self.inventory_dict['csah']['vars']['bootstrap_install_device'] = bootstrap_install_device
         self.inventory_dict['csah']['vars']['worker_install_device'] = worker_install_device
 
     def set_haproxy(self):
-        print('currently only haproxy is supported for load balancing')
+        """ 
+        sets default values for haproxy
+
+        """
+        logging.info('currently only haproxy is supported for load balancing')
         self.inventory_dict['csah']['vars']['proxy'] = 'haproxy'
         self.inventory_dict['csah']['vars']['haproxy_conf'] = '/etc/haproxy/haproxy.cfg'
         self.inventory_dict['csah']['vars']['master_ports'] = [{'port': 6443, 'description': 'apiserver'},
@@ -274,6 +357,10 @@ class InventoryFile:
                                                                {'port': 443, 'description': 'https'}]
 
     def get_ignition_details(self):
+        """ 
+        get details from users used for install-config.yaml file
+
+        """
         self.clear_screen()
         default = 'core'
         install_user = input('enter the user used to install openshift\n'
@@ -289,7 +376,7 @@ class InventoryFile:
         pod_network_cidr = input('enter the pod network cidr\n'
                                  'default [10.128.0.0/14]: ')
         pod_network_cidr = set_values(pod_network_cidr, default)
-        print('pod network cidr: {}'.format(pod_network_cidr))
+        logging.info('pod network cidr: {}'.format(pod_network_cidr))
         pod_network_cidr = validate_network_cidr(pod_network_cidr)
         default = 23
         host_prefix = input('specify cidr notation for number of ips in each node: \n'
@@ -302,6 +389,10 @@ class InventoryFile:
                                      'default [172.30.0.0/16]: ')
         service_network_cidr = set_values(service_network_cidr, default)
         service_network_cidr = validate_network_cidr(service_network_cidr)
+        logging.info('adding install_user: {} install_dir: {} cluster_network_cidr: {}\
+                      host_prefix: {} service_network_cidr: {}'.format(install_user, install_dir,
+                                                                pod_network_cidr, host_prefix, 
+                                                                service_network_cidr))
         self.inventory_dict['csah']['vars']['install_user'] = install_user
         self.inventory_dict['csah']['vars']['install_dir'] = install_dir
         self.inventory_dict['csah']['vars']['cluster_network_cidr'] = pod_network_cidr
@@ -309,13 +400,21 @@ class InventoryFile:
         self.inventory_dict['csah']['vars']['service_network_cidr'] = service_network_cidr
 
     def yaml_inventory(self):
+        """ 
+        generate yaml file using user inputs
+ 
+        """
         inventory_file = 'inventory_file'
         with open(inventory_file, 'w') as invfile:
             yaml.dump(self.inventory_dict, invfile, default_flow_style=False, sort_keys=False)
 
     def display_inventory(self):
-        print(yaml.dump(self.inventory_dict, sort_keys=False, default_flow_style=False))
-        input('Press Enter to continue')
+        """ 
+        display current user input details
+
+        """
+        logging.info(yaml.dump(self.inventory_dict, sort_keys=False, default_flow_style=False))
+        input('Press Enter to continue ')
 
     def run(self):
         self.set_keys()
@@ -324,6 +423,8 @@ class InventoryFile:
 
 
 def main():
+    log_setup(log_file='inventory.log')
+    logging.info('setting log file to inventory.log')
     gen_inv_file = InventoryFile()
     gen_inv_file.run()
     

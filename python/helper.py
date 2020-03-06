@@ -1,6 +1,7 @@
 import ipaddress
 import getpass
 import json
+import logging
 import os
 import re
 import requests
@@ -8,45 +9,74 @@ import sys
 import time
 
 from urllib.request import urlopen
+from urllib.error import HTTPError
 from urllib3.exceptions import InsecureRequestWarning
 
 
 def create_dir(directory):
+    """ 
+    create directory recursively
+ 
+    """
     try:
         os.makedirs(directory)
-        print('successfully created directory {}'.format(directory))
+        logging.info('successfully created directory {}'.format(directory))
     except OSError:
-        print('creating directory {} failed'.format(directory))
+        logging.error('creating directory {} failed'.format(directory))
 
 def check_path(path, isfile=False, isdir=False):
+    """ 
+    returns if path given is a file or directory
+
+    """
     
     return os.path.isfile(path) if isfile else os.path.isdir(path)
 
 def set_values(user_input, default, check=''):
+    """ 
+    sets default value if user input is empty value.
+    ensures integer value if necessary
+
+    """
     if check == 'integer' and user_input != '':
         user_input = check_user_input_if_integer(user_input)
         
     return default if not user_input else user_input
 
 def validate_url(url):
-    
-    url_verify = urlopen(url)
+    """ 
+    validates url and checks if any HTTP Errors
 
-    return True if url_verify.code == 200 else False
+    """
+    url_verify = ''
+
+    try:
+        url_verify = urlopen(url)
+    except HTTPError:
+        logging.error('URL {} - HTTP Error'.format(url))
+
+    return url_verify
 
 def check_user_input_if_integer(user_input):
+    """ 
+    check if user input is integer and not any other data type
+
+    """
     integer_input = ''
     while not integer_input:
          try:
              integer_input = int(user_input)
          except ValueError:
-             print('only integer number accepted')
+             logging.warn('only integer number accepted')
              user_input = input('enter a number: ')
 
     return integer_input
 
 def get_ip(node_name='', ip_type=''):
-    
+    """ 
+    get the ip address of a node
+
+    """
     ip = ''
     while True:
         ip = input('ip address for {} in {} node: '.format(ip_type, node_name))
@@ -54,49 +84,37 @@ def get_ip(node_name='', ip_type=''):
         if ip_check:
             break
         else:
-            print('ip address should be in format: x.x.x.x')
+            logging.warn('ip address should be in format: x.x.x.x')
     
     return ip  
 
-def get_mac(node_name=''):
-
-    mac=''
-    while True:
-        mac = input('mac address for {} node: '.format(node_name))
-        mac_check = validate_mac(mac)
-        if mac_check:
-            break
-        else:
-            print('mac address should be in format: xx:xx:xx:xx:xx')
-
-    return mac
-
 def validate_ip(ip):
-
+    """    
+    validates ip address format
+    
+    """
     valid_ip = ''
     try:
         valid_ip = ipaddress.ip_address(ip)   
     except ValueError:
-        print('ip address \'{}\' is not valid: '.format(ip))
+        logging.error('ip address \'{}\' is not valid: '.format(ip))
   
     return valid_ip
 
-def validate_mac(mac):
-    mac_regex = '[0-9a-f]{2}(:)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$'
-    
-    return True if re.match(mac_regex, mac.lower()) else False
-
-
 def validate_port(port):
+    """
+    validate ports to ensure HAProxy ports are not reused
+
+    """
     invalid_ports = [80, 443, 6443, 22623]
     while True:
         try:
             check_for_string = port.isdigit()
             if not check_for_string:
-                print('port has to be an integer')
+                logging.warn('port has to be an integer')
             else:
                 invalid_ports.index(int(port))
-            print('ports {} are not allowed'.format(invalid_ports))
+            logging.warn('ports {} are not allowed'.format(invalid_ports))
             port = input('enter a port: ')
         except AttributeError:
             break 
@@ -106,18 +124,27 @@ def validate_port(port):
     return port
 
 def validate_network_cidr(network_cidr):
+    """
+    validate ip address with cidr format. defaults to /24 if only IP is given
+
+    """
+    compressed_network_cidr = ''
     while True:
         try:
-            ipaddress.ip_network(network_cidr)
+            compressed_network_cidr = ipaddress.ip_network(network_cidr)
             break
         except ValueError:
-            print('input should be in format x.x.x.x/x')
+            logging.warn('input should be in format x.x.x.x/x')
             network_cidr = input('enter the network cidr: ')
 
-    return network_cidr
+    return compressed_network_cidr.compressed
     
 
 def validate_cidr(cidr):
+    """ 
+    validates subnet in cidr format.
+
+    """
     check_integer = ''
     while not check_integer:
          check_integer = check_user_input_if_integer(cidr)     
@@ -130,20 +157,28 @@ def validate_cidr(cidr):
             
 
 def connect_to_idrac(user, passwd, base_api_url):
+    """ 
+    establishes connection to idrac
+
+    """
     requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
     response = ''
     try:
         response = requests.get(base_api_url, verify=False, auth=(user, passwd),
                                 timeout=5) 
     except requests.exceptions.ConnectTimeout:
-        print('failed to establish connection to base api url')
+        logging.error('failed to establish connection to base api url')
     except Exception as e:
-        print('unknown exception occurred') 
-        print('{}'.format(e))  
+        logging.error('unknown exception occurred') 
+        logging.error('{}'.format(e))  
     
     return response
 
 def get_network_devices(user, passwd, base_api_url):
+    """ 
+    get list of network devices from iDRAC 
+
+    """
     network_devices = ''
     response = connect_to_idrac(user, passwd, base_api_url)
     if response and response.json():
@@ -156,6 +191,10 @@ def get_network_devices(user, passwd, base_api_url):
     return network_devices
         
 def generate_network_devices_menu(devices):
+    """ 
+    generate a list of network devices menu obtained from iDRAC 
+
+    """
     menu = {}
     i = 1
     choice = ''
@@ -166,43 +205,52 @@ def generate_network_devices_menu(devices):
     while True:
         options = menu.keys()
         for entry in options:
-            print('{} -> {}'.format(entry, menu[entry]))
+            logging.info('{} -> {}'.format(entry, menu[entry]))
         choice = input('Select the interface used by DHCP: ')
         if choice == '1' or choice == '2' or choice == '3' or choice == '4':
             break
         else:
-            print('unknown option selected')
+            logging.warn('unknown option selected')
 
     selected_network_device = menu[int(choice)]
-    print('selected interface is: {}'.format(menu[int(choice)]))
+    logging.info('selected interface is: {}'.format(menu[int(choice)]))
     
     return selected_network_device
         
 def get_mac_address(selected_network_device, base_api_url, user, passwd):
+    """ 
+    get mac address for a selected network device
 
+    """   
     url = '{}/{}'.format(base_api_url, selected_network_device)
     device_mac_address = ''
     try:
         response = requests.get(url, verify=False, auth=(user, passwd),
                                 timeout=5)
     except requests.exceptions.ConnectionTimeout:
-        print('failed to establish connection to get mac address')
+        logging.error('failed to establish connection to get mac address')
 
     try:
         network_device_info = response.json()
     except ValueError:
-        print('check URL, iDRAC user and password may be invalid')
-        print('{}'.format(url))
+        logging.error('check URL, iDRAC user and password may be invalid')
+        logging.info('{}'.format(url))
 
     try:
         device_mac_address = network_device_info[u'MACAddress']
     except KeyError:
-        print('No MAC Address found for network devices')
-        print('{}'.format(selected_network_device))
+        logging.error('No MAC Address found for network devices')
+        logging.info('{}'.format(selected_network_device))
 
     return device_mac_address
 
 def get_network_device_mac(node_name='', ip_type=''):
+    """ 
+    lists available network devices from iDRAC
+    generates a menu of network devices
+    obtains mac address for the network device
+
+    """
     devices = []
     network_device_mac_address = ''
     
@@ -217,14 +265,14 @@ def get_network_device_mac(node_name='', ip_type=''):
             try:
                 devices.append(device[0].decode("utf-8").split('/')[-1])
             except IndexError:
-                print('Did not find any network devices')
+                logging.error('Did not find any network devices')
 
     if devices:
         selected_network_device = generate_network_devices_menu(devices)
         network_device_mac_address = get_mac_address(selected_network_device, base_api_url, user, passwd)
 
     if network_device_mac_address:
-        print('device {} mac address is {}'.format(selected_network_device, network_device_mac_address))
+        logging.info('device {} mac address is {}'.format(selected_network_device, network_device_mac_address))
  
     return network_device_mac_address
 
