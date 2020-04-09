@@ -13,7 +13,7 @@ Python Script - Pre-Reqs
 
 Python Script - Execution
 > - python3 generate_inventory_file.py
-> (Refer to Page 15 Chapter 3 in OCP 4.3 Deployment Guide)
+> Refer to Page 15 Chapter 3 in [OCP 4.3 Deployment Guide](https://www.dellemc.com/resources/en-us/asset/technical-guides-support-information/solutions/h18212-openshift-container-dpg.pdf)
 
 Python Script - Output
 > - An inventory file used by ansible to execute roles defined in ocp.yml
