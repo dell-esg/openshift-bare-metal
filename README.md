@@ -1,3 +1,6 @@
+# Master branch is updated with OCP43 contents
+# For OCP42 contents, switch to branch ocp42.
+
 Switch Config
 > - Switches S3048, S5232F config files are saved in examples directory
 > - S5232F x 2 configured in VLTi
@@ -9,8 +12,8 @@ Python Script - Pre-Reqs
 > - pip3 packages (pyyaml, requests)
 
 Python Script - Execution
-> - python3 generate_inventory.py
-> (Refer to Page 17 Section 3 in OCP 4.3 Deployment Guide)
+> - python3 generate_inventory_file.py
+> (Refer to Page 15 Chapter 3 in OCP 4.3 Deployment Guide)
 
 Python Script - Output
 > - An inventory file used by ansible to execute roles defined in ocp.yml
