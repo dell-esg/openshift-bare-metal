@@ -4,7 +4,7 @@
   roles:
     - http
     - dhcp
-    - bind
+    - dns
     - proxy
     - ignition
     - pxe

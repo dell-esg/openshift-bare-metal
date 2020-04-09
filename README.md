@@ -1,29 +1,31 @@
-## Execute Playbook by following steps as below
+# Master branch is updated with OCP43 contents
+# For OCP42 contents, switch to branch ocp42.
 
-- Follow Chapter 3 Setup CSAH node in [OCP 42 Dell Deployment Guide](https://www.dellemc.com/resources/en-us/asset/technical-guides-support-information/solutions/h18022-ocp4.2-dpg.pdf) to run ansible playbook
+Switch Config
+> - Switches S3048, S5232F config files are saved in examples directory
+> - S5232F x 2 configured in VLTi
+> - S3048 used for iDRAC purposes
 
-- Gather the IP address and NIC mac address of bootstrap, master(s), worker(s) nodes
+Python Script - Pre-Reqs
+> - RHEL OS (Tested in 7.6)
+> - Python3
+> - pip3 packages (pyyaml, requests)
 
-- Update the hosts file located in repository home directory
+Python Script - Execution
+> - python3 generate_inventory_file.py
+> Refer to Page 15 Chapter 3 in [OCP 4.3 Deployment Guide](https://www.dellemc.com/resources/en-us/asset/technical-guides-support-information/solutions/h18212-openshift-container-dpg.pdf)
 
-- Current hosts file already is filled with sample values and comments are included for each section accordingly.
+Python Script - Output
+> - An inventory file used by ansible to execute roles defined in ocp.yml
+> - Script log file (*Inventory.log by default*)
 
-- Below are the links to the OpenShift software files. Download them and specify the names accordingly for each variable in hosts file. These files are also referenced in Deployment Guide.
+Ansible Playbooks - Pre-Reqs
+> - RedHat subscription (to download ansible rpm and pullsecret for OCP 4.3)
+> - Inventory File (generated using python script)
 
-  a) [uefi_file](https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.2/4.2.0/rhcos-4.2.0-x86_64-metal-uefi.raw.gz)
+Ansible Playbooks - Execution
+> - cd *git clone dir/containers/ansible*
+> - *ansible-playbook -i 'Path to inventory file path generated using python script' ocp.yml*
 
-  b) [initramfs](https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.2/4.2.0/rhcos-4.2.0-x86_64-installer-initramfs.img)
-
-  c) [openshift_client](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.2.0/openshift-client-linux-4.2.0.tar.gz)
-
-  d) [openshift_installer](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.2.0/openshift-install-linux-4.2.0.tar.gz)
-
-  e) [kernel_file](https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.2/4.2.0/rhcos-4.2.0-x86_64-installer-kernel)
-
-  f) [pull_secret_file](https://cloud.redhat.com/openshift/install/metal/user-provisioned)
-
-## Switch Config Setup 
-
-- Follow Chapter 2 Switch Configuration in [OCP 42 Dell Deployment Guide](https://www.dellemc.com/resources/en-us/asset/technical-guides-support-information/solutions/h18022-ocp4.2-dpg.pdf) to configure Switches
-
-- Sample example switch config files are placed in examples directory for reference.
+Ansible Playbooks - Output
+> - Services such as *DNS/DHCP/PXE/TFTP/HAProxy* are configured in local node using the inventory file generated. 

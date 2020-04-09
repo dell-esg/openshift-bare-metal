@@ -71,6 +71,16 @@
   shell: cat /home/{{ install_user }}/.ssh/id_rsa.pub
   register: ssh_key
 
+- name: export kubeconfig 
+  blockinfile:
+    path: /home/{{ install_user }}/.bash_profile
+    insertafter: EOF
+    block: |
+      export KUBECONFIG={{ ocp_install_dir.path }}/auth/kubeconfig
+      export PATH=$PATH:/home/{{ install_user }}
+    owner: "{{ install_user }}"
+    group: "{{ install_user }}"
+
 - name: generate install config file
   template:
     src: install-config.j2
