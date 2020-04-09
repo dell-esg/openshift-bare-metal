@@ -1,19 +1,18 @@
-# Master branch is updated with OCP43 contents
-# For OCP42 contents, switch to branch ocp42.
+# Master branch is updated with OCP 4.3 contents
+> For OCP 4.2 contents, switch to branch ocp42.
 
-Switch Config
+Switch Config - Refer to Chapter 2 to configure switches in [OCP 4.3 Deployment Guide](https://www.dellemc.com/resources/en-us/asset/technical-guides-support-information/solutions/h18212-openshift-container-dpg.pdf)
 > - Switches S3048, S5232F config files are saved in examples directory
 > - S5232F x 2 configured in VLTi
 > - S3048 used for iDRAC purposes
 
-Python Script - Pre-Reqs
-> - RHEL OS (Tested in 7.6)
+Python Script Pre Requisites - Refer to Page 13 Chapter 3 in [OCP 4.3 Deployment Guide](https://www.dellemc.com/resources/en-us/asset/technical-guides-support-information/solutions/h18212-openshift-container-dpg.pdf)
+> - RHEL OS (Tested in 7.6 - CSAH Node)
 > - Python3
 > - pip3 packages (pyyaml, requests)
 
-Python Script - Execution
+Python Script Execution - Refer to Page 15 Chapter 3 in [OCP 4.3 Deployment Guide](https://www.dellemc.com/resources/en-us/asset/technical-guides-support-information/solutions/h18212-openshift-container-dpg.pdf)
 > - python3 generate_inventory_file.py
-> Refer to Page 15 Chapter 3 in [OCP 4.3 Deployment Guide](https://www.dellemc.com/resources/en-us/asset/technical-guides-support-information/solutions/h18212-openshift-container-dpg.pdf)
 
 Python Script - Output
 > - An inventory file used by ansible to execute roles defined in ocp.yml
