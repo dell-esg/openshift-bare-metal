@@ -1,4 +1,4 @@
-# Master branch is updated with OCP43 contents
+# Master branch is updated with OCP43 CSI contents
 # For OCP42 contents, switch to branch ocp42.
 
 Switch Config
