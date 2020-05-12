@@ -1,0 +1,37 @@
+- debug:
+    msg: "{{ item }}"
+  loop: "{{ groups['csah'] }}"
+
+- name: create directories under /var/www/html
+  file:
+    path: /var/www/html/{{ item }}
+    state: directory
+    recursive: yes
+  loop:
+    - kickstart
+    - rhel
+
+- name: get worker nodes details
+  set_fact:
+    nodes: "{{ hostvars[inventory_hostname]['worker_nodes'] }}"
+
+- debug:
+    msg: "{{ nodes }}"
+
+- name: length of nodes
+  set_fact:
+    length_of_nodes: "{{ nodes|length }}"
+
+- debug:
+    msg: "{{ length_of_nodes }}"
+
+- name: trest
+  debug:
+    msg: "{{ item.name }}"
+  loop: "{{ nodes }}"
+
+- name: generate kickstart files
+  template:
+    src: ks.j2
+    dest: /var/www/html/kickstart/{{ item.name }}.ks.cfg
+  loop: "{{ nodes }}"

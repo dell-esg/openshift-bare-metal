@@ -19,12 +19,11 @@ class InventoryFile:
         self.software_dir = ''
         self.input_choice = ''
         self.ocp43_client_base_url = 'https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-4.3'
-        self.ocp43_rhcos_base_url = 'https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/4.3.0'
-        self.ocp_urls = {'openshift_client': '{}/openshift-client-linux.tar.gz'.format(self.ocp43_client_base_url),
-                         'openshift_installer': '{}/openshift-install-linux.tar.gz'.format(self.ocp43_client_base_url),
-                         'initramfs': '{}/rhcos-4.3.0-x86_64-installer-initramfs.img'.format(self.ocp43_rhcos_base_url),
-                         'kernel_file': '{}/rhcos-4.3.0-x86_64-installer-kernel'.format(self.ocp43_rhcos_base_url),
-                         'uefi_file': '{}/rhcos-4.3.0-x86_64-metal.raw.gz'.format(self.ocp43_rhcos_base_url)}
+        self.ocp43_rhcos_base_url = 'https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/4.3.8'
+        self.ocp_urls = {'openshift_installer': '{}/openshift-install-linux.tar.gz'.format(self.ocp43_client_base_url),
+                         'initramfs': '{}/rhcos-4.3.8-x86_64-installer-initramfs.x86_64.img'.format(self.ocp43_rhcos_base_url),
+                         'kernel_file': '{}/rhcos-4.3.8-x86_64-installer-kernel-x86_64'.format(self.ocp43_rhcos_base_url),
+                         'uefi_file': '{}/rhcos-4.3.8-x86_64-metal.x86_64.raw.gz'.format(self.ocp43_rhcos_base_url)}
         self.task_inputs = """
 1: 'download ocp 4.3 software',
 2: 'bootstrap node details',
@@ -92,7 +91,8 @@ class InventoryFile:
         elif self.input_choice == 4:
             self.get_worker_nodes()
         elif self.input_choice == 5:
-            self.set_bond_network_details()
+            self.set_bond_network_details(node_os='rhcos')
+            self.set_bond_network_details(node_os='rhel')
         elif self.input_choice == 6:
             self.get_disk_name()
         elif self.input_choice == 7:
@@ -181,6 +181,7 @@ class InventoryFile:
         get details about master node
 
         """
+        self.clear_screen()
         default = 3
         master_nodes_count = input('enter number of master nodes\n'
                                    'default [3]: ')
@@ -210,6 +211,7 @@ class InventoryFile:
         get details about worker node
 
         """
+        self.clear_screen()
         worker_nodes_count = input('enter number of worker nodes\n'
                                    'default [2]: ')
         default = 2
@@ -239,6 +241,7 @@ class InventoryFile:
         get dhcp lease times 
         
         """
+        self.clear_screen()
         default_lease_time = input('enter a default lease time for dhcp\n'
                                    'default [800]: ')
         default = 800
@@ -252,28 +255,40 @@ class InventoryFile:
         self.inventory_dict['csah']['vars']['default_lease_time'] = default_lease_time
         self.inventory_dict['csah']['vars']['max_lease_time'] = max_lease_time
 
-    def set_bond_network_details(self):
+    def set_bond_network_details(self, node_os='rhcos'):
         """ 
         get bond details and user interfaces used for bond
 
         """
         self.clear_screen()
+        logging.info('enter bond details for {}'.format(node_os))
         default = 'bond0'
         name = input('enter bond name\n'
                      'default [bond0]: ')
         name = set_values(name, default)
-        interfaces = input('enter bond interfaces seperated by \',\'\n'
-                           'default [ens2f0,ens2f1]: ')
-        default = 'ens2f0,ens2f1'
+        if node_os == 'rhcos':
+            interfaces = input('enter {} bond interfaces seperated by \',\'\n'
+                               'default [ens2f0,ens2f1]: '.format(node_os))
+            default = 'ens2f0,ens2f1'
+            primary = 'ens2f0'
+            backup = 'ens2f1'
+        elif node_os == 'rhel':
+            interfaces = input('enter {} bond interfaces seperated by \',\'\n'
+                               'default [p2p1,p2p2]: '.format(node_os))
+            default = 'p2p1,p2p2'
+            primary = 'p2p1'
+            backup = 'p2p2'
         interfaces = set_values(interfaces, default)
-        default = 'mode=active-backup,miimon=100,primary=ens2f0'
+        default = 'mode=active-backup,miimon=100,primary={}'.format(primary)
         options = input('enter bond options \n'
-                        'default [mode=active-backup,miimon=100,primary=ens2f0]: ')
+                        'default [{}]: '.format(default))
         options = set_values(options, default)
-        logging.info('adding bond_name: {} interfaces: {} bond_options: {}'.format(name, interfaces, options))
-        self.inventory_dict['csah']['vars']['bond_name'] = name
-        self.inventory_dict['csah']['vars']['bond_interfaces'] = interfaces
-        self.inventory_dict['csah']['vars']['bond_options'] = options
+        logging.info('adding {} bond_name: {} interfaces: {} bond_options: {}'.format(node_os, name, interfaces, options))
+        self.inventory_dict['csah']['vars']['{}_bond_name'.format(node_os)] = name
+        self.inventory_dict['csah']['vars']['{}_bond_interfaces'.format(node_os)] = interfaces
+        self.inventory_dict['csah']['vars']['{}_bond_options'.format(node_os)] = options
+        self.inventory_dict['csah']['vars']['{}_primary_interface'.format(node_os)] = primary
+        self.inventory_dict['csah']['vars']['{}_backup_interface'.format(node_os)] = backup
 
     def get_dns_details(self):
         """ 
@@ -413,6 +428,7 @@ class InventoryFile:
         display current user input details
 
         """
+        self.clear_screen()
         logging.info(yaml.dump(self.inventory_dict, sort_keys=False, default_flow_style=False))
         input('Press Enter to continue ')
 

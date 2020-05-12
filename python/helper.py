@@ -13,6 +13,24 @@ from urllib.error import HTTPError
 from urllib3.exceptions import InsecureRequestWarning
 
 
+def get_user_response(message=''):
+    """
+    User response invoked when error exists
+
+    """
+    valid_responses = ['y', 'NO']
+    response = ''
+    while response not in valid_responses:
+        logging.error('{}'.format(message))
+        response = input('Do you want to continue (y/NO): ')
+        if response not in valid_responses:
+            logging.info('Valid responses are \'y\' or \'NO\'')
+
+    if response == 'NO':
+        logging.info('QUITTING!!')
+        sys.exit()
+
+    
 def create_dir(directory):
     """ 
     create directory recursively
@@ -54,6 +72,7 @@ def validate_url(url):
         url_verify = urlopen(url)
     except HTTPError:
         logging.error('URL {} - HTTP Error'.format(url))
+        get_user_response(message='Error validating URL: {}'.format(url))
 
     return url_verify
 
@@ -168,6 +187,7 @@ def connect_to_idrac(user, passwd, base_api_url):
                                 timeout=5) 
     except requests.exceptions.ConnectTimeout:
         logging.error('failed to establish connection to base api url')
+        get_user_response(message='failed to establish connection to base api url')
     except Exception as e:
         logging.error('unknown exception occurred') 
         logging.error('{}'.format(e))  
@@ -187,9 +207,12 @@ def get_network_devices(user, passwd, base_api_url):
             network_devices = network_devices_info[u'Members']
         except KeyError:
             network_devices = ''
+            get_user_response(message='could not get network devices info')
+    else:
+        get_user_response(message='could not connect to idrac')
 
     return network_devices
-        
+  
 def generate_network_devices_menu(devices):
     """ 
     generate a list of network devices menu obtained from iDRAC 
@@ -275,6 +298,7 @@ def get_network_device_mac(node_name='', ip_type=''):
         logging.info('device {} mac address is {}'.format(selected_network_device, network_device_mac_address))
  
     return network_device_mac_address
+
 
 def main():
     pass

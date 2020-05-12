@@ -30,25 +30,6 @@
     group: "{{ install_user }}"
   register: ocp_install_dir
 
-- name: check oc client tool in /home/{{ install_user }}
-  stat:
-    path: /home/{{ install_user }}/oc
-  register: oc
-
-- name: check kubectl client tool in /home/{{ install_user }}
-  stat:
-    path: /home/{{ install_user }}/kubectl
-  register: kubectl
-
-- name: copy openshift client tools to /home/{{ install_user }}
-  unarchive:
-    src: "{{ software_src }}/{{ openshift_client }}"
-    dest: /home/{{ install_user }}
-    remote_src: yes
-    owner: "{{ install_user }}"
-    group: "{{ install_user }}"
-  when: not oc.stat.exists or not kubectl.stat.exists
-
 - name: check openshift-install tool in /home/{{ install_user }}
   stat:
     path: /home/{{ install_user }}/openshift-install

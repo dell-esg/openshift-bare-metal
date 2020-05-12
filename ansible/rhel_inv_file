@@ -1,5 +1,5 @@
 csah:
-  hosts: csah.example.com
+  hosts: r3csah.example.com
   vars:
     proxy: haproxy
     haproxy_conf: /etc/haproxy/haproxy.cfg
@@ -14,12 +14,11 @@ csah:
     - port: 443
       description: https
     software_src: /home/ansible/files
-    pull_secret_file: pullsecret
-    openshift_client: openshift-client-linux-4.3.1.tar.gz
-    openshift_installer: openshift-install-linux-4.3.1.tar.gz
-    initramfs: rhcos-4.3.0-x86_64-installer-initramfs.img
-    kernel_file: rhcos-4.3.0-x86_64-installer-kernel
-    uefi_file: rhcos-4.3.0-x86_64-metal.raw.gz
+    openshift_installer: openshift-install-linux.tar.gz
+    initramfs: rhcos-4.3.8-x86_64-installer-initramfs.x86_64.img
+    kernel_file: rhcos-4.3.8-x86_64-installer-kernel-x86_64
+    uefi_file: rhcos-4.3.8-x86_64-metal.x86_64.raw.gz
+    rhel_os: rhel-server-7.8-x86_64-dvd.iso
     bootstrap_node:
     - name: bootstrap
       ip: 100.82.46.26
@@ -43,15 +42,22 @@ csah:
       ip: 100.82.46.25
       mac: B8:59:9F:C0:35:E6
     number_of_workers: 2
-    bond_name: bond0
-    bond_interfaces: ens2f0,ens2f1
-    bond_options: mode=active-backup,miimon=100,primary=ens2f0
+    rhcos_bond_name: bond0
+    rhcos_bond_interfaces: ens2f0,ens2f1
+    rhcos_bond_options: mode=active-backup,miimon=100,primary=ens2f0
+    rhcos_primary_interface: ens2f0
+    rhcos_backup_interface: ens2f1
+    rhel_bond_name: bond0
+    rhel_bond_interfaces: p2p1,p2p2
+    rhel_bond_options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
+    rhel_primary_interface: p2p1
+    rhel_backup_interface: p2p2
     master_install_device: nvme0n1
     bootstrap_install_device: nvme0n1
     worker_install_device: nvme0n1
     default_zone_file: /var/named/ocp.zones
     cluster: ocp
-    http_port: 8080
+    http_port: 8892
     os: rhcos
     http_ignition: ignition
     version: 4.3
