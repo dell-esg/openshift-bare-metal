@@ -19,10 +19,7 @@ csah:
     kernel_file: rhcos-4.3.8-x86_64-installer-kernel-x86_64
     uefi_file: rhcos-4.3.8-x86_64-metal.x86_64.raw.gz
     rhel_os: rhel-server-7.8-x86_64-dvd.iso
-    bootstrap_node:
-    - name: bootstrap
-      ip: 100.82.46.26
-      mac: B8:59:9F:C0:35:86
+    pull_secret_file: pullsecret
     master_nodes:
     - name: etcd-0
       ip: 100.82.46.21
@@ -41,7 +38,13 @@ csah:
     - name: worker-1
       ip: 100.82.46.25
       mac: B8:59:9F:C0:35:E6
-    number_of_workers: 2
+    - name: worker-2
+      ip: 100.82.46.26
+      mac: B8:59:9F:C0:35:86
+    - name: worker-3
+      ip: 100.82.46.27
+      mac: B8:59:9F:C0:35:26
+    number_of_workers: 4
     rhcos_bond_name: bond0
     rhcos_bond_interfaces: ens2f0,ens2f1
     rhcos_bond_options: mode=active-backup,miimon=100,primary=ens2f0
@@ -68,3 +71,13 @@ csah:
     cluster_network_cidr: 10.128.0.0/14
     host_prefix: 23
     service_network_cidr: 172.30.0.0/16
+  children:
+    workers:
+      hosts:
+        worker-0.example.com:
+        worker-1.example.com:
+        worker-2.example.com:
+      vars:
+        subscription_user: username
+        subscription_pass: password
+        pool_id: pool_id

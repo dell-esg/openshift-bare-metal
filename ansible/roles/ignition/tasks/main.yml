@@ -124,3 +124,18 @@
     - master.ign
     - worker.ign
     - bootstrap.ign
+
+- name: copy kubeconfig file to /home/ansible
+  copy:
+    src: "{{ ocp_install_dir.path }}/auth/{{ item }}"
+    dest: /home/ansible
+    remote_src: yes
+  loop:
+    - kubeconfig
+    - kubeadmin-password
+
+- name: copy core user ssh key to /home/ansible
+  copy:
+    src: /home/core/.ssh/id_rsa.pub
+    dest: /home/ansible/core_id_rsa.pub
+    remote_src: yes
