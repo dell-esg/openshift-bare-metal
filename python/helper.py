@@ -71,7 +71,6 @@ def validate_url(url):
     try:
         url_verify = urlopen(url)
     except HTTPError:
-        logging.error('URL {} - HTTP Error'.format(url))
         get_user_response(message='Error validating URL: {}'.format(url))
 
     return url_verify
@@ -97,6 +96,7 @@ def get_ip(node_name='', ip_type=''):
 
     """
     ip = ''
+    
     while True:
         ip = input('ip address for {} in {} node: '.format(ip_type, node_name))
         ip_check = validate_ip(ip)
@@ -107,6 +107,7 @@ def get_ip(node_name='', ip_type=''):
     
     return ip  
 
+
 def validate_ip(ip):
     """    
     validates ip address format
@@ -114,7 +115,7 @@ def validate_ip(ip):
     """
     valid_ip = ''
     try:
-        valid_ip = ipaddress.ip_address(ip)   
+        valid_ip = str(ipaddress.ip_address(ip))
     except ValueError:
         logging.error('ip address \'{}\' is not valid: '.format(ip))
   
@@ -173,7 +174,31 @@ def validate_cidr(cidr):
              cidr = input('user input has to be an integer and less than 32: ')
              
     return cidr
-            
+
+def check_ip_ping(ip):
+
+    command = 'ping -c 3 {} > /dev/null'.format(ip)
+    response = os.system(command)
+  
+    return response           
+
+def get_idrac_creds(ip):
+    user = input('enter the idraac user for {}: '.format(ip))
+    passwd = getpass.getpass('enter the idrac password for {}: '.format(ip))
+  
+    return user, passwd
+
+def map_interfaces_network(network_devices):
+    devices = []
+    if network_devices:
+        for network_device in network_devices:
+            device = list(map(lambda interface: interface.encode('ascii'), network_device.values()))
+            try:
+                devices.append(device[0].decode("utf-8").split('/')[-1])
+            except IndexError:
+                logging.error('Did not find any network devices')
+
+    return devices
 
 def connect_to_idrac(user, passwd, base_api_url):
     """ 
@@ -182,18 +207,28 @@ def connect_to_idrac(user, passwd, base_api_url):
     """
     requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
     response = ''
+    status_code = None
     try:
+        logging.info('enter try')
         response = requests.get(base_api_url, verify=False, auth=(user, passwd),
                                 timeout=5) 
+        logging.info('after response')
     except requests.exceptions.ConnectTimeout:
-        logging.error('failed to establish connection to base api url')
-        get_user_response(message='failed to establish connection to base api url')
+        logging.info('timeout')
+        get_user_response(message='connecting to idrac timeout')
     except Exception as e:
-        logging.error('unknown exception occurred') 
         logging.error('{}'.format(e))  
-    
-    return response
+        get_user_response(message='connecting to idrac unknown exception occurred')
 
+    try:
+        status_code = response.status_code
+    except AttributeError:
+        logging.error('could not get idrac response status code')
+        
+        return None
+
+    return response if status_code == 200 else None
+    
 def get_network_devices(user, passwd, base_api_url):
     """ 
     get list of network devices from iDRAC 
@@ -209,11 +244,11 @@ def get_network_devices(user, passwd, base_api_url):
             network_devices = ''
             get_user_response(message='could not get network devices info')
     else:
-        get_user_response(message='could not connect to idrac')
+        get_user_response(message='idrac connection status code is 401')
 
     return network_devices
   
-def generate_network_devices_menu(devices):
+def generate_network_devices_menu(devices, purpose=''):
     """ 
     generate a list of network devices menu obtained from iDRAC 
 
@@ -223,17 +258,22 @@ def generate_network_devices_menu(devices):
     choice = ''
     devices.sort()
     for device in devices:
-        menu[i] = device
+        menu[int(i)] = device
         i += 1
     while True:
         options = menu.keys()
         for entry in options:
             logging.info('{} -> {}'.format(entry, menu[entry]))
-        choice = input('Select the interface used by DHCP: ')
-        if choice == '1' or choice == '2' or choice == '3' or choice == '4':
+        choice = input('Select the interface used by {}: '.format(purpose))
+        try:
+            menu[int(choice)]
             break
-        else:
-            logging.warn('unknown option selected')
+        except KeyError:
+            logging.warn('Invalid option')
+            continue
+        except ValueError:
+            logging.warn('Input option should be integer and not string')
+            continue
 
     selected_network_device = menu[int(choice)]
     logging.info('selected interface is: {}'.format(menu[int(choice)]))
@@ -267,38 +307,46 @@ def get_mac_address(selected_network_device, base_api_url, user, passwd):
 
     return device_mac_address
 
-def get_network_device_mac(node_name='', ip_type=''):
+def get_network_device_mac(devices, user, passwd, base_api_url):
     """ 
     lists available network devices from iDRAC
     generates a menu of network devices
     obtains mac address for the network device
 
     """
-    devices = []
     network_device_mac_address = ''
-    
-    ip = get_ip(node_name=node_name, ip_type=ip_type)
-    user = input('enter the idrac user for {}: '.format(node_name))
-    passwd = getpass.getpass('enter idrac password for {}: '.format(node_name))
-    base_api_url = 'https://{}/redfish/v1/Systems/System.Embedded.1/EthernetInterfaces'.format(ip)
-    network_devices = get_network_devices(user, passwd, base_api_url)
-    if network_devices:
-        for network_device in network_devices:
-            device = list(map(lambda interface: interface.encode('ascii'), network_device.values()))
-            try:
-                devices.append(device[0].decode("utf-8").split('/')[-1])
-            except IndexError:
-                logging.error('Did not find any network devices')
 
     if devices:
-        selected_network_device = generate_network_devices_menu(devices)
+        selected_network_device = generate_network_devices_menu(devices, purpose='DHCP')
         network_device_mac_address = get_mac_address(selected_network_device, base_api_url, user, passwd)
 
     if network_device_mac_address:
         logging.info('device {} mac address is {}'.format(selected_network_device, network_device_mac_address))
- 
+    
     return network_device_mac_address
 
+def get_device_enumeration(device, os=''):
+    integrated_nic_pattern = 'Integrated'
+    nic_slot_pattern = 'NIC.Slot.'   
+    enumeration = ''
+
+    if integrated_nic_pattern in device:
+        enumeration_postfix = device.split('NIC.Integrated.1-')[1].split('-')[0]
+        if os == 'rhcos':
+            enumeration = 'eno' + enumeration_postfix
+        if os == 'rhel':
+            enumeration = 'em' + enumeration_postfix
+    
+    if nic_slot_pattern in device:
+        slot_number = device.split('NIC.Slot.')[1].split('-')[0]
+        port_number = device.split('NIC.Slot.')[1].split('-')[1]
+        if os == 'rhcos':
+            enumeration = 'ens' + slot_number + 'f' + str(int(port_number)-1)
+        if os == 'rhel':
+            enumeration = 'p' + slot_number + 'p' + port_number
+
+    return enumeration  
+        
 
 def main():
     pass
