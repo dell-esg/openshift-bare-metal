@@ -18,20 +18,19 @@ lang en_US.UTF-8
 
 ignoredisk --only-use={{ worker_install_device }}
 # Network information
-network  --bootproto=static --device=em1 --onboot=off --ipv6=auto
-network  --bootproto=static --device=em2 --onboot=off --ipv6=auto
-network  --bootproto=static --device={{ rhel_primary_interface }} --onboot=off --ipv6=auto
-network  --bootproto=static --device={{ rhel_backup_interface }}  --onboot=off --ipv6=auto
+{% for interface in item.interfaces %}
+network --bootproto=static --device={{ interface }} --onboot=off --ipv6=auto
+{% endfor %}
 network  --hostname={{ item.name }}.{{ ansible_domain }}
 
 # Root password
 rootpw --plaintext password
-#System timezone
+# System timezone
 timezone America/New_York --isUtc
 user --name=user --plaintext --password=password
 user --name=ansible --plaintext --password=password
 # System bootloader configuration
-bootloader --append=" crashkernel=auto" --location=mbr --boot-drive=nvme0n1
+bootloader --append=" crashkernel=auto" --location=mbr --boot-drive={{ worker_install_device }}
 # Partition clearing information
 clearpart --all --initlabel --drives={{ worker_install_device }}
 # Disk partitioning information
@@ -73,9 +72,9 @@ kexec-tools
 %post --nochroot --log=/mnt/sysimage/root/ks-post-log.log
 
 #add a bond device
-nmcli conn add type bond ifname {{ rhel_bond_name }} con-name {{ rhel_bond_name }} bond.options "{{ rhel_bond_options }}"
-nmcli conn add type ethernet ifname {{ rhel_primary_interface }} master {{ rhel_bond_name }}
-nmcli conn add type ethernet ifname {{ rhel_backup_interface }} master {{ rhel_bond_name }}
+nmcli conn add type bond ifname {{ item.bond }} con-name {{ item.bond }} bond.options "{{ item.options }}"
+nmcli conn add type ethernet ifname {{ item.primary }} master {{ item.bond }}
+nmcli conn add type ethernet ifname {{ item.backup }} master {{ item.bond }}
 nmcli conn mod bond0 ipv4.method manual ipv4.addresses {{ item.ip }}/{{ net_mask_cidr }} connection.autoconnect yes ipv4.gateway {{ ansible_default_ipv4.gateway }} ipv4.dns {{ ansible_default_ipv4.address }} ipv4.dns-search {{ ansible_domain }}
 
 #copy network configuration files to the install image

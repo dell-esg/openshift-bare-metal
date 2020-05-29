@@ -1,7 +1,7 @@
 {% if bootstrap_node is defined %}
 {% for node in bootstrap_node %}
 menuentry '{{ node.name }}' --class fedora --class gnu-linux --class gnu --class os {
-  linuxefi {{ os }}/{{ version }}/{{ kernel_file }} nomodeset rd.neednet=1 coreos.inst=yes coreos.inst.install_dev={{ bootstrap_install_device }} coreos.inst.image_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ os }}/{{ version }}/{{ uefi_file }} coreos.inst.ignition_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ http_ignition }}/bootstrap.ign ip={{ node.ip}}::{{ ansible_default_ipv4.gateway }}:{{ ansible_default_ipv4.netmask }}:{{ node.name }}.{{ ansible_domain }}:{{ rhcos_bond_name }}:none bond={{ rhcos_bond_name }}:{{ rhcos_bond_interfaces }}:{{ rhcos_bond_options }} nameserver={{ ansible_default_ipv4.address }}
+  linuxefi {{ os }}/{{ version }}/{{ kernel_file }} nomodeset rd.neednet=1 coreos.inst=yes coreos.inst.install_dev={{ bootstrap_install_device }} coreos.inst.image_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ os }}/{{ version }}/{{ uefi_file }} coreos.inst.ignition_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ http_ignition }}/bootstrap.ign ip={{ node.ip}}::{{ ansible_default_ipv4.gateway }}:{{ ansible_default_ipv4.netmask }}:{{ node.name }}.{{ ansible_domain }}:{{ node.bond }}:none bond={{ node.bond }}:{{ node.primary }},{{ node.backup }}:{{ node.options }} nameserver={{ ansible_default_ipv4.address }}
   initrdefi {{ os }}/{{ version }}/{{ initramfs }}
 }
 {% endfor %}
@@ -9,7 +9,7 @@ menuentry '{{ node.name }}' --class fedora --class gnu-linux --class gnu --class
 
 {% for node in master_nodes %}
 menuentry '{{ node.name }}' --class fedora --class gnu-linux --class gnu --class os {
-  linuxefi {{ os }}/{{ version }}/{{ kernel_file }} nomodeset rd.neednet=1 coreos.inst=yes coreos.inst.install_dev={{ master_install_device }} coreos.inst.image_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ os }}/{{ version }}/{{ uefi_file }} coreos.inst.ignition_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ http_ignition }}/master.ign ip={{ node.ip}}::{{ ansible_default_ipv4.gateway }}:{{ ansible_default_ipv4.netmask }}:{{ node.name }}.{{ ansible_domain }}:{{ rhcos_bond_name }}:none bond={{ rhcos_bond_name }}:{{ rhcos_bond_interfaces }}:{{ rhcos_bond_options }} nameserver={{ ansible_default_ipv4.address }}
+  linuxefi {{ os }}/{{ version }}/{{ kernel_file }} nomodeset rd.neednet=1 coreos.inst=yes coreos.inst.install_dev={{ master_install_device }} coreos.inst.image_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ os }}/{{ version }}/{{ uefi_file }} coreos.inst.ignition_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ http_ignition }}/master.ign ip={{ node.ip}}::{{ ansible_default_ipv4.gateway }}:{{ ansible_default_ipv4.netmask }}:{{ node.name }}.{{ ansible_domain }}:{{ node.bond }}:none bond={{ node.bond }}:{{ node.primary }},{{ node.backup }}:{{ node.options }} nameserver={{ ansible_default_ipv4.address }}
   initrdefi {{ os }}/{{ version }}/{{ initramfs }}
 }
 {% endfor %}

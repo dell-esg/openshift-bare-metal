@@ -84,19 +84,18 @@
   set_fact:
     nodes: "{{ hostvars[inventory_hostname]['worker_nodes'] }}"
 
-- debug:
-    msg: "{{ nodes }}"
-
 - name: length of nodes
   set_fact:
     length_of_nodes: "{{ nodes|length }}"
 
-- debug:
-    msg: "{{ length_of_nodes }}"
-
 - name: dispay worker node names
   debug:
     msg: "{{ item.name }}"
+  loop: "{{ nodes }}"
+
+- name: display worker node interfaces
+  debug:
+    msg: "{{ item.interfaces }}"
   loop: "{{ nodes }}"
 
 - name: display network cidr
