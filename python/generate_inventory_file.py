@@ -330,7 +330,10 @@ class InventoryFile:
         self.clear_screen()
         node_keys = ['name','ip','mac','bond','primary','backup','options']
         node_values = []
-        bond_options = 'mode=active-backup,miimon=100,primary={}'.format(primary)
+        if node_type == 'worker_nodes':
+            bond_options = 'lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4'
+        else:
+            bond_options = 'mode=active-backup,miimon=100,primary={}'.format(primary)
         bond_interfaces = '{},{}'.format(primary, backup)
         node_values.append(node_name)
         node_values.append(ip)

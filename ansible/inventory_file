@@ -1,5 +1,5 @@
 csah:
-  hosts: r3csah.example.com
+  hosts: csah.example.lab
   vars:
     proxy: haproxy
     haproxy_conf: /etc/haproxy/haproxy.cfg
@@ -20,8 +20,8 @@ csah:
     initramfs: rhcos-4.3.8-x86_64-installer-initramfs.x86_64.img
     kernel_file: rhcos-4.3.8-x86_64-installer-kernel-x86_64
     uefi_file: rhcos-4.3.8-x86_64-metal.x86_64.raw.gz
-    rhel_os: rhel-server-7.8-x86_64-dvd.iso
     pull_secret_file: pullsecret
+    rhel_os: rhel-server-7.8-x86_64-dvd.iso
     bootstrap_node:
     - name: bootstrap
       ip: 100.82.46.26
@@ -60,7 +60,7 @@ csah:
       bond: bond0
       primary: p2p1
       backup: p2p2
-      options: mode=active-backup,miimon=100,primary=p2p1
+      options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
       interfaces:
       - em1
       - em2
@@ -72,7 +72,7 @@ csah:
       bond: bond0
       primary: p2p1
       backup: p2p2
-      options: mode=active-backup,miimon=100,primary=p2p1
+      options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
       interfaces:
       - em1
       - em2

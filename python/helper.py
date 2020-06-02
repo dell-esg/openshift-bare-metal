@@ -183,7 +183,7 @@ def check_ip_ping(ip):
     return response           
 
 def get_idrac_creds(ip):
-    user = input('enter the idraac user for {}: '.format(ip))
+    user = input('enter the idrac user for {}: '.format(ip))
     passwd = getpass.getpass('enter the idrac password for {}: '.format(ip))
   
     return user, passwd
@@ -209,10 +209,8 @@ def connect_to_idrac(user, passwd, base_api_url):
     response = ''
     status_code = None
     try:
-        logging.info('enter try')
         response = requests.get(base_api_url, verify=False, auth=(user, passwd),
                                 timeout=5) 
-        logging.info('after response')
     except requests.exceptions.ConnectTimeout:
         logging.info('timeout')
         get_user_response(message='connecting to idrac timeout')

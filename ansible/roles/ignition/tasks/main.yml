@@ -1,5 +1,13 @@
 ---
 # tasks file for ignition
+- name: install openshift rpms
+  yum:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - openshift-ansible
+    - openshift-clients
+
 - name: create openshift installer user - {{ install_user }}
   user:
     name: "{{ install_user }}"

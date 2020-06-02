@@ -62,6 +62,7 @@
   file:
     path: /var/lib/tftpboot/rhel
     state: directory
+  register: tftp_rhel_dir
 
 - name: copy files from rhel7 /boot to {{ tftp_uefi.path }}
   copy:
@@ -74,11 +75,11 @@
 
 - name: copy pxeboot files from rhel7 iso 
   copy:
-    src: /var/www/html/rhel/images/pxeboot/{{ item }}
-    dest: "{{ tftp_uefi.path }}/rhel/"
-  loop:
-    - vmlinuz
-    - initrd.img
+    src: "/var/www/html/rhel/images/pxeboot/{{ item.src }}"
+    dest: "{{ tftp_rhel_dir.path }}/{{ item.dest }}"
+  with_items:
+    - { src: vmlinuz, dest: vmlinuz }
+    - { src: initrd.img, dest: initrd.img }
 
 - name: get worker nodes details
   set_fact:
