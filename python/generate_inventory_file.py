@@ -27,16 +27,16 @@ class InventoryFile:
                          'kernel_file': '{}/rhcos-4.3.8-x86_64-installer-kernel-x86_64'.format(self.ocp43_rhcos_base_url),
                          'uefi_file': '{}/rhcos-4.3.8-x86_64-metal.x86_64.raw.gz'.format(self.ocp43_rhcos_base_url)}
         self.task_inputs = """
-1: 'download ocp 4.3 software',
-2: 'bootstrap node details',
-3: 'master node details',
-4: 'worker node details',
-5: 'disk info',
-6: 'bind dns',
-7: 'http webserver',
-8: 'ignition config',
-9: 'print inventory',
-10: 'generate inventory file',
+1: 'download ocp 4.3 software'
+2: 'bootstrap node details'
+3: 'master node details'
+4: 'worker node details'
+5: 'disk info'
+6: 'bind dns'
+7: 'http webserver'
+8: 'ignition config'
+9: 'print inventory'
+10: 'generate inventory file'
 11: 'Exit'
 """                 
 

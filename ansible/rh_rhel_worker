@@ -3,4 +3,4 @@ ansible_user=ansible
 ansible_become=True
 openshift_kubeconfig_path="/home/ansible/kubeconfig"
 [new_workers]
-worker-1.example.lab
+worker-2.example.lab

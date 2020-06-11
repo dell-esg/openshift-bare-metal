@@ -78,7 +78,19 @@ csah:
       - em2
       - p2p1
       - p2p2
-    number_of_workers: 2
+    - name: worker-2
+      ip: 100.82.46.26
+      mac: B8:59:9F:C0:35:86
+      bond: bond0
+      primary: p2p1
+      backup: p2p2
+      options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
+      interfaces:
+      - em1
+      - em2
+      - p2p1
+      - p2p2
+    number_of_workers: 3
     master_install_device: nvme0n1
     bootstrap_install_device: nvme0n1
     worker_install_device: nvme0n1

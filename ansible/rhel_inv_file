@@ -1,6 +1,6 @@
 workers:
-  hosts: worker-1.example.lab
+  hosts: worker-2.example.lab
   vars:
-    subscription_user: xxxxxxxxxxxxx
-    subscription_pass: xxxxxxxxxxxxx
-    pool_id: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    subscription_user: smuser
+    subscription_pass: smpassword
+    pool_id: poolid
