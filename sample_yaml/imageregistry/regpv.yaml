@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-image-registry
+  namespace: openshift-image-registry
+spec:
+  capacity:
+    storage: 210Gi
+  accessModes:
+  - ReadWriteMany
+  nfs:
+    path: /r3csi
+    server: 100.82.46.8
+  persistentVolumeReclaimPolicy: Retain

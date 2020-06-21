@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: static-pv-powermax-fc
+  namespace: powermax
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 14Gi
+  csi:
+    driver: csi-powermax.dellemc.com
+    fsType: ext4
+    volumeAttributes:
+      CapacityGB: "14.00"
+      SRP: SRP_1
+      ServiceLevel: Bronze
+    volumeHandle: static_pv_fc-000197900896-00042
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: test-powermax-fc
+  volumeMode: Filesystem
