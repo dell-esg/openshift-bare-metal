@@ -1,0 +1,38 @@
+'''
+- Ensure namespace (powermax) is specified appropriately.
+- X_CSI_POWERMAX_ENDPOINT - management IP of PowerMax is specified
+- X_CSI_K8S_CLUSTER_PREFIX value is added for every host and volume created using CSI drivers
+- X_CSI_POWERMAX_PORTGROUPS value is obtained from Unisphere for PowerMax -> HOSTS -> Port Groups
+- Click [here](https://github.com/dell/dell-csi-operator#set-the-following-mandatory-environment-variables-3) for environment variables
+- SRP info is listed under Unisphere IP of PowerMax -> STORAGE -> Storage Resource Pools
+- SYMID is listed under "All Systems" in Unishpere for PowerMax -> Home Page
+'''
+apiVersion: storage.dell.com/v1
+kind: CSIPowerMax
+metadata:
+  name: test-powermax
+  namespace: powermax
+spec:
+  driver:
+    common:
+      envs:
+        - name: X_CSI_POWERMAX_ENDPOINT
+          value: 'https://100.82.47.42:8443'
+        - name: X_CSI_K8S_CLUSTER_PREFIX
+          value: OS4
+        - name: X_CSI_POWERMAX_PORTGROUPS
+          value: 'SEPort'
+        - name: X_CSI_TRANSPORT_PROTOCOL
+          value: 'iSCSI'
+      image: 'dellemc/csi-powermax:v1.2.0.000R'
+      imagePullPolicy: IfNotPresent
+    configVersion: v1
+    forceUpdate: false
+    replicas: 1
+    storageClass:
+      - name: iscsi
+        parameters:
+          SRP: SRP_1
+          SYMID: '000197900896'
+          ServiceLevel: Bronze
+        reclaimPolicy: Delete
