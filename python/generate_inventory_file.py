@@ -19,7 +19,7 @@ class InventoryFile:
         self.software_dir = ''
         self.input_choice = ''
         self.ocp43_client_base_url = 'https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-4.3'
-        self.ocp43_rhcos_base_url = 'https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/4.3.0'
+        self.ocp43_rhcos_base_url = 'https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.3/4.3.0'
         self.ocp_urls = {'openshift_client': '{}/openshift-client-linux.tar.gz'.format(self.ocp43_client_base_url),
                          'openshift_installer': '{}/openshift-install-linux.tar.gz'.format(self.ocp43_client_base_url),
                          'initramfs': '{}/rhcos-4.3.0-x86_64-installer-initramfs.img'.format(self.ocp43_rhcos_base_url),
