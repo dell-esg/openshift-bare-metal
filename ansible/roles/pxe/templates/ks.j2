@@ -19,7 +19,7 @@ lang en_US.UTF-8
 ignoredisk --only-use={{ worker_install_device }}
 # Network information
 {% for interface in item.interfaces %}
-network --bootproto=static --device={{ interface }} --onboot=off --ipv6=auto
+network --bootproto=dhcp --device={{ interface }} --onboot=off --ipv6=auto
 {% endfor %}
 network  --hostname={{ item.name }}.{{ ansible_domain }}
 
