@@ -12,7 +12,7 @@ Python Script - Pre-Reqs
 
 Python Script - Execution
 > - python3 generate_inventory_file.py
-> Refer to Chapter 3 in [Dell EMC Ready Stack for Red Hat OpenShift Container Platform 4.3 with CSI Attached Storage](https://infohub.delltechnologies.com/t/guides-45)
+> - Refer to Chapter 3 in [Dell EMC Ready Stack for Red Hat OpenShift Container Platform 4.3 with CSI Attached Storage](https://infohub.delltechnologies.com/t/guides-45)
 
 Python Script - Output
 > - An inventory file used by ansible to execute roles defined in ocp.yml
