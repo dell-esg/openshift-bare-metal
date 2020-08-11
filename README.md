@@ -1,4 +1,4 @@
-# Master branch is updated with OCP 4.3 contents
+# Master branch is updated with OCP 4.3 CSI contents. OCP43 branch is for installing OCP 4.3 without Dell CSI support.
 > For OCP 4.2 contents, switch to branch ocp42.
 
 Switch Config - Refer to Chapter 2 to configure switches in [OCP 4.3 Deployment Guide](https://www.dellemc.com/resources/en-us/asset/technical-guides-support-information/solutions/h18212-openshift-container-dpg.pdf)
