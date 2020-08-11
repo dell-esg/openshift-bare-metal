@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: static-pv-unity-fc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 7Gi
+  csi:
+    driver: csi-unity.dellemc.com
+    fsType: xfs
+    volumeHandle: sv_654
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: test-unity-fc
+  volumeMode: Filesystem

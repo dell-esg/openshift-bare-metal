@@ -1,5 +1,13 @@
 ---
 # tasks file for ignition
+- name: install openshift rpms
+  yum:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - openshift-ansible
+    - openshift-clients
+
 - name: create openshift installer user - {{ install_user }}
   user:
     name: "{{ install_user }}"
@@ -29,25 +37,6 @@
     owner: "{{ install_user }}"
     group: "{{ install_user }}"
   register: ocp_install_dir
-
-- name: check oc client tool in /home/{{ install_user }}
-  stat:
-    path: /home/{{ install_user }}/oc
-  register: oc
-
-- name: check kubectl client tool in /home/{{ install_user }}
-  stat:
-    path: /home/{{ install_user }}/kubectl
-  register: kubectl
-
-- name: copy openshift client tools to /home/{{ install_user }}
-  unarchive:
-    src: "{{ software_src }}/{{ openshift_client }}"
-    dest: /home/{{ install_user }}
-    remote_src: yes
-    owner: "{{ install_user }}"
-    group: "{{ install_user }}"
-  when: not oc.stat.exists or not kubectl.stat.exists
 
 - name: check openshift-install tool in /home/{{ install_user }}
   stat:
@@ -143,3 +132,18 @@
     - master.ign
     - worker.ign
     - bootstrap.ign
+
+- name: copy kubeconfig file to /home/ansible
+  copy:
+    src: "{{ ocp_install_dir.path }}/auth/{{ item }}"
+    dest: /home/ansible
+    remote_src: yes
+  loop:
+    - kubeconfig
+    - kubeadmin-password
+
+- name: copy core user ssh key to /home/ansible
+  copy:
+    src: /home/core/.ssh/id_rsa.pub
+    dest: /home/ansible/core_id_rsa.pub
+    remote_src: yes

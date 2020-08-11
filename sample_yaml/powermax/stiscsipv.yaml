@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: static-pv-powermax-iscsi
+  namespace: powermax
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 16Gi
+  csi:
+    driver: csi-powermax.dellemc.com
+    fsType: ext4
+    volumeHandle: static_pv_iscsi-000197900896-00044
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: test-powermax-iscsi
+  volumeMode: Filesystem

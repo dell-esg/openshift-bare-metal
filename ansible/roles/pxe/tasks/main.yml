@@ -58,7 +58,13 @@
     state: directory
   register: tftp_uefi
 
-- name: copy files from rhel8 /boot to {{ tftp_uefi.path }}
+- name: create rhel dir under tftp root dir
+  file:
+    path: /var/lib/tftpboot/rhel
+    state: directory
+  register: tftp_rhel_dir
+
+- name: copy files from rhel7 /boot to {{ tftp_uefi.path }}
   copy:
     src: "/boot/efi/EFI/redhat/{{ item.src }}"
     dest: "{{ tftp_uefi.path }}/{{ item.dest }}"
@@ -66,6 +72,46 @@
   with_items:
     - { src: shimx64.efi, dest: shim.efi }
     - { src: grubx64.efi, dest: grubx64.efi }
+
+- name: copy pxeboot files from rhel7 iso 
+  copy:
+    src: "/var/www/html/rhel/images/pxeboot/{{ item.src }}"
+    dest: "{{ tftp_rhel_dir.path }}/{{ item.dest }}"
+  with_items:
+    - { src: vmlinuz, dest: vmlinuz }
+    - { src: initrd.img, dest: initrd.img }
+
+- name: get worker nodes details
+  set_fact:
+    nodes: "{{ hostvars[inventory_hostname]['worker_nodes'] }}"
+
+- name: length of nodes
+  set_fact:
+    length_of_nodes: "{{ nodes|length }}"
+
+- name: dispay worker node names
+  debug:
+    msg: "{{ item.name }}"
+  loop: "{{ nodes }}"
+
+- name: display worker node interfaces
+  debug:
+    msg: "{{ item.interfaces }}"
+  loop: "{{ nodes }}"
+
+- name: display network cidr
+  set_fact:
+    net_mask: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}"
+
+- name: display cidr
+  set_fact:
+    net_mask_cidr: "{{ net_mask | ipaddr('prefix') }}"
+
+- name: generate kickstart files
+  template:
+    src: ks.j2
+    dest: /var/www/html/kickstart/{{ item.name }}.ks.cfg
+  loop: "{{ nodes }}"
 
 - name: generate pxe menu grub.cfg file
   template:

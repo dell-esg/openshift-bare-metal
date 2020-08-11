@@ -37,12 +37,32 @@
     state: directory
   register: http_os_dir
 
-- name: create directory for ignition files
+- name: create directories for rhel os and kickstart
   file:
-    path: /var/www/html/{{ http_ignition }}
+    path: /var/www/html/{{ item }}
     state: directory
+  loop:
+    - kickstart
+    - rhel
+    - "{{ http_ignition }}"
 
 - name: copy rhcos bare metal uefi file to http location
   copy:
     src: "{{ software_src }}/{{ uefi_file }}"
     dest: "{{ http_os_dir.path }}/{{ uefi_file }}"
+
+- name: mount rhel iso file
+  mount:
+    path: /mnt
+    src: "{{ software_src }}/{{ rhel_os }}"
+    fstype: iso9660
+    opts: loop,ro
+    state: mounted
+
+- name: copy rhel os contents to http dir
+  shell: 'cp -r /mnt/* /var/www/html/rhel/'
+
+- name: unmount rhel iso file
+  mount:
+    path: /mnt
+    state: unmounted

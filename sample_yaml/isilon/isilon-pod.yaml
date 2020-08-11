@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: isilon-pod
+  namespace: isilon
+spec:
+  containers:
+  - name: task-pv-container
+    image: nginx
+    ports:
+      - containerPort: 80
+        name: "http-server"
+    volumeMounts:
+      - mountPath: "/usr/share/nginx/html"
+        name: nov-eleventh-1-pv-storage
+  volumes:
+    - name: nov-eleventh-1-pv-storage
+      persistentVolumeClaim:
+        claimName: dynamic-isilon-pvc

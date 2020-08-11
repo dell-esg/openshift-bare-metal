@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: static-pvc-powermax-fc
+  namespace: powermax
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 14Gi
+  volumeName: static-pv-powermax-fc
+  storageClassName: test-powermax-fc
