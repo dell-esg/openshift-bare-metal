@@ -1,0 +1,5 @@
+---
+- hosts: bootstrap
+  become: yes
+  roles:
+    - bootstrap
