@@ -23,6 +23,7 @@ class InventoryFile:
         self.inventory_dict = inventory_dict
         self.software_dir = ''
         self.input_choice = ''
+        self.cluster_install = 0
         self.ocp45_client_base_url = 'https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-4.5'
         self.ocp45_rhcos_base_url = 'https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.5/4.5.2/'
         self.ocp_urls = {'openshift_installer': '{}/openshift-install-linux.tar.gz'.format(self.ocp45_client_base_url),
@@ -30,13 +31,15 @@ class InventoryFile:
                          'kernel_file': '{}/rhcos-4.5.2-x86_64-installer-kernel-x86_64'.format(self.ocp45_rhcos_base_url),
                          'uefi_file': '{}/rhcos-4.5.2-x86_64-metal.x86_64.raw.gz'.format(self.ocp45_rhcos_base_url)}
         self.task_inputs = """
-1: 'download ocp 4.5 software'
-2: 'bootstrap node details'
-3: 'master node details'
-4: 'worker node details'
-9: 'print inventory'
-10: 'generate inventory file'
-11: 'Exit'
+1: download ocp 4.5 software
+2: cluster install
+3: disk info
+4: bind
+5: http
+6: ignition config
+7: print inventory
+8: generate inventory file
+9: Exit
 """                 
 
     def clear_screen(self):
@@ -60,13 +63,13 @@ class InventoryFile:
         """
         self.clear_screen()
         self.input_choice = ''
-        valid_choices = range(1,14)
+        valid_choices = range(1,10)
         while self.input_choice not in valid_choices:
              logging.info('{}'.format(self.task_inputs))
              try:
                  self.input_choice = int(input('task choice for necessary inputs: '))
                  if self.input_choice not in valid_choices:
-                     logging.warn('Invalid choice. Valid choice is an integer from 1-13')
+                     logging.warn('Invalid choice. Valid choice is an integer from 1-9')
              except ValueError:
                  logging.error('Strings not a valid choice')
 
@@ -78,40 +81,36 @@ class InventoryFile:
         performs tasks based on user input
 
         """
-        if self.input_choice == 11:
+        if self.input_choice == 9:
             sys.exit()
         elif self.input_choice == 1:
             self.get_software_download_dir()
             self.get_software()
         elif self.input_choice == 2:
-            self.get_bootstrap_node()
+            self.get_cluster_nodes()
         elif self.input_choice == 3:
-            self.get_master_nodes()
-        elif self.input_choice == 4:
-            self.get_worker_nodes()
-        elif self.input_choice == 5:
             self.get_disk_name()
-        elif self.input_choice == 6:
+        elif self.input_choice == 4:
             self.get_dns_details()
-        elif self.input_choice == 7:
+        elif self.input_choice == 5:
             self.get_http_details()
-        elif self.input_choice == 8:
+        elif self.input_choice == 6:
             self.get_ignition_details()
-        elif self.input_choice == 9:
+        elif self.input_choice == 7:
             self.display_inventory()
-        elif self.input_choice == 10:
+        elif self.input_choice == 8:
             self.yaml_inventory()
             sys.exit()
         self.generate_inputs_menu()
 
     def get_software_download_dir(self):
         """ 
-        get software download directory to download OCP 4.3 software bits
+        get software download directory to download OCP 4.5 software bits
   
         """
         self.clear_screen()
         default = '/home/ansible/files'
-        self.software_dir = input('provide complete path of directory to download OCP 4.3 software bits\n'
+        self.software_dir = input('provide complete path of directory to download OCP 4.5 software bits\n'
                                   'default [/home/ansible/files]: ')
         self.software_dir = set_values(self.software_dir, default)
         dest_path_exist = check_path(self.software_dir, isdir=True)
@@ -125,12 +124,12 @@ class InventoryFile:
 
     def get_software(self):
         """ 
-        performs OCP 4.3 software bits download from the base urls
+        performs OCP 4.5 software bits download from the base urls
         specified in the class __init__ 
    
         """
 
-        logging.info('downloading OCP 4.3 software bits into {}'.format(self.software_dir))
+        logging.info('downloading OCP 4.5 software bits into {}'.format(self.software_dir))
         for url_key in self.ocp_urls.keys():
             url = self.ocp_urls[url_key]
             dest_name = url.split('/')[-1]
@@ -150,6 +149,30 @@ class InventoryFile:
                 logging.info('downloading {}'.format(dest_name))
                 urlretrieve('{}'.format(url),'{}/{}'.format(self.software_dir, dest_name))
                 self.inventory_dict['csah']['vars'][url_key] = dest_name
+
+    def get_cluster_nodes(self):
+        supported_install = """
+        1. 3 node (master/worker in master nodes)
+        2. 6+ node (3 master and 3+ worker)
+        """
+        logging.info('supported cluster install options: {}'.format(supported_install))
+        valid_choices = [1, 2]
+        while self.cluster_install not in valid_choices:
+            try:
+                self.cluster_install = int(input('enter cluster install option: '))
+                logging.info('option selected: {}'.format(self.cluster_install))
+            except ValueError:
+                logging.error('valid choices are: {}'.format(valid_choices))
+                
+
+        self.get_bootstrap_node()
+        self.get_master_nodes()
+        if self.cluster_install == 2:
+            self.get_worker_nodes()
+            self.inventory_dict['csah']['vars']['cluster_install'] = '6+ node'
+        else:
+            self.inventory_dict['csah']['vars']['cluster_install'] = '3 node'
+
 
     def get_bootstrap_node(self):
         """ 
@@ -234,8 +257,8 @@ class InventoryFile:
         default = 'ignition'
         ignition_dir = set_values(ignition_dir, default)
         ocp_version = input('specify the version of ocp \n'
-                            'default [4.3]: ')
-        default = 4.3
+                            'default [4.5]: ')
+        default = 4.5
         ocp_version = set_values(ocp_version, default)
         logging.info('adding http_port: {} http_ignition: {} version: {}'.format(port, ignition_dir, ocp_version))
         self.inventory_dict['csah']['vars']['http_port'] = int(port)
