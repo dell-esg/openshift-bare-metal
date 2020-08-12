@@ -63,6 +63,7 @@ def get_nodes_info(node_type='master', inventory=''):
     for num in range(nodes_count):
         values = []
         devices = None
+        map_devices = None
         interfaces_enumeration = []
         mac = ''
         
@@ -93,7 +94,7 @@ def get_nodes_info(node_type='master', inventory=''):
             user, passwd = get_idrac_creds(idrac_ip)
             base_api_url = 'https://{}/redfish/v1/Systems/System.Embedded.1/EthernetInterfaces'.format(idrac_ip)
             devices = get_network_devices(user, passwd, base_api_url)
-
+        
         if devices:
             map_devices = map_interfaces_network(devices)
 
@@ -147,9 +148,9 @@ def get_nodes_info(node_type='master', inventory=''):
                 node_pairs = dict(zip(node_keys, node_values))
                 inventory['csah']['vars']['{}_nodes'.format(node_type)].append(node_pairs)
 
-        if node_type == 'worker':
-            inventory['csah']['vars']['number_of_workers'] = nodes_count
-        else:
-            inventory['csah']['vars']['number_of_masters'] = nodes_count
+    if node_type == 'worker':
+        inventory['csah']['vars']['number_of_workers'] = nodes_count
+    else:
+        inventory['csah']['vars']['number_of_masters'] = nodes_count
 
     return inventory

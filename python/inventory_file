@@ -1,0 +1,101 @@
+csah:
+  hosts: r5acsah.oss.labs
+  vars:
+    proxy: haproxy
+    haproxy_conf: /etc/haproxy/haproxy.cfg
+    master_ports:
+    - port: 6443
+      description: apiserver
+    - port: 22623
+      description: configserver
+    worker_ports:
+    - port: 80
+      description: http
+    - port: 443
+      description: https
+    default_lease_time: 8000
+    max_lease_time: 72000
+    software_src: /home/ansible/files
+    openshift_installer: openshift-install-linux.tar.gz
+    initramfs: rhcos-4.5.2-x86_64-installer-initramfs.x86_64.img
+    kernel_file: rhcos-4.5.2-x86_64-installer-kernel-x86_64
+    uefi_file: rhcos-4.5.2-x86_64-metal.x86_64.raw.gz
+    pull_secret_file: pullsecret
+    rhel_os: rhel-server-7.8-x86_64-dvd.iso
+    bootstrap_node:
+    - name: r5abs
+      ip: 100.82.42.97
+      mac: 52:54:00:50:74:38
+    master_nodes:
+    - name: r5am1
+      ip: 100.82.42.91
+      mac: 98:03:9B:58:AE:D2
+      bond: bond0
+      primary: eno1
+      backup: eno2
+      options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
+    - name: r5am2
+      ip: 100.82.42.92
+      mac: 98:03:9B:58:AD:92
+      bond: bond0
+      primary: eno1
+      backup: eno2
+      options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
+    - name: r5am3
+      ip: 100.82.42.93
+      mac: 98:03:9B:58:AE:12
+      bond: bond0
+      primary: eno1
+      backup: eno2
+      options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
+    number_of_masters: 3
+    worker_nodes:
+    - name: r5aw1
+      ip: 100.82.42.94
+      mac: 98:03:9B:58:A9:22
+      bond: bond0
+      primary: eno1
+      backup: eno2
+      options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
+      interfaces:
+      - eno1
+      os: rhcos
+    - name: r5aw2
+      ip: 100.82.42.95
+      mac: 98:03:9B:58:AD:C2
+      bond: bond0
+      primary: em1
+      backup: em2
+      options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
+      interfaces:
+      - em1
+      - em2
+      - p2p1
+      - p2p2
+      os: rhel
+    - name: r5aw3
+      ip: 100.82.42.96
+      mac: 98:03:9B:58:AD:62
+      bond: bond0
+      primary: eno1
+      backup: eno2
+      options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
+      interfaces:
+      - eno1
+      os: rhcos
+    number_of_workers: 3
+    cluster_install: 6+ node
+    master_install_device: nvme0n1
+    bootstrap_install_device: nvme0n1
+    worker_install_device: nvme0n1
+    default_zone_file: /var/named/r5a.zones
+    cluster: r5a
+    http_port: 8080
+    os: rhcos
+    http_ignition: ignition
+    version: 4.5
+    install_user: core
+    install_dir: openshift
+    cluster_network_cidr: 10.128.0.0/14
+    host_prefix: 23
+    service_network_cidr: 172.30.0.0/16
