@@ -7,4 +7,5 @@
     #- dns
     #- proxy
     #- ignition
-    - pxe
+    #- pxe
+    - bootstrap
