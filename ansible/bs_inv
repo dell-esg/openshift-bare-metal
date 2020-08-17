@@ -1,4 +1,0 @@
-bootstrap:
-  hosts: r5acsah.oss.labs
-  vars:
-    dummy_var: 9090
