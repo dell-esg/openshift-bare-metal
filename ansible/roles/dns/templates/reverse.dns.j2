@@ -21,8 +21,9 @@ $TTL 86400
 {{ last_octet }}   IN       PTR       {{ node.name }}.{{ ansible_domain }}.
 {% endfor %}
 
+{% if worker_nodes is defined %}
 {% for node in worker_nodes %}
 {% set last_octet = '.'.join(node.ip.split('.')[-(strip_last_octets|int):][::-1]) %}
 {{ last_octet }}   IN       PTR       {{ node.name }}.{{ ansible_domain }}.
 {% endfor %}
-
+{% endif %}

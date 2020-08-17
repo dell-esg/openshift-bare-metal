@@ -1,26 +1,18 @@
 ---
 # tasks file for pxe
-- name: install tftp-server package
+- name: install pxe pre-requisite packages 
   yum:
-    name: tftp-server
+    name: ['tftp-server', 'xinetd', 'syslinux']
     state: latest
 
-- name: install xinetd package
-  yum: 
-    name: xinetd
-    state: latest
-
-- name: enable and start xinetd service
+- name: enable services
   systemd:
-    name: xinetd
+    name: "{{ item }}"
     enabled: yes
     state: started
-
-- name: enable and start tftp service
-  systemd:
-    name: tftp
-    enabled: yes
-    state: started
+  with_items:
+    - xinetd
+    - tftp
 
 - name: add firewalld service for tftp
   firewalld:
@@ -36,68 +28,36 @@
     block: "{{ lookup('template', 'pxe.config.j2') }}"
   notify: "restart dhcp"
 
-- name: create directory for {{ os }} kernel and initramfs
+- name: create required directories for pxe uefi/bios
   file:
-    path: /var/lib/tftpboot/{{ os }}/{{ version }}
-    state: directory 
-  register: tftp_dir
+     path: "/var/lib/tftpboot/{{ item }}"
+     state: directory
+  with_items:
+    - uefi
+    - rhcos
+    - rhcos/{{ version }}
+    - rhel
+    - bios
+    - bios/pxelinux.cfg
+    - bios/rhcos
+    - bios/rhcos/{{ version }}
 
-- name: copy {{ os }} kernel file to {{ tftp_dir.path }}
+- name: copy required files for pxe uefi/bios
   copy:
-    src: "{{ software_src }}/{{ kernel_file }}"
-    dest: "{{ tftp_dir.path }}/{{ kernel_file }}"
-  
-- name: copy {{ initramfs }} file to {{ tftp_dir.path }}
-  copy:
-    src: "{{ software_src }}/{{ initramfs }}"
-    dest: "{{ tftp_dir.path }}/{{ initramfs }}"
-
-- name: create uefi dir under tftp root dir
-  file:
-    path: /var/lib/tftpboot/uefi
-    state: directory
-  register: tftp_uefi
-
-- name: create rhel dir under tftp root dir
-  file:
-    path: /var/lib/tftpboot/rhel
-    state: directory
-  register: tftp_rhel_dir
-
-- name: copy files from rhel7 /boot to {{ tftp_uefi.path }}
-  copy:
-    src: "/boot/efi/EFI/redhat/{{ item.src }}"
-    dest: "{{ tftp_uefi.path }}/{{ item.dest }}"
+    src: "{{ item.src }}"
+    dest: "/var/lib/tftpboot/{{ item.dest }}"
     remote_src: yes
   with_items:
-    - { src: shimx64.efi, dest: shim.efi }
-    - { src: grubx64.efi, dest: grubx64.efi }
-
-- name: copy pxeboot files from rhel7 iso 
-  copy:
-    src: "/var/www/html/rhel/images/pxeboot/{{ item.src }}"
-    dest: "{{ tftp_rhel_dir.path }}/{{ item.dest }}"
-  with_items:
-    - { src: vmlinuz, dest: vmlinuz }
-    - { src: initrd.img, dest: initrd.img }
-
-- name: get worker nodes details
-  set_fact:
-    nodes: "{{ hostvars[inventory_hostname]['worker_nodes'] }}"
-
-- name: length of nodes
-  set_fact:
-    length_of_nodes: "{{ nodes|length }}"
-
-- name: dispay worker node names
-  debug:
-    msg: "{{ item.name }}"
-  loop: "{{ nodes }}"
-
-- name: display worker node interfaces
-  debug:
-    msg: "{{ item.interfaces }}"
-  loop: "{{ nodes }}"
+    - { src: "{{ software_src }}/{{ kernel_file }}", dest: "rhcos/{{ version }}/{{ kernel_file }}" }
+    - { src: "{{ software_src }}/{{ initramfs }}", dest: "rhcos/{{ version }}/{{ initramfs }}" }
+    - { src: /boot/efi/EFI/redhat/shimx64.efi, dest: uefi/shim.efi }
+    - { src: /boot/efi/EFI/redhat/grubx64.efi, dest: uefi/grubx64.efi }
+    - { src: /var/www/html/rhel/images/pxeboot/vmlinuz, dest: rhel/vmlinuz }
+    - { src: /var/www/html/rhel/images/pxeboot/initrd.img, dest: rhel/initrd.img }
+    - { src: /var/www/html/rhel/isolinux/vesamenu.c32, dest: bios/vesamenu.c32 }
+    - { src: /usr/share/syslinux/pxelinux.0, dest: bios/pxelinux.0 }
+    - { src: "{{ software_src }}/{{ kernel_file }}", dest: "bios/rhcos/{{ version }}/{{ kernel_file }}" }
+    - { src: "{{ software_src }}/{{ initramfs }}", dest: "bios/rhcos/{{ version }}/{{ initramfs }}" }
 
 - name: display network cidr
   set_fact:
@@ -107,11 +67,29 @@
   set_fact:
     net_mask_cidr: "{{ net_mask | ipaddr('prefix') }}"
 
+- name: get worker nodes details
+  set_fact:
+    nodes: "{{ hostvars[inventory_hostname]['worker_nodes'] }}"
+  when: cluster_install == '6+ node'
+
+- name: dispay worker node names
+  debug:
+    msg: "{{ item.name }}"
+  loop: "{{ nodes }}"
+  when: cluster_install == '6+ node'
+
+- name: dispay rhel worker node names
+  debug:
+    msg: "{{ item.name }}"
+  loop: "{{ nodes }}"
+  when: cluster_install == '6+ node' and item.os == 'rhel'
+
 - name: generate kickstart files
   template:
     src: ks.j2
     dest: /var/www/html/kickstart/{{ item.name }}.ks.cfg
   loop: "{{ nodes }}"
+  when: cluster_install == '6+ node' and item.os == 'rhel'
 
 - name: generate pxe menu grub.cfg file
   template:
@@ -119,8 +97,14 @@
     dest: /var/lib/tftpboot/uefi/grub.cfg
     mode: 0755
 
+- name: generate pxe menu bios menu
+  template:
+    src: default.j2
+    dest: /var/lib/tftpboot/bios/pxelinux.cfg/default
+    mode: 0755
+
 - name: create tftp file under /etc/xinetd.d
-  copy: 
+  copy:
     dest: "/etc/xinetd.d/tftp"
     content: |
       service tftp

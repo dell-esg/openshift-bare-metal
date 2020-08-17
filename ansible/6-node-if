@@ -22,10 +22,10 @@ csah:
     uefi_file: rhcos-4.5.2-x86_64-metal.x86_64.raw.gz
     rhel_os: rhel-server-7.8-x86_64-dvd.iso
     pull_secret_file: pullsecret
-    bootstrap_node:
-    - name: r5abs
-      ip: 100.82.42.97
-      mac: '52:54:00:29:44:49'
+    #bootstrap_node:
+    #- name: r5abs
+    #  ip: 100.82.42.97
+    #  mac: '52:54:00:29:44:49'
     master_nodes:
     - name: r5am1
       ip: 100.82.42.91

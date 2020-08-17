@@ -1,9 +1,15 @@
 apiVersion: v1
 baseDomain: {{ ansible_domain }}
 compute:
+{% if cluster_install == '6+ node' %}
 - hyperthreading: Enabled
   name: worker
   replicas: {{ number_of_workers }}
+{% else %}
+- name: worker
+  platform: {}
+  replicas: 0
+{% endif %}
 controlPlane:
   hyperthreading: Enabled
   name: master

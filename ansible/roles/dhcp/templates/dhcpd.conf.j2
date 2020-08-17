@@ -33,6 +33,7 @@ host {{ node.name }}{
 
 {% endfor %}
 
+{% if worker_nodes is defined %}
 {% for node in worker_nodes %}
 host {{ node.name }}{
    hardware ethernet {{ node.mac }};
@@ -40,6 +41,7 @@ host {{ node.name }}{
 }
 
 {% endfor %}
+{% endif %}
 
 
 subnet {{ ansible_default_ipv4.network }} netmask {{ ansible_default_ipv4.netmask}} {

@@ -20,33 +20,31 @@ csah:
     initramfs: rhcos-4.5.2-x86_64-installer-initramfs.x86_64.img
     kernel_file: rhcos-4.5.2-x86_64-installer-kernel-x86_64
     uefi_file: rhcos-4.5.2-x86_64-metal.x86_64.raw.gz
-    pull_secret_file: pullsecret
-    rhel_os: rhel-server-7.8-x86_64-dvd.iso
     bootstrap_node:
     - name: r5abs
       ip: 100.82.42.97
-      mac: 52:54:00:50:74:38
+      mac: '52:54:00:29:44:49'
     master_nodes:
     - name: r5am1
       ip: 100.82.42.91
       mac: 98:03:9B:58:AE:D2
       bond: bond0
       primary: eno1
-      backup: eno2
+      backup: ens2f1
       options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
     - name: r5am2
       ip: 100.82.42.92
       mac: 98:03:9B:58:AD:92
       bond: bond0
       primary: eno1
-      backup: eno2
+      backup: ens2f1
       options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
     - name: r5am3
       ip: 100.82.42.93
       mac: 98:03:9B:58:AE:12
       bond: bond0
       primary: eno1
-      backup: eno2
+      backup: ens2f1
       options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
     number_of_masters: 3
     worker_nodes:
@@ -54,18 +52,21 @@ csah:
       ip: 100.82.42.94
       mac: 98:03:9B:58:A9:22
       bond: bond0
-      primary: eno1
-      backup: eno2
+      primary: em1
+      backup: p2p2
       options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
       interfaces:
-      - eno1
-      os: rhcos
+      - em1
+      - em2
+      - p2p1
+      - p2p2
+      os: rhel
     - name: r5aw2
       ip: 100.82.42.95
       mac: 98:03:9B:58:AD:C2
       bond: bond0
       primary: em1
-      backup: em2
+      backup: p2p2
       options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
       interfaces:
       - em1
@@ -78,7 +79,7 @@ csah:
       mac: 98:03:9B:58:AD:62
       bond: bond0
       primary: eno1
-      backup: eno2
+      backup: ens2f1
       options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
       interfaces:
       - eno1

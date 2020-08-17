@@ -49,45 +49,7 @@ csah:
       backup: ens2f1
       options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
     number_of_masters: 3
-    worker_nodes:
-    - name: r5aw1
-      ip: 100.82.42.94
-      mac: 98:03:9B:58:A9:22
-      bond: bond0
-      primary: em1
-      backup: p2p2
-      options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
-      interfaces:
-      - em1
-      - em2
-      - p2p1
-      - p2p2
-      os: rhel
-    - name: r5aw2
-      ip: 100.82.42.95
-      mac: 98:03:9B:58:AD:C2
-      bond: bond0
-      primary: em1
-      backup: p2p2
-      options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
-      interfaces:
-      - em1
-      - em2
-      - p2p1
-      - p2p2
-      os: rhel
-    - name: r5aw3
-      ip: 100.82.42.96
-      mac: 98:03:9B:58:AD:62
-      bond: bond0
-      primary: eno1
-      backup: ens2f1
-      options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
-      interfaces:
-      - eno1
-      os: rhcos
-    number_of_workers: 3
-    cluster_install: 6+ node
+    cluster_install: 3 node
     master_install_device: nvme0n1
     bootstrap_install_device: nvme0n1
     worker_install_device: nvme0n1

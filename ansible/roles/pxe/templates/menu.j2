@@ -15,9 +15,11 @@ menuentry '{{ node.name }}' --class fedora --class gnu-linux --class gnu --class
 {% endfor %}
 
 
+{% if worker_nodes is defined %}
 {% for node in worker_nodes %}
 menuentry '{{ node.name }}' --class fedora --class gnu-linux --class gnu --class os {
   linuxefi rhel/vmlinuz ip=dhcp inst.ks=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/kickstart/{{ node.name }}.ks.cfg
   initrdefi rhel/initrd.img
 }
 {% endfor %}
+{% endif %}

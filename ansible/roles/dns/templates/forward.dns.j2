@@ -21,9 +21,11 @@ $TTL 8600
 {{ node.name }}  IN    A    {{ node.ip }}
 {% endfor %}
 
+{% if worker_nodes is defined %}
 {% for node in worker_nodes %}
 {{ node.name }}  IN    A    {{ node.ip }}
 {% endfor %}
+{% endif %}
 
 $ORIGIN {{ cluster }}.{{ ansible_domain }}.
 
@@ -40,9 +42,11 @@ etcd-{{ index }}    IN   CNAME   {{ node.name }}.{{ ansible_domain }}.
 {% set index = index + 1 %}
 {% endfor %}
 
+{% if worker_nodes is defined %}
 {% for node in worker_nodes %}
 {{ node.name }}    IN   CNAME   {{ node.name }}.{{ ansible_domain }}.
 {% endfor %}
+{% endif %}
 
 
 *.apps    IN     A   {{ ansible_default_ipv4.address }}

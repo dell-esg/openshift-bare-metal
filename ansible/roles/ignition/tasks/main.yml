@@ -111,8 +111,18 @@
   lineinfile:
     path: "{{ ocp_install_dir.path }}/manifests/cluster-scheduler-02-config.yml"
     regexp: 'mastersSchedulable'
-    line: '  mastersSchedulable: False'
-  when: not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
+    line: '  mastersSchedulable: true'
+  when: manifest.stat.exists and cluster_install == '3 node'
+
+- name: backup openshift and manifest directory
+  copy:
+    src: "{{ ocp_install_dir.path }}/{{ item }}"
+    dest: /var/www/html/
+    remote_src: yes
+  loop:
+    - openshift
+    - manifests
+  when: manifest.stat.exists
 
 - name: generate ignition config files
   become: yes
