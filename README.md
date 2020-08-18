@@ -1,4 +1,6 @@
-# Master branch is updated with OCP43 CSI contents
+# Master branch is updated with OCP45 CSI contents
+
+For OCP 43 CSI contents - Refer to https://github.com/dell-esg/openshift-bare-metal
 
 Switch Config
 > - Switches S3048, S5232F config files are saved in examples directory
