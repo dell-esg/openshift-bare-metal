@@ -36,7 +36,7 @@ clearpart --all --initlabel --drives={{ worker_install_device }}
 # Disk partitioning information
 part /boot/efi --fstype="efi" --ondisk={{ worker_install_device }} --size=200 --fsoptions="umask=0077,shortname=winnt"
 part /boot --fstype="xfs" --ondisk={{ worker_install_device }} --size=1024
-part pv.265 --fstype="lvmpv" --ondisk={{ worker_install_device }} --percent=100
+part pv.265 --fstype="lvmpv" --ondisk={{ worker_install_device }} --size=1024 --grow
 volgroup rhel --pesize=4096 pv.265
 logvol swap  --fstype="swap" --size=4096 --name=swap --vgname=rhel
 logvol /  --fstype="xfs" --grow --maxsize=51200 --size=1024 --name=root --vgname=rhel

@@ -25,11 +25,11 @@ class InventoryFile:
         self.input_choice = ''
         self.cluster_install = 0
         self.ocp45_client_base_url = 'https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-4.5'
-        self.ocp45_rhcos_base_url = 'https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.5/4.5.2/'
+        self.ocp45_rhcos_base_url = 'https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.5/4.5.6/'
         self.ocp_urls = {'openshift_installer': '{}/openshift-install-linux.tar.gz'.format(self.ocp45_client_base_url),
-                         'initramfs': '{}/rhcos-4.5.2-x86_64-installer-initramfs.x86_64.img'.format(self.ocp45_rhcos_base_url),
-                         'kernel_file': '{}/rhcos-4.5.2-x86_64-installer-kernel-x86_64'.format(self.ocp45_rhcos_base_url),
-                         'uefi_file': '{}/rhcos-4.5.2-x86_64-metal.x86_64.raw.gz'.format(self.ocp45_rhcos_base_url)}
+                         'initramfs': '{}/rhcos-4.5.6-x86_64-installer-initramfs.x86_64.img'.format(self.ocp45_rhcos_base_url),
+                         'kernel_file': '{}/rhcos-4.5.6-x86_64-installer-kernel-x86_64'.format(self.ocp45_rhcos_base_url),
+                         'uefi_file': '{}/rhcos-4.5.6-x86_64-metal.x86_64.raw.gz'.format(self.ocp45_rhcos_base_url)}
         self.task_inputs = """
 1: download ocp 4.5 software
 2: cluster install

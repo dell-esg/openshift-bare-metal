@@ -1,6 +1,6 @@
 workers:
-  hosts: worker-0.example.lab
+  hosts: r5aw2.oss.labs
   vars:
-    subscription_user: smuser
-    subscription_pass: smpassword
-    pool_id: xxxxxxxxxxxxxxxxxxxxxxxx
+    subscription_user: umesh.sunnapu@dell.com
+    subscription_pass: ************
+    pool_id: 8a85f99a70399fad01703be0ef504235
