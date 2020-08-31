@@ -228,12 +228,16 @@ class InventoryFile:
         if file_exists:
             with open('{}'.format(current_inventory_file), 'r') as file:
                  self.inventory_dict = yaml.load(file, Loader=yaml.FullLoader)
-    
-            self.inventory_file = get_nodes_info(node_type='worker', inventory=self.inventory_dict, add=True, 
-                                                 idrac_user=self.id_user, idrac_pass=self.id_pass)
-            self.yaml_inventory()
+      
+            try:
+                self.inventory_dict['csah']['vars']['worker_nodes']
+                self.inventory_file = get_nodes_info(node_type='worker', inventory=self.inventory_dict, add=True, 
+                                                     idrac_user=self.id_user, idrac_pass=self.id_pass)
+                self.yaml_inventory()
+            except KeyError:
+                logging.error('Inventory file does not contain worker nodes info')
+
             sys.exit(2)
-            
         else:
             logging.error('incorrect file path specified')
             sys.exit(2)       

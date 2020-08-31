@@ -71,7 +71,20 @@ csah:
       - p3p1
       - p3p2
       os: rhel
-    number_of_workers: 2
+    - name: new-worker-0
+      ip: 100.82.46.146
+      mac: B8:59:9F:C2:04:5A
+      bond: bond0
+      primary: p3p1
+      backup: p3p2
+      options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
+      interfaces:
+      - em1
+      - em2
+      - p3p1
+      - p3p2
+      os: rhel
+    number_of_workers: 3
     cluster_install: 6+ node
     master_install_device: nvme0n1
     worker_install_device: nvme0n1
