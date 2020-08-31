@@ -1,0 +1,88 @@
+csah:
+  hosts: r2bcsah.oss.labs
+  vars:
+    proxy: haproxy
+    haproxy_conf: /etc/haproxy/haproxy.cfg
+    master_ports:
+    - port: 6443
+      description: apiserver
+    - port: 22623
+      description: configserver
+    worker_ports:
+    - port: 80
+      description: http
+    - port: 443
+      description: https
+    default_lease_time: 8000
+    max_lease_time: 72000
+    software_src: /home/ansible/files
+    openshift_installer: openshift-install-linux.tar.gz
+    initramfs: rhcos-4.5.6-x86_64-installer-initramfs.x86_64.img
+    kernel_file: rhcos-4.5.6-x86_64-installer-kernel-x86_64
+    uefi_file: rhcos-4.5.6-x86_64-metal.x86_64.raw.gz
+    bootstrap_node:
+    - name: r2bbs
+      ip: 100.82.46.139
+      mac: 52:54:00:59:76:40
+    master_nodes:
+    - name: r2bm1
+      ip: 100.82.46.141
+      mac: B8:59:9F:C0:35:EE
+      bond: bond0
+      primary: ens2f0
+      backup: ens2f1
+      options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
+    - name: r2bm2
+      ip: 100.82.46.142
+      mac: B8:59:9F:C0:35:96
+      bond: bond0
+      primary: ens2f0
+      backup: ens2f1
+      options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
+    - name: r2bm3
+      ip: 100.82.46.143
+      mac: B8:59:9F:C0:35:FE
+      bond: bond0
+      primary: ens2f0
+      backup: ens2f1
+      options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
+    number_of_masters: 3
+    worker_nodes:
+    - name: r2bw1
+      ip: 100.82.46.144
+      mac: B8:59:9F:C2:04:4A
+      bond: bond0
+      primary: ens3f0
+      backup: ens3f1
+      options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
+      interfaces:
+      - ens3f0
+      os: rhcos
+    - name: r2bw2
+      ip: 100.82.46.145
+      mac: B8:59:9F:C2:04:3A
+      bond: bond0
+      primary: p3p1
+      backup: p3p2
+      options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
+      interfaces:
+      - em1
+      - em2
+      - p3p1
+      - p3p2
+      os: rhel
+    number_of_workers: 2
+    cluster_install: 6+ node
+    master_install_device: nvme0n1
+    worker_install_device: nvme0n1
+    default_zone_file: /var/named/r2b.zones
+    cluster: r2b
+    http_port: 8080
+    os: rhcos
+    http_ignition: ignition
+    version: 4.5
+    install_user: core
+    install_dir: openshift
+    cluster_network_cidr: 10.128.0.0/14
+    host_prefix: 23
+    service_network_cidr: 172.30.0.0/16

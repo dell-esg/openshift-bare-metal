@@ -1,3 +1,4 @@
+import argparse
 import os
 import logging
 import socket
@@ -19,8 +20,10 @@ from helper import create_dir, check_path, get_ip, get_network_device_mac, \
 from nodes import get_nodes_info
 
 class InventoryFile:
-    def __init__(self, inventory_dict = {}):
+    def __init__(self, inventory_dict = {}, id_user='', id_pass=''):
         self.inventory_dict = inventory_dict
+        self.id_user = id_user
+        self.id_pass = id_pass
         self.software_dir = ''
         self.input_choice = ''
         self.cluster_install = 0
@@ -73,7 +76,7 @@ class InventoryFile:
              except ValueError:
                  logging.error('Strings not a valid choice')
 
-        logging.info('user choice is {}'.format(self.input_choice))
+        logging.debug('user choice is {}'.format(self.input_choice))
         self.get_user_inputs_for_task()
             
     def get_user_inputs_for_task(self):
@@ -189,8 +192,8 @@ class InventoryFile:
         bootstrap_os_ip = get_ip(node_name=bootstrap_name, ip_type='os')
         bootstrap_os_ip = validate_ip(bootstrap_os_ip)
         bootstrap_mac = "52:54:00:{}:{}:{}".format(randint(10,99),randint(10,99),randint(10,99))
-        logging.info('adding bootstrap_node values as name: {} ip: {} mac: {}'.format(bootstrap_name, bootstrap_os_ip,
-                                                                                      bootstrap_mac)) 
+        logging.debug('adding bootstrap_node values as name: {} ip: {} mac: {}'.format(bootstrap_name, bootstrap_os_ip,
+                                                                                       bootstrap_mac)) 
         self.inventory_dict['csah']['vars']['bootstrap_node'] = []
         bootstrap_keys = ['name','ip','mac']
         bootstrap_values = [bootstrap_name, bootstrap_os_ip, bootstrap_mac]
@@ -203,7 +206,8 @@ class InventoryFile:
 
         """
         self.clear_screen()
-        self.inventory_dict = get_nodes_info(node_type='master', inventory=self.inventory_dict)
+        self.inventory_dict = get_nodes_info(node_type='master', inventory=self.inventory_dict, idrac_user=self.id_user, 
+                                             idrac_pass=self.id_pass)
 
     def get_worker_nodes(self):
         """ 
@@ -211,7 +215,28 @@ class InventoryFile:
 
         """
         self.clear_screen()
-        self.inventory_dict = get_nodes_info(node_type='worker', inventory=self.inventory_dict)
+        self.inventory_dict = get_nodes_info(node_type='worker', inventory=self.inventory_dict, idrac_user=self.id_user,
+                                             idrac_pass=self.id_pass)
+
+    def add_new_worker_nodes(self):
+        """
+        get new worker nodes added to inventory file
+
+        """
+        current_inventory_file = input('Enter complete path to existing inventory file: ')
+        file_exists = os.path.exists('{}'.format(current_inventory_file))
+        if file_exists:
+            with open('{}'.format(current_inventory_file), 'r') as file:
+                 self.inventory_dict = yaml.load(file, Loader=yaml.FullLoader)
+    
+            self.inventory_file = get_nodes_info(node_type='worker', inventory=self.inventory_dict, add=True, 
+                                                 idrac_user=self.id_user, idrac_pass=self.id_pass)
+            self.yaml_inventory()
+            sys.exit(2)
+            
+        else:
+            logging.error('incorrect file path specified')
+            sys.exit(2)       
 
     def dhcp_lease_times(self):
         """ 
@@ -277,17 +302,12 @@ class InventoryFile:
         master_install_device = input('specify the master device that will be installed\n'
                                       'default [nvme0n1]: ')
         master_install_device = set_values(master_install_device, default)
-        bootstrap_install_device = input('specify the bootstrap device that will be installed\n'
-                                         'default [nvme0n1]: ')
-        bootstrap_install_device = set_values(bootstrap_install_device, default)
         worker_install_device = input('specify the worker device that will be installed\n'
                                       'default [nvme0n1]: ')
         worker_install_device = set_values(worker_install_device, default)
-        logging.info('adding master_install_device: {} bootstrap_install_device: {}\
-                      worker_install_device: {}'.format(master_install_device, bootstrap_install_device,
-                                                        worker_install_device))
+        logging.info('adding master_install_device: {} worker_install_device: {}'.format(master_install_device, 
+                      worker_install_device))
         self.inventory_dict['csah']['vars']['master_install_device'] = master_install_device
-        self.inventory_dict['csah']['vars']['bootstrap_install_device'] = bootstrap_install_device
         self.inventory_dict['csah']['vars']['worker_install_device'] = worker_install_device
 
     def set_haproxy(self):
@@ -372,11 +392,22 @@ class InventoryFile:
 
 
 def main():
-    log_setup(log_file='inventory.log')
-    logging.info('setting log file to inventory.log')
-    gen_inv_file = InventoryFile()
-    gen_inv_file.run()
+    parser = argparse.ArgumentParser(description="Generate Inventory")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('--run', help='generate inventory file', action='store_true', required=False)
+    group.add_argument('--add', help='number of worker nodes', action='store_true', required=False)
+    parser.add_argument('--id_user', help='specify idrac user', required=False)
+    parser.add_argument('--id_pass', help='specify idrac user', required=False)
+    parser.add_argument('--debug', help='specify debug logs', action='store_true', required=False)
+    args = parser.parse_args()
+    log_setup(log_file='inventory.log', debug=args.debug)
+    gen_inv_file = InventoryFile(id_user=args.id_user, id_pass=args.id_pass)
+    if args.run:
+        gen_inv_file.run()
     
+    if args.add:
+        gen_inv_file.add_new_worker_nodes()
+        
 
 if __name__ == "__main__":
     main()

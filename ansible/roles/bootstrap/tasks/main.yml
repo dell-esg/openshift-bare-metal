@@ -22,6 +22,19 @@
   when: bootstrap_node is defined
 
 - name: bootstrap kvm command
-  debug:
-    msg: "KVM Command: virt-install --name bootstrapkvm --ram 20480 --vcpu 8 --disk path=/home/bootstrapvm-disk.qcow2,format=qcow2,size=200 --os-variant generic --network=bridge=br0,model=virtio,mac={{ bootstrap_mac_info }}  --pxe --boot hd,network"
+  set_fact:
+    command: "KVM Command: virt-install --name bootstrapkvm --ram 20480 --vcpu 8 --disk path=/home/bootstrapvm-disk.qcow2,format=qcow2,size=200 --os-variant generic --network=bridge=br0,model=virtio,mac={{ bootstrap_mac_info }}  --pxe --boot hd,network"
+  when: bootstrap_node is defined
+
+- name: create a file to save bootstrap command
+  file:
+    path: "{{ software_src }}/bootstrap_command"
+    state: touch 
+  when: bootstrap_node is defined
+
+- name: add bootstrap command in file
+  blockinfile:
+    path: "{{ software_src }}/bootstrap_command"
+    block: |
+      "{{ command }}"
   when: bootstrap_node is defined
