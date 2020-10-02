@@ -403,6 +403,9 @@ def main():
     parser.add_argument('--id_user', help='specify idrac user', required=False)
     parser.add_argument('--id_pass', help='specify idrac user', required=False)
     parser.add_argument('--debug', help='specify debug logs', action='store_true', required=False)
+    if len(sys.argv) == 1:
+        parser.print_help(sys.stderr)
+        sys.exit()
     args = parser.parse_args()
     log_setup(log_file='inventory.log', debug=args.debug)
     gen_inv_file = InventoryFile(id_user=args.id_user, id_pass=args.id_pass)
