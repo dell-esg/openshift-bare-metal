@@ -35,7 +35,7 @@ def set_network_details(node_type='', node_name='', ip='', mac='', bond_name='',
     node_values.append(backup)
     node_values.append(bond_options)
 
-    if node_type == 'worker_nodes':
+    if node_type == 'compute_nodes':
         node_keys = ['name', 'ip', 'mac', 'bond', 'primary', 'backup', 'options', 'interfaces', 'os']
         node_values.append(interfaces)
         node_values.append(os)
@@ -47,22 +47,21 @@ def set_network_details(node_type='', node_name='', ip='', mac='', bond_name='',
 
     return inventory
 
-def get_nodes_info(node_type='master', inventory='', add=False, idrac_user='', idrac_pass=''):
-    desc = 'enter number of new worker nodes' if add else 'enter number of {} nodes'.format(node_type)
-    nodes_count = input('{}\n'
-                        'default [3]: '.format(desc))
-    default = 3
-    nodes_count = set_values(nodes_count, default, check='integer')
+def get_nodes_info(node_type='', inventory='', add=False, idrac_user='', idrac_pass='', nodes_info=''):
 
-    if not add:
-        inventory['csah']['vars']['{}_nodes'.format(node_type)] = []
+    if add:
+        nodes_count = len(nodes_info['new_compute_nodes'])
+    else:
+        nodes_count = len(nodes_info['control_nodes']) if node_type == 'control_nodes' else len(nodes_info['compute_nodes'])
 
-    bonding = input('Do you want to perform bonding (y/NO): ')
+    bonding = input('Do you want to perform bonding for \'{}\' (y/NO): '.format(node_type))
     valid_responses = ['y', 'NO']
 
     while bonding not in valid_responses:
         logging.error('Invalid option provided. Enter \'y\' or \'NO\'')
         bonding = input('Do you want to perform bonding (y/NO): ')
+
+    all_compute_nodes = ['compute_nodes', 'new_compute_nodes']
 
     for num in range(nodes_count):
         values = []
@@ -70,30 +69,17 @@ def get_nodes_info(node_type='master', inventory='', add=False, idrac_user='', i
         map_devices = None
         interfaces_enumeration = []
         mac = ''
-        
-        if node_type == 'master':
-            default = 'etcd-{}'.format(num)
-        else:
-            default = '{}-{}'.format(node_type, num)
-   
-        if add:
-            default = 'new-{}-{}'.format(node_type, num)
- 
-        name = input('enter the {} {} node name \n'
-                     'default [{}]: '.format(node_type, num, default))
-        name = set_values(name, default)
+        name = nodes_info[node_type][num]['name']
+        os_ip = nodes_info[node_type][num]['ip_os']
+        os_ip = validate_ip(os_ip)
+        idrac_ip = nodes_info[node_type][num]['ip_idrac']
+        response = check_ip_ping(idrac_ip)
 
-        if node_type == 'worker':
-            default = 'rhcos'
-            os = get_worker_os()
-            os = set_values(os, default)            
+        #if node_type == 'compute_nodes':
+        if node_type in all_compute_nodes:
+            os = nodes_info[node_type][num]['os']
         else:
             os = 'rhcos'
-
-        os_ip = get_ip(node_name=name, ip_type='os')
-        os_ip = validate_ip(os_ip)
-        idrac_ip = get_ip(node_name=name, ip_type='idrac')
-        response = check_ip_ping(idrac_ip)
             
         if response != 0:
             get_user_response(message='idrac ip {} not pingeable'.format(idrac_ip))
@@ -109,6 +95,7 @@ def get_nodes_info(node_type='master', inventory='', add=False, idrac_user='', i
         if devices:
             map_devices = map_interfaces_network(devices)
 
+        logging.info('select network interfaces for node {}'.format(name))
         if map_devices:
             if bonding == 'y':
                 mac = get_network_device_mac(map_devices, user, passwd, base_api_url)
@@ -124,15 +111,17 @@ def get_nodes_info(node_type='master', inventory='', add=False, idrac_user='', i
                 logging.debug('interfaces: {}'.format(devices))
                 logging.debug('map interfaces: {}'.format(map_devices))
                     
-                if node_type == 'worker' and os == 'rhel':
+                #if node_type == 'compute_nodes' and os == 'rhel':
+                if node_type in all_compute_nodes and os == 'rhel':
                     for device in map_devices:
                         interface_enumeration = get_device_enumeration(device, os=os)
                         interfaces_enumeration.append(interface_enumeration)
                 else:
                     interfaces_enumeration.append(active_bond_enumeration)
                 
-                inventory = set_network_details(node_type='{}_nodes'.format(node_type), node_name=name, 
-                                                ip=os_ip, mac=mac, bond_name=bond_name, primary=active_bond_enumeration,
+                nodes = 'control_nodes' if node_type == 'control_nodes' else 'compute_nodes'
+                inventory = set_network_details(node_type=nodes, node_name=name, ip=os_ip, mac=mac, 
+                                                bond_name=bond_name, primary=active_bond_enumeration,
                                                 backup=backup_bond_enumeration, interfaces=interfaces_enumeration,
                                                 inventory=inventory, os=os)
                 
@@ -145,7 +134,8 @@ def get_nodes_info(node_type='master', inventory='', add=False, idrac_user='', i
                 logging.debug('{} nic mac address: {}'.format(name, nic_mac))
                 node_keys = ['name','ip','mac','interface','os']
 
-                if node_type == 'worker' and os == 'rhel':
+                #if node_type == 'compute_nodes' and os == 'rhel':
+                if node_type in all_compute_nodes and os == 'rhel':
                     node_keys = ['name','ip','mac','interface','os','interfaces']
                     for device in map_devices:
                         interface_enumeration = get_device_enumeration(device, os='rhel')
@@ -157,15 +147,12 @@ def get_nodes_info(node_type='master', inventory='', add=False, idrac_user='', i
 
                 logging.debug('{} node values: {}'.format(name, node_values))
                 node_pairs = dict(zip(node_keys, node_values))
-                inventory['csah']['vars']['{}_nodes'.format(node_type)].append(node_pairs)
+                inventory['csah']['vars'][node_type].append(node_pairs)
 
-    if node_type == 'worker' and add:
-        worker_nodes_count = inventory['csah']['vars']['number_of_workers']
-        new_worker_nodes_count = worker_nodes_count + nodes_count
-        inventory['csah']['vars']['number_of_workers'] = new_worker_nodes_count
-    elif node_type == 'worker' and not add:
-        inventory['csah']['vars']['number_of_workers'] = nodes_count
-    else:
-        inventory['csah']['vars']['number_of_masters'] = nodes_count
+    #if node_type == 'compute_nodes' and add:
+    if node_type in all_compute_nodes and add:
+        compute_nodes_count = inventory['csah']['vars']['num_of_compute_nodes']
+        new_compute_nodes_count = compute_nodes_count + nodes_count
+        inventory['csah']['vars']['num_of_compute_nodes'] = new_compute_nodes_count
 
     return inventory

@@ -46,10 +46,14 @@
     - rhel
     - "{{ http_ignition }}"
 
-- name: copy rhcos bare metal uefi file to http location
+- name: copy rhcos bare metal uefi files to http location
   copy:
-    src: "{{ software_src }}/{{ uefi_file }}"
-    dest: "{{ http_os_dir.path }}/{{ uefi_file }}"
+    src: "{{ item.src }}"
+    dest: "{{ http_os_dir.path }}/{{ item.dest }}"
+  with_items:
+    - { src: "{{ software_src }}/{{ uefi_file }}", dest: "{{ uefi_file }}" }
+    - { src: "{{ software_src }}/{{ initramfs }}", dest: "{{ initramfs }}" }
+    - { src: "{{ software_src }}/{{ rootfs }}", dest: "{{ rootfs }}" }
 
 - name: mount rhel iso file
   mount:

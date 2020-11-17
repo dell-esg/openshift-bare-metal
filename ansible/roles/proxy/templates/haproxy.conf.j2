@@ -76,7 +76,7 @@ backend {{ port.description }}
    server {{ node.name }} {{ node.ip }}:{{ port.port }} check
 {% endfor %}
 {% endif %}
-{% for node in master_nodes %}
+{% for node in control_nodes %}
    server {{ node.name }} {{ node.ip }}:{{ port.port }} check
 {% endfor %}
 
@@ -93,11 +93,11 @@ backend {{ port.description }}
    balance roundrobin
    mode tcp
 {% if cluster_install == '3 node' %}
-{% for node in master_nodes %}
+{% for node in control_nodes %}
    server {{ node.name }} {{ node.ip }}:{{ port.port }} check
 {% endfor %}
 {% else %}
-{% for node in worker_nodes %}
+{% for node in compute_nodes %}
    server {{ node.name }} {{ node.ip }}:{{ port.port }} check
 {% endfor %}
 {% endif %}

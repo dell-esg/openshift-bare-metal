@@ -50,6 +50,7 @@
   with_items:
     - { src: "{{ software_src }}/{{ kernel_file }}", dest: "rhcos/{{ version }}/{{ kernel_file }}" }
     - { src: "{{ software_src }}/{{ initramfs }}", dest: "rhcos/{{ version }}/{{ initramfs }}" }
+    - { src: "{{ software_src }}/{{ rootfs }}", dest: "rhcos/{{ version }}/{{ rootfs }}" }
     - { src: /boot/efi/EFI/redhat/shimx64.efi, dest: uefi/shim.efi }
     - { src: /boot/efi/EFI/redhat/grubx64.efi, dest: uefi/grubx64.efi }
     - { src: /var/www/html/rhel/images/pxeboot/vmlinuz, dest: rhel/vmlinuz }
@@ -58,6 +59,8 @@
     - { src: /usr/share/syslinux/pxelinux.0, dest: bios/pxelinux.0 }
     - { src: "{{ software_src }}/{{ kernel_file }}", dest: "bios/rhcos/{{ version }}/{{ kernel_file }}" }
     - { src: "{{ software_src }}/{{ initramfs }}", dest: "bios/rhcos/{{ version }}/{{ initramfs }}" }
+    - { src: "{{ software_src }}/{{ rootfs }}", dest: "bios/rhcos/{{ version }}/{{ rootfs }}" }
+    
 
 - name: display network cidr
   set_fact:
@@ -69,16 +72,16 @@
 
 - name: get worker nodes details
   set_fact:
-    nodes: "{{ hostvars[inventory_hostname]['worker_nodes'] }}"
+    nodes: "{{ hostvars[inventory_hostname]['compute_nodes'] }}"
   when: cluster_install == '6+ node'
 
-- name: dispay worker node names
+- name: dispay compute node names
   debug:
     msg: "{{ item.name }}"
   loop: "{{ nodes }}"
   when: cluster_install == '6+ node'
 
-- name: dispay rhel worker node names
+- name: dispay rhel compute node names
   debug:
     msg: "{{ item.name }}"
   loop: "{{ nodes }}"

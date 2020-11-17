@@ -1,0 +1,28 @@
+bootstrap_kvm:
+  - name: bootstrap
+    ip_os: 3.3.3.3
+control_nodes:
+  - name: control-1
+    ip_os: 100.67.191.81
+    ip_idrac: 100.67.191.11
+  - name: control-2
+    ip_os: 100.67.191.82
+    ip_idrac: 100.67.191.12
+compute_nodes:
+  - name: compute-1
+    ip_os: 100.67.191.84
+    ip_idrac: 100.67.191.14
+    os: rhel
+  - name: compute-2
+    ip_os: 100.67.191.85
+    ip_idrac: 100.67.191.15
+    os: rhcos
+new_compute_nodes:
+  - name: compute-3
+    ip_os: 100.67.191.83
+    ip_idrac: 100.67.191.13
+    os: rhel
+  - name: compute-4
+    ip_os: 100.67.191.86
+    ip_idrac: 100.67.191.16
+    os: rhcos

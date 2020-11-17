@@ -4,7 +4,7 @@ compute:
 {% if cluster_install == '6+ node' %}
 - hyperthreading: Enabled
   name: worker
-  replicas: {{ number_of_workers }}
+  replicas: {{ num_of_compute_nodes }}
 {% else %}
 - name: worker
   platform: {}
@@ -13,7 +13,7 @@ compute:
 controlPlane:
   hyperthreading: Enabled
   name: master
-  replicas: {{ number_of_masters }}
+  replicas: {{ num_of_control_nodes }}
 metadata:
   name: {{ cluster }}
 networking:

@@ -17,12 +17,12 @@ $TTL 8600
 {% endfor %}
 {% endif %}
 
-{% for node in master_nodes %}
+{% for node in control_nodes %}
 {{ node.name }}  IN    A    {{ node.ip }}
 {% endfor %}
 
-{% if worker_nodes is defined %}
-{% for node in worker_nodes %}
+{% if compute_nodes is defined %}
+{% for node in compute_nodes %}
 {{ node.name }}  IN    A    {{ node.ip }}
 {% endfor %}
 {% endif %}
@@ -37,13 +37,13 @@ $ORIGIN {{ cluster }}.{{ ansible_domain }}.
 
 {% set index = 0 %}
 
-{% for node in master_nodes %}
+{% for node in control_nodes %}
 etcd-{{ index }}    IN   CNAME   {{ node.name }}.{{ ansible_domain }}.
 {% set index = index + 1 %}
 {% endfor %}
 
-{% if worker_nodes is defined %}
-{% for node in worker_nodes %}
+{% if compute_nodes is defined %}
+{% for node in compute_nodes %}
 {{ node.name }}    IN   CNAME   {{ node.name }}.{{ ansible_domain }}.
 {% endfor %}
 {% endif %}
@@ -55,7 +55,7 @@ api-int   IN     A   {{ ansible_default_ipv4.address }}
 
 {% set index = 0 %}
 
-{% for node in master_nodes %}
+{% for node in control_nodes %}
 _etcd-server-ssl._tcp 86400  IN   SRV   0   10 2380  etcd-{{ index }}.{{ cluster }}.{{ ansible_domain }}.
 {% set index = index + 1 %}
 {% endfor %}
