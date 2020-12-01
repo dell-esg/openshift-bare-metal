@@ -17,6 +17,7 @@
     - rhel-7-server-rpms
     - rhel-7-server-ansible-2.9-rpms
     - rhel-7-server-ose-4.6-rpms
+    - rhel-7-fast-datapath-rpms
 
 - name: disable firewalld in worker nodes
   systemd:

@@ -1,6 +1,6 @@
 workers:
-  hosts: r5aw2.oss.labs
+  hosts: compute-3.oss.labs
   vars:
     subscription_user: umesh.sunnapu@dell.com
-    subscription_pass: ************
-    pool_id: 8a85f99a70399fad01703be0ef504235
+    subscription_pass: ***********
+    pool_id: ********************************
