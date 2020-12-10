@@ -25,7 +25,8 @@ def set_network_details(node_type='', node_name='', ip='', mac='', bond_name='',
     devices = []
     node_keys = ['name', 'ip', 'mac', 'bond', 'primary', 'backup', 'options']
     node_values = []
-    bond_options = 'lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4'
+    #bond_options = 'lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4'
+    bond_options = 'mode=active-backup'
     bond_interfaces = '{},{}'.format(primary, backup)
     node_values.append(node_name)
     node_values.append(ip)
@@ -75,7 +76,6 @@ def get_nodes_info(node_type='', inventory='', add=False, idrac_user='', idrac_p
         idrac_ip = nodes_info[node_type][num]['ip_idrac']
         response = check_ip_ping(idrac_ip)
 
-        #if node_type == 'compute_nodes':
         if node_type in all_compute_nodes:
             os = nodes_info[node_type][num]['os']
         else:

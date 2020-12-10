@@ -1,0 +1,88 @@
+csah:
+  hosts: csah.example.com
+  vars:
+    proxy: haproxy
+    haproxy_conf: /etc/haproxy/haproxy.cfg
+    master_ports:
+    - port: 6443
+      description: apiserver
+    - port: 22623
+      description: configserver
+    worker_ports:
+    - port: 80
+      description: http
+    - port: 443
+      description: https
+    default_lease_time: 8000
+    max_lease_time: 72000
+    software_src: /home/ansible/files
+    openshift_installer: openshift-install-linux.tar.gz
+    initramfs: rhcos-live-initramfs.x86_64.img
+    kernel_file: rhcos-live-kernel-x86_64
+    uefi_file: rhcos-metal.x86_64.raw.gz
+    rootfs: rhcos-live-rootfs.x86_64.img
+    rhel_os: rhel-server-7.9-x86_64-dvd.iso
+    pull_secret_file: pullsecret
+    bootstrap_node:
+    - name: bootstrap
+      ip: 100.82.46.19
+      mac: 52:54:00:96:59:56
+    control_nodes:
+    - name: etcd-0
+      ip: 100.82.46.21
+      mac: B8:59:9F:C0:36:46
+      bond: bond0
+      primary: ens2f0
+      backup: ens2f1
+      options: mode=active-backup
+    - name: etcd-1
+      ip: 100.82.46.22
+      mac: B8:59:9F:C0:35:66
+      bond: bond0
+      primary: ens2f0
+      backup: ens2f1
+      options: mode=active-backup
+    - name: etcd-2
+      ip: 100.82.46.23
+      mac: B8:59:9F:C0:34:C6
+      bond: bond0
+      primary: ens2f0
+      backup: ens2f1
+      options: mode=active-backup
+    num_of_control_nodes: 3
+    compute_nodes:
+    - name: compute-1
+      ip: 100.82.46.24
+      mac: B8:59:9F:C0:36:3E
+      bond: bond0
+      primary: ens2f0
+      backup: ens2f1
+      options: mode=active-backup
+      interfaces:
+      - ens2f0
+      os: rhcos
+    - name: compute-2
+      ip: 100.82.46.25
+      mac: B8:59:9F:C0:35:E6
+      bond: bond0
+      primary: ens2f0
+      backup: ens2f1
+      options: mode=active-backup
+      interfaces:
+      - ens2f0
+      os: rhcos
+    num_of_compute_nodes: 2
+    cluster_install: 6+ node
+    master_install_device: nvme0n1
+    worker_install_device: nvme0n1
+    default_zone_file: /var/named/ocp.zones
+    cluster: ocp
+    http_port: 8080
+    os: rhcos
+    http_ignition: ignition
+    version: 4.6
+    install_user: core
+    install_dir: openshift
+    cluster_network_cidr: 10.128.0.0/14
+    host_prefix: 23
+    service_network_cidr: 172.30.0.0/16
