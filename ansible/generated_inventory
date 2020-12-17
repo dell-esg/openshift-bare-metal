@@ -23,10 +23,10 @@ csah:
     rootfs: rhcos-live-rootfs.x86_64.img
     rhel_os: rhel-server-7.9-x86_64-dvd.iso
     pull_secret_file: pullsecret
-    bootstrap_node:
-    - name: bootstrap
-      ip: 100.82.46.19
-      mac: 52:54:00:96:59:56
+    #bootstrap_node:
+    #- name: bootstrap
+    #  ip: 100.82.46.19
+    #  mac: 52:54:00:96:59:56
     control_nodes:
     - name: etcd-0
       ip: 100.82.46.21
@@ -71,7 +71,20 @@ csah:
       interfaces:
       - ens2f0
       os: rhcos
-    num_of_compute_nodes: 2
+    - name: compute-3
+      ip: 100.82.46.27
+      mac: B8:59:9F:C0:35:26
+      bond: bond0
+      primary: p2p1
+      backup: p2p2
+      options: mode=active-backup
+      interfaces:
+      - em1
+      - em2
+      - p2p1
+      - p2p2
+      os: rhel
+    num_of_compute_nodes: 3
     cluster_install: 6+ node
     master_install_device: nvme0n1
     worker_install_device: nvme0n1

@@ -1,6 +1,6 @@
 workers:
-  hosts: compute-3.oss.labs
+  hosts: compute-3.example.com
   vars:
     subscription_user: umesh.sunnapu@dell.com
-    subscription_pass: ***********
-    pool_id: ********************************
+    subscription_pass: *********
+    pool_id: ***********************
