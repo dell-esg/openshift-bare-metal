@@ -1,43 +1,52 @@
+import argparse
 import os
 import logging
 import socket
 import sys
 import yaml
 
+from random import randint
 from urllib.request import urlopen
 from urllib.request import urlretrieve
 
 from log_config import log_setup
 from helper import create_dir, check_path, get_ip, get_network_device_mac, \
-                   set_values, validate_cidr, validate_ip, \
+                   set_values, validate_cidr, validate_ip, validate_file, \
                    validate_network_cidr, validate_port, validate_url, \
                    check_user_input_if_integer, check_ip_ping, get_network_devices, \
                    map_interfaces_network, get_idrac_creds, generate_network_devices_menu, \
-                   get_device_enumeration, get_user_response
+                   get_device_enumeration, get_user_response, get_mac_address
+
+from nodes import get_nodes_info
 
 class InventoryFile:
-    def __init__(self, inventory_dict = {}):
+    def __init__(self, inventory_dict = {}, id_user='', id_pass='', version='', nodes_inventory=''):
         self.inventory_dict = inventory_dict
+        self.id_user = id_user
+        self.id_pass = id_pass
+        self.version = version
+        self.nodes_inventory = nodes_inventory
+        self.nodes_inv = ''
         self.software_dir = ''
         self.input_choice = ''
-        self.ocp43_client_base_url = 'https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-4.3'
-        self.ocp43_rhcos_base_url = 'https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.3/4.3.8'
-        self.ocp_urls = {'openshift_installer': '{}/openshift-install-linux.tar.gz'.format(self.ocp43_client_base_url),
-                         'initramfs': '{}/rhcos-4.3.8-x86_64-installer-initramfs.x86_64.img'.format(self.ocp43_rhcos_base_url),
-                         'kernel_file': '{}/rhcos-4.3.8-x86_64-installer-kernel-x86_64'.format(self.ocp43_rhcos_base_url),
-                         'uefi_file': '{}/rhcos-4.3.8-x86_64-metal.x86_64.raw.gz'.format(self.ocp43_rhcos_base_url)}
+        self.cluster_install = 0
+        self.ocp_client_base_url = 'https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-{}'.format(self.version)
+        self.ocp_rhcos_base_url = 'https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/{}/latest'.format(self.version)
+        self.ocp_urls = {'openshift_installer': '{}/openshift-install-linux.tar.gz'.format(self.ocp_client_base_url),
+                         'initramfs': '{}/rhcos-live-initramfs.x86_64.img'.format(self.ocp_rhcos_base_url),
+                         'kernel_file': '{}/rhcos-live-kernel-x86_64'.format(self.ocp_rhcos_base_url),
+                         'uefi_file': '{}/rhcos-metal.x86_64.raw.gz'.format(self.ocp_rhcos_base_url),
+                         'rootfs': '{}/rhcos-live-rootfs.x86_64.img'.format(self.ocp_rhcos_base_url)}
         self.task_inputs = """
-1: 'download ocp 4.3 software'
-2: 'bootstrap node details'
-3: 'master node details'
-4: 'worker node details'
-5: 'disk info'
-6: 'bind dns'
-7: 'http webserver'
-8: 'ignition config'
-9: 'print inventory'
-10: 'generate inventory file'
-11: 'Exit'
+1: download OpenShift software
+2: cluster install
+3: disk info
+4: bind
+5: http
+6: ignition config
+7: print inventory
+8: generate inventory file
+9: Exit
 """                 
 
     def clear_screen(self):
@@ -54,6 +63,16 @@ class InventoryFile:
         """
         self.inventory_dict['csah'] = {'hosts': '{}'.format(socket.getfqdn()), 'vars': {}}
 
+    def set_nodes_inventory(self):
+        nodes_inventory_check = check_path(self.nodes_inventory, isfile=True)
+
+        if nodes_inventory_check:
+            with open(r'{}'.format(self.nodes_inventory)) as nodes_inv:
+                self.nodes_inv = yaml.load(nodes_inv, Loader=yaml.FullLoader)
+        else:
+            logging.error('incorrect nodes inventory specified: {}'.format(self.nodes_inventory))
+            sys.exit()
+
     def generate_inputs_menu(self):
         """
         generates a menu of tasks for user input for each task
@@ -61,17 +80,17 @@ class InventoryFile:
         """
         self.clear_screen()
         self.input_choice = ''
-        valid_choices = range(1,14)
+        valid_choices = range(1,10)
         while self.input_choice not in valid_choices:
              logging.info('{}'.format(self.task_inputs))
              try:
                  self.input_choice = int(input('task choice for necessary inputs: '))
                  if self.input_choice not in valid_choices:
-                     logging.warn('Invalid choice. Valid choice is an integer from 1-13')
+                     logging.warn('Invalid choice. Valid choice is an integer from 1-9')
              except ValueError:
                  logging.error('Strings not a valid choice')
 
-        logging.info('user choice is {}'.format(self.input_choice))
+        logging.debug('user choice is {}'.format(self.input_choice))
         self.get_user_inputs_for_task()
             
     def get_user_inputs_for_task(self):
@@ -79,41 +98,37 @@ class InventoryFile:
         performs tasks based on user input
 
         """
-        if self.input_choice == 11:
+        if self.input_choice == 9:
             sys.exit()
         elif self.input_choice == 1:
             self.get_software_download_dir()
             self.get_software()
         elif self.input_choice == 2:
-            self.get_bootstrap_node()
+            self.get_cluster_nodes()
         elif self.input_choice == 3:
-            self.get_master_nodes()
-        elif self.input_choice == 4:
-            self.get_worker_nodes()
-        elif self.input_choice == 5:
             self.get_disk_name()
-        elif self.input_choice == 6:
+        elif self.input_choice == 4:
             self.get_dns_details()
-        elif self.input_choice == 7:
+        elif self.input_choice == 5:
             self.get_http_details()
-        elif self.input_choice == 8:
+        elif self.input_choice == 6:
             self.get_ignition_details()
-        elif self.input_choice == 9:
+        elif self.input_choice == 7:
             self.display_inventory()
-        elif self.input_choice == 10:
-            self.yaml_inventory()
+        elif self.input_choice == 8:
+            self.yaml_inventory(inventory_file='generated_inventory')
             sys.exit()
         self.generate_inputs_menu()
 
     def get_software_download_dir(self):
         """ 
-        get software download directory to download OCP 4.3 software bits
+        get software download directory to download OCP software bits
   
         """
         self.clear_screen()
         default = '/home/ansible/files'
-        self.software_dir = input('provide complete path of directory to download OCP 4.3 software bits\n'
-                                  'default [/home/ansible/files]: ')
+        self.software_dir = input('provide complete path of directory to download OCP {} software bits\n'
+                                  'default [/home/ansible/files]: '.format(self.version))
         self.software_dir = set_values(self.software_dir, default)
         dest_path_exist = check_path(self.software_dir, isdir=True)
         if dest_path_exist:
@@ -126,12 +141,15 @@ class InventoryFile:
 
     def get_software(self):
         """ 
-        performs OCP 4.3 software bits download from the base urls
+        performs OCP software bits download from the base urls
         specified in the class __init__ 
    
         """
 
-        logging.info('downloading OCP 4.3 software bits into {}'.format(self.software_dir))
+        logging.info('downloading OCP {} software bits into {}'.format(self.software_dir, self.version))
+        urlretrieve('{}/sha256sum.txt'.format(self.ocp_client_base_url),'{}/client.txt'.format(self.software_dir))
+        urlretrieve('{}/sha256sum.txt'.format(self.ocp_rhcos_base_url),'{}/rhcos.txt'.format(self.software_dir))
+        shasum = False
         for url_key in self.ocp_urls.keys():
             url = self.ocp_urls[url_key]
             dest_name = url.split('/')[-1]
@@ -140,6 +158,7 @@ class InventoryFile:
             url_check = ''
             if dest_path_exist:
                 logging.info('file {} already exists in {}'.format(dest_name, self.software_dir))
+                shasum = validate_file(self.software_dir, dest_name, self.ocp_rhcos_base_url)
                 self.inventory_dict['csah']['vars'][url_key] = dest_name
             else:
                 url_check = validate_url(url)
@@ -147,10 +166,40 @@ class InventoryFile:
                     logging.error('file {} in {} is not available'.format(dest_name, url_key))
                     self.inventory_dict['csah']['vars'][url_key] = ''
 
-            if url_check != '' and url_check.code == 200:
+            if not shasum:
+                url_check = validate_url(url)
+                if url_check == '':
+                    logging.error('file {} in {} is not available'.format(dest_name, url_key))
+                    self.inventory_dict['csah']['vars'][url_key] = ''
+
+            if url_check != '' and url_check.code == 200 and not shasum:
                 logging.info('downloading {}'.format(dest_name))
                 urlretrieve('{}'.format(url),'{}/{}'.format(self.software_dir, dest_name))
                 self.inventory_dict['csah']['vars'][url_key] = dest_name
+
+    def get_cluster_nodes(self):
+        supported_install = """
+        1. 3 node (control/compute in control nodes)
+        2. 6+ node (3 control and 3+ compute)
+        """
+        logging.info('supported cluster install options: {}'.format(supported_install))
+        valid_choices = [1, 2]
+        while self.cluster_install not in valid_choices:
+            try:
+                self.cluster_install = int(input('enter cluster install option: '))
+                logging.info('option selected: {}'.format(self.cluster_install))
+            except ValueError:
+                logging.error('valid choices are: {}'.format(valid_choices))
+                
+
+        self.get_bootstrap_node()
+        self.get_master_nodes()
+        if self.cluster_install == 2:
+            self.get_worker_nodes()
+            self.inventory_dict['csah']['vars']['cluster_install'] = '6+ node'
+        else:
+            self.inventory_dict['csah']['vars']['cluster_install'] = '3 node'
+
 
     def get_bootstrap_node(self):
         """ 
@@ -160,97 +209,27 @@ class InventoryFile:
         bootstrap_mac = ''
         bootstrap_devices = None
         self.clear_screen()
-        default = 'bootstrap'
-        bootstrap_name = input('enter the bootstrap node name\n'
-                               'default [bootstrap]: ')
-        bootstrap_name = set_values(bootstrap_name, default)
-        bootstrap_os_ip = get_ip(node_name=bootstrap_name, ip_type='os')
-        bootstrap_os_ip = validate_ip(bootstrap_os_ip)
-        bootstrap_idrac_ip = get_ip(node_name=bootstrap_name, ip_type='idrac')
-        response = check_ip_ping(bootstrap_idrac_ip)
+        bootstrap_name = self.nodes_inv['bootstrap_kvm'][0]['name']
+        bootstrap_os_ip = self.nodes_inv['bootstrap_kvm'][0]['ip_os']
+        bootstrap_mac = "52:54:00:{}:{}:{}".format(randint(10,99),randint(10,99),randint(10,99))
+        logging.debug('adding bootstrap_node values as name: {} ip: {} mac: {}'.format(bootstrap_name, bootstrap_os_ip,
+                                                                                       bootstrap_mac)) 
+        self.inventory_dict['csah']['vars']['bootstrap_node'] = []
+        bootstrap_keys = ['name','ip','mac']
+        bootstrap_values = [bootstrap_name, bootstrap_os_ip, bootstrap_mac]
+        bootstrap_pairs = dict(zip(bootstrap_keys, bootstrap_values))
+        self.inventory_dict['csah']['vars']['bootstrap_node'].append(bootstrap_pairs)
 
-        if response != 0:
-            get_user_response(message='idrac ip {} not pingeable'.format(bootstrap_idrac_ip))
-        else:
-            user, passwd = get_idrac_creds(bootstrap_idrac_ip)
-            base_api_url = 'https://{}/redfish/v1/Systems/System.Embedded.1/EthernetInterfaces'.format(bootstrap_idrac_ip)
-            bootstrap_devices = get_network_devices(user, passwd, base_api_url)
-
-        if bootstrap_devices:
-            map_devices = map_interfaces_network(bootstrap_devices)
-            bootstrap_mac = get_network_device_mac(map_devices, user, passwd, base_api_url)
-    
-        if bootstrap_mac:
-            logging.info('adding bootstrap_node values as name: {} ip: {} mac: {}'.format(bootstrap_name, bootstrap_os_ip,
-                                                                                          bootstrap_mac)) 
-            self.inventory_dict['csah']['vars']['bootstrap_node'] = []
-
-        if bootstrap_mac and map_devices:
-            bootstrap_bond_name = 'bond0'
-            bootstrap_active_bond_device = generate_network_devices_menu(map_devices, purpose='boostrap active bond interface')
-            logging.info('selected bootstrap active bond interface: {}'.format(bootstrap_active_bond_device))
-            bootstrap_active_bond_enumeration = get_device_enumeration(bootstrap_active_bond_device, os='rhcos')
-            logging.info('bootstrap active bond enumeration: {}'.format(bootstrap_active_bond_enumeration))
-            bootstrap_backup_bond_device = generate_network_devices_menu(map_devices, purpose='bootstrap backup bond interface')
-            logging.info('selected bootstrap backup bond interface: {}'.format(bootstrap_backup_bond_device))
-            bootstrap_backup_bond_enumeration = get_device_enumeration(bootstrap_backup_bond_device, os='rhcos')
-            logging.info('bootstrap backup bond enumeration: {}'.format(bootstrap_backup_bond_enumeration))
-            self.set_network_details(node_type='bootstrap_node', node_name=bootstrap_name,ip=bootstrap_os_ip,mac=bootstrap_mac,
-                                     bond_name=bootstrap_bond_name,primary=bootstrap_active_bond_enumeration,
-                                     backup=bootstrap_backup_bond_enumeration)
-            
-            
     def get_master_nodes(self):
         """ 
         get details about master node
 
         """
         self.clear_screen()
-        default = 3
-        master_nodes_count = input('enter number of master nodes\n'
-                                   'default [3]: ')
-        master_nodes_count = set_values(master_nodes_count, default, check='integer')
-        self.inventory_dict['csah']['vars']['master_nodes'] = []
-        for num in range(master_nodes_count):
-            master_values = []
-            master_mac = ''
-            master_devices = None
-            default = 'etcd-{}'.format(num)
-            master_name = input('enter the master {} node name \n'
-                                'default [{}]: '.format(num, default))
-            master_name = set_values(master_name, default)
-            master_os_ip = get_ip(node_name=master_name, ip_type='os')
-            master_os_ip = validate_ip(master_os_ip)
-            master_idrac_ip = get_ip(node_name=master_name, ip_type='idrac')
-            response = check_ip_ping(master_idrac_ip)
-            
-            if response != 0:
-                get_user_response(message='idrac ip {} not pingeable'.format(master_idrac_ip))
-            else:
-                user, passwd = get_idrac_creds(master_idrac_ip)
-                base_api_url = 'https://{}/redfish/v1/Systems/System.Embedded.1/EthernetInterfaces'.format(master_idrac_ip)
-                master_devices = get_network_devices(user, passwd, base_api_url)
-
-            if master_devices:
-                map_devices = map_interfaces_network(master_devices)
-                master_mac = get_network_device_mac(map_devices, user, passwd, base_api_url)
-
-            if master_mac and map_devices:
-                master_bond_name = 'bond0'
-                master_active_bond_device = generate_network_devices_menu(map_devices, purpose='{} active bond interface'.format(master_name))
-                logging.info('selected {} active bond interface: {}'.format(master_name, master_active_bond_device))
-                master_active_bond_enumeration = get_device_enumeration(master_active_bond_device, os='rhcos')
-                logging.info('{} active bond enumeration: {}'.format(master_name, master_active_bond_enumeration))
-                master_backup_bond_device = generate_network_devices_menu(map_devices, purpose='{} backup bond interface'.format(master_name))
-                logging.info('selected {} backup bond interface: {}'.format(master_name, master_backup_bond_device))
-                master_backup_bond_enumeration = get_device_enumeration(master_backup_bond_device, os='rhcos')
-                logging.info('{} backup bond enumeration: {}'.format(master_name, master_backup_bond_enumeration))
-                self.set_network_details(node_type='master_nodes', node_name=master_name, ip=master_os_ip, mac=master_mac,
-                                         bond_name=master_bond_name, primary=master_active_bond_enumeration,
-                                         backup=master_backup_bond_enumeration)
-
-            self.clear_screen()
-        self.inventory_dict['csah']['vars']['number_of_masters'] = master_nodes_count
+        self.inventory_dict['csah']['vars']['control_nodes'] = []
+        self.inventory_dict['csah']['vars']['num_of_control_nodes'] = len(self.nodes_inv['control_nodes'])
+        self.inventory_dict = get_nodes_info(node_type='control_nodes', inventory=self.inventory_dict, idrac_user=self.id_user, 
+                                             idrac_pass=self.id_pass, nodes_info=self.nodes_inv)
 
     def get_worker_nodes(self):
         """ 
@@ -258,59 +237,34 @@ class InventoryFile:
 
         """
         self.clear_screen()
-        worker_nodes_count = input('enter number of worker nodes\n'
-                                   'default [2]: ')
-        default = 2
-        worker_nodes_count = set_values(worker_nodes_count, default, check='integer')
-        self.inventory_dict['csah']['vars']['worker_nodes'] = []
-        for num in range(worker_nodes_count):
-            worker_values = []
-            worker_devices = None
-            worker_interfaces_enumeration = []
-            worker_mac = ''
-            default = 'worker-{}'.format(num)
-            worker_name = input('enter the worker {} node name \n'
-                                'default [{}]: '.format(num, default))
-            worker_name = set_values(worker_name, default)
-            worker_os_ip = get_ip(node_name=worker_name, ip_type='os')
-            worker_os_ip = validate_ip(worker_os_ip)
-            worker_idrac_ip = get_ip(node_name=worker_name, ip_type='idrac')
-            response = check_ip_ping(worker_idrac_ip)
-            
-            if response != 0:
-                get_user_response(message='idrac ip {} not pingeable'.format(worker_idrac_ip))
-            else:
-                user, passwd = get_idrac_creds(worker_idrac_ip)
-                base_api_url = 'https://{}/redfish/v1/Systems/System.Embedded.1/EthernetInterfaces'.format(worker_idrac_ip)
-                worker_devices = get_network_devices(user, passwd, base_api_url)
+        self.inventory_dict['csah']['vars']['compute_nodes'] = []
+        self.inventory_dict['csah']['vars']['num_of_compute_nodes'] = len(self.nodes_inv['compute_nodes'])
+        self.inventory_dict = get_nodes_info(node_type='compute_nodes', inventory=self.inventory_dict, idrac_user=self.id_user,
+                                             idrac_pass=self.id_pass, nodes_info=self.nodes_inv)
 
-            if worker_devices:
-                map_devices = map_interfaces_network(worker_devices)
-                worker_mac = get_network_device_mac(map_devices, user, passwd, base_api_url)
+    def add_new_worker_nodes(self):
+        """
+        get new worker nodes added to inventory file
 
-            if worker_mac and map_devices:
-                worker_bond_name = 'bond0'
-                worker_active_bond_device = generate_network_devices_menu(map_devices, purpose='{} active bond interface'.format(worker_name))
-                logging.info('selected {} active bond interface: {}'.format(worker_name, worker_active_bond_device))
-                worker_active_bond_enumeration = get_device_enumeration(worker_active_bond_device, os='rhel')
-                logging.info('{} active bond enumeration: {}'.format(worker_name, worker_active_bond_enumeration))
-                worker_backup_bond_device = generate_network_devices_menu(map_devices, purpose='{} backup bond interface'.format(worker_name))
-                logging.info('selected {} backup bond interface: {}'.format(worker_name, worker_backup_bond_device))
-                worker_backup_bond_enumeration = get_device_enumeration(worker_backup_bond_device, os='rhel')
-                logging.info('{} backup bond enumeration: {}'.format(worker_name, worker_backup_bond_enumeration))
-                logging.info('interfaces: {}'.format(worker_devices))
-                logging.info('map interfaces: {}'.format(map_devices))
-                for worker_device in map_devices:
-                    interface_enumeration = get_device_enumeration(worker_device, os='rhel')
-                    worker_interfaces_enumeration.append(interface_enumeration)
-                #self.inventory_dict['csah']['vars']['{}_interfaces'.format(worker_name)] = worker_interfaces_enumeration
-                self.set_network_details(node_type='worker_nodes', node_name=worker_name, ip=worker_os_ip, mac=worker_mac,
-                                         bond_name=worker_bond_name, primary=worker_active_bond_enumeration,
-                                         backup=worker_backup_bond_enumeration, interfaces=worker_interfaces_enumeration)
-                
-            self.clear_screen()
+        """
+        current_inventory_file = input('Enter complete path to existing inventory file: ')
+        file_exists = os.path.exists('{}'.format(current_inventory_file))
+        if file_exists:
+            with open('{}'.format(current_inventory_file), 'r') as file:
+                 self.inventory_dict = yaml.load(file, Loader=yaml.FullLoader)
+      
+            try:
+                self.inventory_dict['csah']['vars']['compute_nodes']
+                self.inventory_file = get_nodes_info(node_type='new_compute_nodes', inventory=self.inventory_dict, add=True, 
+                                                     idrac_user=self.id_user, idrac_pass=self.id_pass, nodes_info=self.nodes_inv)
+                self.yaml_inventory(inventory_file=current_inventory_file)
+            except KeyError:
+                logging.error('Inventory file does not contain worker nodes info')
 
-        self.inventory_dict['csah']['vars']['number_of_workers'] = worker_nodes_count
+            sys.exit(2)
+        else:
+            logging.error('incorrect file path specified')
+            sys.exit(2)       
 
     def dhcp_lease_times(self):
         """ 
@@ -321,51 +275,20 @@ class InventoryFile:
         self.inventory_dict['csah']['vars']['default_lease_time'] = 8000
         self.inventory_dict['csah']['vars']['max_lease_time'] = 72000
 
-    def set_network_details(self, node_type='', node_name='', ip='', mac='', bond_name='', primary='', backup='', interfaces=''):
-        """ 
-        get bond details and user interfaces used for bond
-
-        """
-        devices = []
-        self.clear_screen()
-        node_keys = ['name','ip','mac','bond','primary','backup','options']
-        node_values = []
-        if node_type == 'worker_nodes':
-            bond_options = 'lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4'
-        else:
-            bond_options = 'mode=active-backup,miimon=100,primary={}'.format(primary)
-        bond_interfaces = '{},{}'.format(primary, backup)
-        node_values.append(node_name)
-        node_values.append(ip)
-        node_values.append(mac)
-        node_values.append(bond_name)
-        node_values.append(primary)
-        node_values.append(backup)
-        node_values.append(bond_options)
-
-        if node_type == 'worker_nodes':
-            node_keys = ['name','ip','mac','bond','primary','backup','options', 'interfaces']
-            node_values.append(interfaces)
-            logging.info('adding interfaces in {} node: {}'.format(node_name, interfaces))
-
-        node_pairs = dict(zip(node_keys, node_values))
-        logging.info('node_values {} {} {}'.format(node_type, node_values, node_pairs))
-        self.inventory_dict['csah']['vars'][node_type].append(node_pairs)
-
     def get_dns_details(self):
         """ 
         get zone config file and cluster name used by DNS
 
         """
         self.clear_screen()
-        zone_file = input('specify zone file \n'
-                          'default [/var/named/ocp.zones]: ')
-        default = '/var/named/ocp.zones'
-        zone_file = set_values(zone_file, default)
         cluster_name = input('specify cluster name \n'
                              'default [ocp]: ')
         default = 'ocp'
         cluster_name = set_values(cluster_name, default)
+        zone_file = input('specify zone file \n'
+                          'default [/var/named/{}.zones]: '.format(cluster_name))
+        default = '/var/named/{}.zones'.format(cluster_name)
+        zone_file = set_values(zone_file, default)
         logging.info('adding zone_file: {} cluster: {}'.format(zone_file, cluster_name))
         self.inventory_dict['csah']['vars']['default_zone_file'] = zone_file
         self.inventory_dict['csah']['vars']['cluster'] = cluster_name
@@ -386,15 +309,11 @@ class InventoryFile:
                              'default [ignition]: ')
         default = 'ignition'
         ignition_dir = set_values(ignition_dir, default)
-        ocp_version = input('specify the version of ocp \n'
-                            'default [4.3]: ')
-        default = 4.3
-        ocp_version = set_values(ocp_version, default)
-        logging.info('adding http_port: {} http_ignition: {} version: {}'.format(port, ignition_dir, ocp_version))
+        logging.info('adding http_port: {} http_ignition: {} version: {}'.format(port, ignition_dir, self.version))
         self.inventory_dict['csah']['vars']['http_port'] = int(port)
         self.inventory_dict['csah']['vars']['os'] = 'rhcos'
         self.inventory_dict['csah']['vars']['http_ignition'] = ignition_dir
-        self.inventory_dict['csah']['vars']['version'] = ocp_version
+        self.inventory_dict['csah']['vars']['version'] = self.version
 
     def get_disk_name(self):
         """ 
@@ -404,21 +323,19 @@ class InventoryFile:
         self.clear_screen()
         default = 'nvme0n1'
         logging.info('ensure disknames are absolutely available. Otherwise OpenShift install fails')
-        master_install_device = input('specify the master device that will be installed\n'
+        master_install_device = input('specify the control plane device that will be installed\n'
                                       'default [nvme0n1]: ')
         master_install_device = set_values(master_install_device, default)
-        bootstrap_install_device = input('specify the bootstrap device that will be installed\n'
-                                         'default [nvme0n1]: ')
-        bootstrap_install_device = set_values(bootstrap_install_device, default)
-        worker_install_device = input('specify the worker device that will be installed\n'
-                                      'default [nvme0n1]: ')
-        worker_install_device = set_values(worker_install_device, default)
-        logging.info('adding master_install_device: {} bootstrap_install_device: {}\
-                      worker_install_device: {}'.format(master_install_device, bootstrap_install_device,
-                                                        worker_install_device))
         self.inventory_dict['csah']['vars']['master_install_device'] = master_install_device
-        self.inventory_dict['csah']['vars']['bootstrap_install_device'] = bootstrap_install_device
-        self.inventory_dict['csah']['vars']['worker_install_device'] = worker_install_device
+        if self.cluster_install == 1:
+            pass
+        else:
+            worker_install_device = input('specify the compute node device that will be installed\n'
+                                          'default [nvme0n1]: ')
+            worker_install_device = set_values(worker_install_device, default)
+            logging.info('adding master_install_device: {} worker_install_device: {}'.format(master_install_device, 
+                          worker_install_device))
+            self.inventory_dict['csah']['vars']['worker_install_device'] = worker_install_device
 
     def set_haproxy(self):
         """ 
@@ -476,12 +393,12 @@ class InventoryFile:
         self.inventory_dict['csah']['vars']['host_prefix'] = int(host_prefix)
         self.inventory_dict['csah']['vars']['service_network_cidr'] = service_network_cidr
 
-    def yaml_inventory(self):
+    def yaml_inventory(self, inventory_file=''):
         """ 
         generate yaml file using user inputs
  
         """
-        inventory_file = 'inventory_file'
+        #inventory_file = 'generated_inventory'
         with open(inventory_file, 'w') as invfile:
             yaml.dump(self.inventory_dict, invfile, default_flow_style=False, sort_keys=False)
 
@@ -498,15 +415,33 @@ class InventoryFile:
         self.set_keys()
         self.set_haproxy()
         self.dhcp_lease_times()
+        self.set_nodes_inventory()
         self.generate_inputs_menu()
 
 
 def main():
-    log_setup(log_file='inventory.log')
-    logging.info('setting log file to inventory.log')
-    gen_inv_file = InventoryFile()
-    gen_inv_file.run()
+    parser = argparse.ArgumentParser(description="Generate Inventory")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('--run', help='generate inventory file', action='store_true', required=False)
+    group.add_argument('--add', help='number of worker nodes', action='store_true', required=False)
+    parser.add_argument('--ver', type=float, help='specify OpenShift version', required=True, choices=[4.6], default=4.6)
+    parser.add_argument('--nodes', help='nodes inventory file', required=True)
+    parser.add_argument('--id_user', help='specify idrac user', required=False)
+    parser.add_argument('--id_pass', help='specify idrac user', required=False)
+    parser.add_argument('--debug', help='specify debug logs', action='store_true', required=False)
+    if len(sys.argv) == 1:
+        parser.print_help(sys.stderr)
+        sys.exit()
+    args = parser.parse_args()
+    log_setup(log_file='inventory.log', debug=args.debug)
+    gen_inv_file = InventoryFile(id_user=args.id_user, id_pass=args.id_pass, version=args.ver, nodes_inventory=args.nodes)
+    if args.run:
+        gen_inv_file.run()
     
+    if args.add:
+        gen_inv_file.set_nodes_inventory()
+        gen_inv_file.add_new_worker_nodes()
+        
 
 if __name__ == "__main__":
     main()

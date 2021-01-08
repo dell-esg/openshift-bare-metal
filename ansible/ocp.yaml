@@ -8,3 +8,4 @@
     - proxy
     - ignition
     - pxe
+    - bootstrap

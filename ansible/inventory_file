@@ -1,5 +1,5 @@
 csah:
-  hosts: csah.example.lab
+  hosts: r192csah.oss.labs
   vars:
     proxy: haproxy
     haproxy_conf: /etc/haproxy/haproxy.cfg
@@ -17,89 +17,79 @@ csah:
     max_lease_time: 72000
     software_src: /home/ansible/files
     openshift_installer: openshift-install-linux.tar.gz
-    initramfs: rhcos-4.3.8-x86_64-installer-initramfs.x86_64.img
-    kernel_file: rhcos-4.3.8-x86_64-installer-kernel-x86_64
-    uefi_file: rhcos-4.3.8-x86_64-metal.x86_64.raw.gz
-    pull_secret_file: pullsecret
+    initramfs: rhcos-4.5.6-x86_64-installer-initramfs.x86_64.img
+    kernel_file: rhcos-4.5.6-x86_64-installer-kernel-x86_64
+    uefi_file: rhcos-4.5.6-x86_64-metal.x86_64.raw.gz
     rhel_os: rhel-server-7.8-x86_64-dvd.iso
-    bootstrap_node:
-    - name: bootstrap
-      ip: 100.82.46.26
-      mac: B8:59:9F:C0:35:86
-      bond: bond0
-      primary: ens2f0
-      backup: ens2f1
-      options: mode=active-backup,miimon=100,primary=ens2f0
+    pull_secret_file: pullsecret
+    #bootstrap_node:
+    #- name: r192abs
+    #  ip: 100.67.192.69
+    #  mac: 52:54:00:27:91:12
     master_nodes:
-    - name: etcd-0
-      ip: 100.82.46.21
-      mac: B8:59:9F:C0:36:46
+    - name: r192am1
+      ip: 100.67.192.71
+      mac: 98:03:9B:58:AE:D2
       bond: bond0
-      primary: ens2f0
-      backup: ens2f1
-      options: mode=active-backup,miimon=100,primary=ens2f0
-    - name: etcd-1
-      ip: 100.82.46.22
-      mac: B8:59:9F:C0:35:66
+      primary: eno1
+      backup: ens2f0
+      options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
+    - name: r192am2
+      ip: 100.67.192.72
+      mac: 98:03:9B:58:AE:F2
       bond: bond0
-      primary: ens2f0
-      backup: ens2f1
-      options: mode=active-backup,miimon=100,primary=ens2f0
-    - name: etcd-2
-      ip: 100.82.46.23
-      mac: B8:59:9F:C0:34:C6
+      primary: eno1
+      backup: ens2f0
+      options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
+    - name: r192am3
+      ip: 100.67.192.73
+      mac: 98:03:9B:58:AD:92
       bond: bond0
-      primary: ens2f0
-      backup: ens2f1
-      options: mode=active-backup,miimon=100,primary=ens2f0
+      primary: eno1
+      backup: ens2f0
+      options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
     number_of_masters: 3
     worker_nodes:
-    - name: worker-0
-      ip: 100.82.46.24
-      mac: B8:59:9F:C0:36:3E
+    - name: r192aw1
+      ip: 100.67.192.74
+      mac: 98:03:9B:58:A9:22
       bond: bond0
-      primary: p2p1
-      backup: p2p2
+      primary: eno1
+      backup: ens2f0
       options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
       interfaces:
-      - em1
-      - em2
-      - p2p1
-      - p2p2
-    - name: worker-1
-      ip: 100.82.46.25
-      mac: B8:59:9F:C0:35:E6
+      - eno1
+      os: rhcos
+    - name: r192aw2
+      ip: 100.67.192.75
+      mac: 98:03:9B:58:AD:C2
       bond: bond0
-      primary: p2p1
-      backup: p2p2
+      primary: eno1
+      backup: ens2f0
       options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
       interfaces:
-      - em1
-      - em2
-      - p2p1
-      - p2p2
-    - name: worker-2
-      ip: 100.82.46.26
-      mac: B8:59:9F:C0:35:86
+      - eno1
+      os: rhcos
+    - name: r192aw3
+      ip: 100.67.192.76
+      mac: 98:03:9B:58:AD:62
       bond: bond0
-      primary: p2p1
-      backup: p2p2
+      primary: eno1
+      backup: ens2f0
       options: lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4
       interfaces:
-      - em1
-      - em2
-      - p2p1
-      - p2p2
+      - eno1
+      os: rhcos
     number_of_workers: 3
+    cluster_install: 6+ node
     master_install_device: nvme0n1
-    bootstrap_install_device: nvme0n1
     worker_install_device: nvme0n1
-    default_zone_file: /var/named/ocp.zones
-    cluster: ocp
+    default_zone_file: /var/named/r192a.zones
+    cluster: r192a
     http_port: 8080
     os: rhcos
     http_ignition: ignition
-    version: 4.3
+    version: 4.5
     install_user: core
     install_dir: openshift
     cluster_network_cidr: 10.128.0.0/14

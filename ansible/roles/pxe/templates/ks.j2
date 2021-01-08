@@ -36,7 +36,7 @@ clearpart --all --initlabel --drives={{ worker_install_device }}
 # Disk partitioning information
 part /boot/efi --fstype="efi" --ondisk={{ worker_install_device }} --size=200 --fsoptions="umask=0077,shortname=winnt"
 part /boot --fstype="xfs" --ondisk={{ worker_install_device }} --size=1024
-part pv.265 --fstype="lvmpv" --ondisk={{ worker_install_device }} --size=1524960
+part pv.265 --fstype="lvmpv" --ondisk={{ worker_install_device }} --size=1024 --grow
 volgroup rhel --pesize=4096 pv.265
 logvol swap  --fstype="swap" --size=4096 --name=swap --vgname=rhel
 logvol /  --fstype="xfs" --grow --maxsize=51200 --size=1024 --name=root --vgname=rhel
@@ -71,11 +71,16 @@ kexec-tools
 #create bonding by NetworkManager
 %post --nochroot --log=/mnt/sysimage/root/ks-post-log.log
 
-#add a bond device
+#configure networking
+{% if item.bond is defined %}
 nmcli conn add type bond ifname {{ item.bond }} con-name {{ item.bond }} bond.options "{{ item.options }}"
 nmcli conn add type ethernet ifname {{ item.primary }} master {{ item.bond }}
 nmcli conn add type ethernet ifname {{ item.backup }} master {{ item.bond }}
-nmcli conn mod bond0 ipv4.method manual ipv4.addresses {{ item.ip }}/{{ net_mask_cidr }} connection.autoconnect yes ipv4.gateway {{ ansible_default_ipv4.gateway }} ipv4.dns {{ ansible_default_ipv4.address }} ipv4.dns-search {{ ansible_domain }}
+nmcli conn mod {{ item.bond }} ipv4.method manual ipv4.addresses {{ item.ip }}/{{ net_mask_cidr }} connection.autoconnect yes ipv4.gateway {{ ansible_default_ipv4.gateway }} ipv4.dns {{ ansible_default_ipv4.address }} ipv4.dns-search {{ ansible_domain }}
+{% else %}
+nmcli con add type ethernet ifname {{ item.interface }} con-name {{ item.interface }} 
+nmcli con mod {{ item.interface }} ipv4.method manual ipv4.addresses {{ item.ip }}/{{ net_mask_cidr }} connection.autoconnect yes ipv4.gateway {{ ansible_default_ipv4.gateway }} ipv4.dns {{ ansible_default_ipv4.address }} ipv4.dns-search {{ ansible_domain }}
+{% endif %}
 
 #copy network configuration files to the install image
 rm -rf /mnt/sysimage/etc/sysconfig/network-scripts/ifcfg-*

@@ -94,11 +94,6 @@
     - bootstrap.ign
   register: ign
 
-- name: check manifest directory in {{ ocp_install_dir.path }}
-  stat:
-    path: "{{ ocp_install_dir.path }}/manifests"
-  register: manifest
-
 - name: generate manifests directory in {{ ocp_install_dir.path }}
   become: yes
   become_user: "{{ install_user }}"
@@ -107,12 +102,21 @@
     /home/{{ install_user }}/openshift-install create manifests --dir={{ ocp_install_dir.path }}
   when: not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
 
-- name: modify cluster-scheduler-02-config.yml file in manifests dir
-  lineinfile:
-    path: "{{ ocp_install_dir.path }}/manifests/cluster-scheduler-02-config.yml"
-    regexp: 'mastersSchedulable'
-    line: '  mastersSchedulable: False'
-  when: not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
+- name: check manifest directory in {{ ocp_install_dir.path }}
+  stat:
+    path: "{{ ocp_install_dir.path }}/manifests"
+  register: manifest_dir
+
+- name: backup openshift and manifest directory
+  copy:
+    src: "{{ ocp_install_dir.path }}/{{ item }}"
+    dest: /var/www/html/
+    remote_src: yes
+    directory_mode: yes
+  loop:
+    - openshift
+    - manifests
+  when: manifest_dir.stat.exists and manifest_dir.stat.isdir
 
 - name: generate ignition config files
   become: yes
