@@ -52,10 +52,3 @@ etcd-{{ index }}    IN   CNAME   {{ node.name }}.{{ ansible_domain }}.
 *.apps    IN     A   {{ ansible_default_ipv4.address }}
 api       IN     A   {{ ansible_default_ipv4.address }}
 api-int   IN     A   {{ ansible_default_ipv4.address }}
-
-{% set index = 0 %}
-
-{% for node in control_nodes %}
-_etcd-server-ssl._tcp 86400  IN   SRV   0   10 2380  etcd-{{ index }}.{{ cluster }}.{{ ansible_domain }}.
-{% set index = index + 1 %}
-{% endfor %}
