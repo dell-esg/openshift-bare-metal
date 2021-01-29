@@ -1,6 +1,0 @@
-workers:
-  hosts: compute-3.example.com
-  vars:
-    subscription_user: smuser
-    subscription_pass: smpassword
-    pool_id: xxxxxxxxxxxxxxxxxxxxxxxx
