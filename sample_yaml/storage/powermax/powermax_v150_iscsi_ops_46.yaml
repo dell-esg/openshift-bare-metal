@@ -18,7 +18,7 @@ spec:
         # Unisphere IP
         # If using PowerMax reverseproxy, leave it unchanged
         - name: X_CSI_POWERMAX_ENDPOINT
-          value: "https://100.82.46.26:8443/"
+          value: "https://192.168.46.26:8443/"
         # Change this to a 3 character prefix unique for this cluster
         - name: X_CSI_K8S_CLUSTER_PREFIX
           value: "OCP"

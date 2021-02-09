@@ -73,7 +73,7 @@ kexec-tools
 
 #configure networking
 {% if item.bond is defined %}
-nmcli conn add type bond ifname {{ item.bond }} con-name {{ item.bond }} bond.options "{{ item.options }}"
+nmcli conn add type bond ifname {{ item.bond }} con-name {{ item.bond }} bond.options "lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4"
 nmcli conn add type ethernet ifname {{ item.primary }} master {{ item.bond }}
 nmcli conn add type ethernet ifname {{ item.backup }} master {{ item.bond }}
 nmcli conn mod {{ item.bond }} ipv4.method manual ipv4.addresses {{ item.ip }}/{{ net_mask_cidr }} connection.autoconnect yes ipv4.gateway {{ ansible_default_ipv4.gateway }} ipv4.dns {{ ansible_default_ipv4.address }} ipv4.dns-search {{ ansible_domain }}

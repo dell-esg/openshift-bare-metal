@@ -17,7 +17,7 @@ spec:
         - name: X_CSI_VERBOSE
           value: "1"
         - name: X_CSI_ISI_ENDPOINT
-          value: 100.82.182.85
+          value: 192.168.182.85
         - name: X_CSI_ISI_PORT
           value: "8080"
         - name: X_CSI_ISI_PATH
@@ -54,7 +54,7 @@ spec:
         parameters:
           AccessZone: "System"
           IsiPath: "/ifs"
-          AzServiceIP: 100.82.182.85
+          AzServiceIP: 192.168.182.85
           RootClientEnabled: "false"
     snapshotClass:
       # The volumeSnapshotClass name will have a prefix "isilon"
