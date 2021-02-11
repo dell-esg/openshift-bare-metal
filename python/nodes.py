@@ -147,7 +147,11 @@ def get_nodes_info(node_type='', inventory='', add=False, idrac_user='', idrac_p
                 inventory['csah']['vars'][node_type].append(node_pairs)
 
     if node_type in all_compute_nodes and add:
-        compute_nodes_count = inventory['csah']['vars']['num_of_compute_nodes']
+        try:
+            compute_nodes_count = inventory['csah']['vars']['num_of_compute_nodes']
+        except KeyError:
+            inventory['csah']['vars']['num_of_compute_nodes'] = 0
+            compute_nodes_count = 0
         new_compute_nodes_count = compute_nodes_count + nodes_count
         inventory['csah']['vars']['num_of_compute_nodes'] = new_compute_nodes_count
 

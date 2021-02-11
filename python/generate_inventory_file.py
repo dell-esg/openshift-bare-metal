@@ -255,11 +255,19 @@ class InventoryFile:
       
             try:
                 self.inventory_dict['csah']['vars']['compute_nodes']
-                self.inventory_file = get_nodes_info(node_type='new_compute_nodes', inventory=self.inventory_dict, add=True, 
-                                                     idrac_user=self.id_user, idrac_pass=self.id_pass, nodes_info=self.nodes_inv)
-                self.yaml_inventory(inventory_file=current_inventory_file)
             except KeyError:
                 logging.error('Inventory file does not contain worker nodes info')
+                self.inventory_dict['csah']['vars']['cluster_install'] = '6+ node'
+                self.inventory_dict['csah']['vars']['compute_nodes'] = []
+                default = 'nvme0n1'
+                worker_install_device = input('specify the compute node device that will be installed\n'
+                                              'default [nvme0n1]: ')
+                worker_install_device = set_values(worker_install_device, default)
+                self.inventory_dict['csah']['vars']['worker_install_device'] = worker_install_device
+
+            self.inventory_dict = get_nodes_info(node_type='new_compute_nodes', inventory=self.inventory_dict, add=True, 
+                                                 idrac_user=self.id_user, idrac_pass=self.id_pass, nodes_info=self.nodes_inv)
+            self.yaml_inventory(inventory_file=current_inventory_file)
 
             sys.exit(2)
         else:
@@ -398,7 +406,6 @@ class InventoryFile:
         generate yaml file using user inputs
  
         """
-        #inventory_file = 'generated_inventory'
         with open(inventory_file, 'w') as invfile:
             yaml.dump(self.inventory_dict, invfile, default_flow_style=False, sort_keys=False)
 
