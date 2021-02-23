@@ -16,13 +16,14 @@ $TTL 86400
 {% endfor %}
 {% endif %}
 
-{% for node in master_nodes %}
+{% for node in control_nodes %}
 {% set last_octet = '.'.join(node.ip.split('.')[-(strip_last_octets|int):][::-1]) %}
 {{ last_octet }}   IN       PTR       {{ node.name }}.{{ ansible_domain }}.
 {% endfor %}
 
-{% for node in worker_nodes %}
+{% if compute_nodes is defined %}
+{% for node in compute_nodes %}
 {% set last_octet = '.'.join(node.ip.split('.')[-(strip_last_octets|int):][::-1]) %}
 {{ last_octet }}   IN       PTR       {{ node.name }}.{{ ansible_domain }}.
 {% endfor %}
-
+{% endif %}

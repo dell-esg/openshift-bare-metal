@@ -28,12 +28,12 @@ interface vlan34
 interface vlan47
  description "storage network"
  shutdown
- ip address 100.82.47.4/24
+ ip address 192.168.47.4/24
 !
 interface vlan461
  description "OCP 4.3"
  no shutdown
- ip address 100.82.46.5/26
+ ip address 192.168.46.5/26
 !
 interface port-channel51
  description Up-S5232F-1
@@ -49,7 +49,7 @@ interface port-channel51
 interface mgmt1/1/1
  no shutdown
  no ip address dhcp
- ip address 100.82.33.46/24
+ ip address 192.168.33.46/24
  ipv6 address autoconfig
 !
 interface ethernet1/1/1
@@ -318,7 +318,7 @@ interface ethernet1/1/52
  mtu 9216
  flowcontrol receive on
 !
-management route 0.0.0.0/0 100.82.33.1
+management route 0.0.0.0/0 192.168.33.1
 !
 snmp-server contact "Contact Support"
 !

@@ -65,14 +65,3 @@
     name: named
     enabled: yes
     state: started
-
-- name: modify dns server for bond0 interface
-  nmcli:
-    conn_name: bond0
-    type: bond
-    state: present
-    dns4:
-    - "{{ ansible_default_ipv4.address }}"
-    dns4_search:
-    - "{{ ansible_domain }}"
-  notify: "reload NetworkManager"

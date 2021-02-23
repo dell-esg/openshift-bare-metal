@@ -1,5 +1,6 @@
 import ipaddress
 import getpass
+import hashlib
 import json
 import logging
 import os
@@ -107,6 +108,28 @@ def get_ip(node_name='', ip_type=''):
     
     return ip  
 
+def validate_file(directory, filename, url):
+    re_hash = ''
+    hash_value = False
+    logging.info('validating file {} in {}'.format(filename, directory))
+
+    with open('{}/{}'.format(directory, filename), 'rb') as f:
+       bytes = f.read()
+       re_hash = hashlib.sha256(bytes).hexdigest()
+    logging.info('sha256 for file {} is {}'.format(filename, re_hash))
+    
+    with open('{}/rhcos.txt'.format(directory)) as f:
+       if re_hash and re_hash in f.read():
+           logging.info('sha256sum for file {} is validated in rhcos.txt'.format(filename))
+           hash_value = True
+
+    if not hash_value:
+        with open('{}/client.txt'.format(directory)) as f:
+            if re_hash and re_hash in f.read():
+                logging.info('sha256sum for file {} is validated in client.txt'.format(filename))
+                hash_value = True
+
+    return hash_value
 
 def validate_ip(ip):
     """    

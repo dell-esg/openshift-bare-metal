@@ -1,0 +1,26 @@
+bootstrap_kvm:
+  - name: bootstrap
+    ip_os: 192.168.46.19
+control_nodes:
+  - name: etcd-0
+    ip_os: 192.168.46.21
+    ip_idrac: 192.168.34.21
+  - name: etcd-1
+    ip_os: 192.168.46.22
+    ip_idrac: 192.168.34.22
+  - name: etcd-2
+    ip_os: 192.168.46.23
+    ip_idrac: 192.168.34.23
+compute_nodes:
+  - name: compute-1
+    ip_os: 192.168.46.24
+    ip_idrac: 192.168.34.24
+    os: rhcos
+  - name: compute-2
+    ip_os: 192.168.46.25
+    ip_idrac: 192.168.34.25
+    os: rhcos
+  - name: compute-3
+    ip_os: 192.168.46.27
+    ip_idrac: 192.168.34.27
+    os: rhel

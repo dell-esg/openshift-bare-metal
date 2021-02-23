@@ -25,7 +25,7 @@ host {{ node.name }}{
 {% endfor %}
 {% endif %}
 
-{% for node in master_nodes %}
+{% for node in control_nodes %}
 host {{ node.name }}{
    hardware ethernet {{ node.mac }};
    fixed-address {{ node.ip }};
@@ -33,13 +33,15 @@ host {{ node.name }}{
 
 {% endfor %}
 
-{% for node in worker_nodes %}
+{% if compute_nodes is defined %}
+{% for node in compute_nodes %}
 host {{ node.name }}{
    hardware ethernet {{ node.mac }};
    fixed-address {{ node.ip }};
 }
 
 {% endfor %}
+{% endif %}
 
 
 subnet {{ ansible_default_ipv4.network }} netmask {{ ansible_default_ipv4.netmask}} {

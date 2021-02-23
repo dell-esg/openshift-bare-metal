@@ -67,7 +67,7 @@ interface vlan47
 interface vlan461
  description R3-RHOCP
  no shutdown
- ip address 100.82.46.4/26
+ ip address 192.168.46.4/26
 !
 interface port-channel1
  no shutdown
@@ -187,7 +187,7 @@ interface port-channel100
 interface mgmt1/1/1
  no shutdown
  no ip address dhcp
- ip address 100.82.33.45/24
+ ip address 192.168.33.45/24
  ipv6 address autoconfig
 !
 interface ethernet1/1/1
@@ -407,10 +407,10 @@ interface ethernet1/1/34
  flowcontrol receive on
  flowcontrol transmit on
 !
-management route 0.0.0.0/0 100.82.33.1
+management route 0.0.0.0/0 192.168.33.1
 !
 vlt-domain 1
- backup destination 100.82.33.44
+ backup destination 192.168.33.44
  discovery-interface ethernet1/1/31-1/1/32
  peer-routing
  primary-priority 65535
