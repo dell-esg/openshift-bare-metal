@@ -1,6 +1,6 @@
 # Master branch is updated with OCP46 contents
 ```
-For OCP 43 CSI contents - Refer to https://github.com/dell-esg/openshift-bare-metal
+For OCP 43 CSI contents - Refer to https://github.com/dell-esg/openshift-bare-metal and checkout branch ocp43_csi
 ```
 
 ```
