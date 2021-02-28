@@ -25,7 +25,6 @@ def set_network_details(node_type='', node_name='', ip='', mac='', bond_name='',
     devices = []
     node_keys = ['name', 'ip', 'mac', 'bond', 'primary', 'backup', 'options']
     node_values = []
-    #bond_options = 'lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4'
     bond_options = 'mode=active-backup'
     bond_interfaces = '{},{}'.format(primary, backup)
     node_values.append(node_name)
@@ -44,7 +43,7 @@ def set_network_details(node_type='', node_name='', ip='', mac='', bond_name='',
 
     node_pairs = dict(zip(node_keys, node_values))
     logging.debug('node_values {} {} {}'.format(node_type, node_values, node_pairs))
-    inventory['csah']['vars'][node_type].append(node_pairs)
+    inventory['all']['vars'][node_type].append(node_pairs)
 
     return inventory
 
@@ -111,7 +110,6 @@ def get_nodes_info(node_type='', inventory='', add=False, idrac_user='', idrac_p
                 logging.debug('interfaces: {}'.format(devices))
                 logging.debug('map interfaces: {}'.format(map_devices))
                     
-                #if node_type == 'compute_nodes' and os == 'rhel':
                 if node_type in all_compute_nodes and os == 'rhel':
                     for device in map_devices:
                         interface_enumeration = get_device_enumeration(device, os=os)
@@ -134,7 +132,6 @@ def get_nodes_info(node_type='', inventory='', add=False, idrac_user='', idrac_p
                 logging.debug('{} nic mac address: {}'.format(name, nic_mac))
                 node_keys = ['name','ip','mac','interface','os']
 
-                #if node_type == 'compute_nodes' and os == 'rhel':
                 if node_type in all_compute_nodes and os == 'rhel':
                     node_keys = ['name','ip','mac','interface','os','interfaces']
                     for device in map_devices:
@@ -147,12 +144,15 @@ def get_nodes_info(node_type='', inventory='', add=False, idrac_user='', idrac_p
 
                 logging.debug('{} node values: {}'.format(name, node_values))
                 node_pairs = dict(zip(node_keys, node_values))
-                inventory['csah']['vars'][node_type].append(node_pairs)
+                inventory['all']['vars'][node_type].append(node_pairs)
 
-    #if node_type == 'compute_nodes' and add:
     if node_type in all_compute_nodes and add:
-        compute_nodes_count = inventory['csah']['vars']['num_of_compute_nodes']
+        try:
+            compute_nodes_count = inventory['all']['vars']['num_of_compute_nodes']
+        except KeyError:
+            inventory['all']['vars']['num_of_compute_nodes'] = 0
+            compute_nodes_count = 0
         new_compute_nodes_count = compute_nodes_count + nodes_count
-        inventory['csah']['vars']['num_of_compute_nodes'] = new_compute_nodes_count
+        inventory['all']['vars']['num_of_compute_nodes'] = new_compute_nodes_count
 
     return inventory

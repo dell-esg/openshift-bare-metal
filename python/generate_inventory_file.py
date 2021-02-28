@@ -61,9 +61,24 @@ class InventoryFile:
         sets the initial keys for the inventory file
 
         """
-        self.inventory_dict['csah'] = {'hosts': '{}'.format(socket.getfqdn()), 'vars': {}}
+        self.inventory_dict['all'] = {'children': {}}
+        self.inventory_dict['all']['vars'] = {}
+        backup_management_node = input('Is there a backup management node [yes/No]: ')
+
+        if backup_management_node == 'yes':
+            backup_fqdn = input('Enter backup management node FQDN: ')
+            self.inventory_dict['all']['children'] = {'primary': {'hosts': '{}'.format(socket.getfqdn())}, 
+                                                      'secondary': {'hosts': '{}'.format(backup_fqdn)}}
+            vip = input('Enter the IP address of VIP used for HAProxy: ')
+            self.inventory_dict['all']['vars']['vip'] = vip
+        else:
+            self.inventory_dict['all']['children'] = {'primary': {'hosts': '{}'.format(socket.getfqdn())}}
 
     def set_nodes_inventory(self):
+        """ 
+        read inventory file specifying bootstrap, control and compute nodes info
+
+        """
         nodes_inventory_check = check_path(self.nodes_inventory, isfile=True)
 
         if nodes_inventory_check:
@@ -137,7 +152,7 @@ class InventoryFile:
             logging.info('Creating directory {}'.format(self.software_dir))
             create_dir(self.software_dir)
 
-        self.inventory_dict['csah']['vars']['software_src'] = self.software_dir
+        self.inventory_dict['all']['vars']['software_src'] = self.software_dir
 
     def get_software(self):
         """ 
@@ -159,28 +174,28 @@ class InventoryFile:
             if dest_path_exist:
                 logging.info('file {} already exists in {}'.format(dest_name, self.software_dir))
                 shasum = validate_file(self.software_dir, dest_name, self.ocp_rhcos_base_url)
-                self.inventory_dict['csah']['vars'][url_key] = dest_name
+                self.inventory_dict['all']['vars'][url_key] = dest_name
             else:
                 url_check = validate_url(url)
                 if url_check == '':
                     logging.error('file {} in {} is not available'.format(dest_name, url_key))
-                    self.inventory_dict['csah']['vars'][url_key] = ''
+                    self.inventory_dict['all']['vars'][url_key] = ''
 
             if not shasum:
                 url_check = validate_url(url)
                 if url_check == '':
                     logging.error('file {} in {} is not available'.format(dest_name, url_key))
-                    self.inventory_dict['csah']['vars'][url_key] = ''
+                    self.inventory_dict['all']['vars'][url_key] = ''
 
             if url_check != '' and url_check.code == 200 and not shasum:
                 logging.info('downloading {}'.format(dest_name))
                 urlretrieve('{}'.format(url),'{}/{}'.format(self.software_dir, dest_name))
-                self.inventory_dict['csah']['vars'][url_key] = dest_name
+                self.inventory_dict['all']['vars'][url_key] = dest_name
 
     def get_cluster_nodes(self):
         supported_install = """
-        1. 3 node (master/worker in master nodes)
-        2. 6+ node (3 master and 3+ worker)
+        1. 3 node (control/compute in control nodes)
+        2. 6+ node (3 control and 3+ compute)
         """
         logging.info('supported cluster install options: {}'.format(supported_install))
         valid_choices = [1, 2]
@@ -196,9 +211,9 @@ class InventoryFile:
         self.get_master_nodes()
         if self.cluster_install == 2:
             self.get_worker_nodes()
-            self.inventory_dict['csah']['vars']['cluster_install'] = '6+ node'
+            self.inventory_dict['all']['vars']['cluster_install'] = '6+ node'
         else:
-            self.inventory_dict['csah']['vars']['cluster_install'] = '3 node'
+            self.inventory_dict['all']['vars']['cluster_install'] = '3 node'
 
 
     def get_bootstrap_node(self):
@@ -214,11 +229,11 @@ class InventoryFile:
         bootstrap_mac = "52:54:00:{}:{}:{}".format(randint(10,99),randint(10,99),randint(10,99))
         logging.debug('adding bootstrap_node values as name: {} ip: {} mac: {}'.format(bootstrap_name, bootstrap_os_ip,
                                                                                        bootstrap_mac)) 
-        self.inventory_dict['csah']['vars']['bootstrap_node'] = []
+        self.inventory_dict['all']['vars']['bootstrap_node'] = []
         bootstrap_keys = ['name','ip','mac']
         bootstrap_values = [bootstrap_name, bootstrap_os_ip, bootstrap_mac]
         bootstrap_pairs = dict(zip(bootstrap_keys, bootstrap_values))
-        self.inventory_dict['csah']['vars']['bootstrap_node'].append(bootstrap_pairs)
+        self.inventory_dict['all']['vars']['bootstrap_node'].append(bootstrap_pairs)
 
     def get_master_nodes(self):
         """ 
@@ -226,8 +241,8 @@ class InventoryFile:
 
         """
         self.clear_screen()
-        self.inventory_dict['csah']['vars']['control_nodes'] = []
-        self.inventory_dict['csah']['vars']['num_of_control_nodes'] = len(self.nodes_inv['control_nodes'])
+        self.inventory_dict['all']['vars']['control_nodes'] = []
+        self.inventory_dict['all']['vars']['num_of_control_nodes'] = len(self.nodes_inv['control_nodes'])
         self.inventory_dict = get_nodes_info(node_type='control_nodes', inventory=self.inventory_dict, idrac_user=self.id_user, 
                                              idrac_pass=self.id_pass, nodes_info=self.nodes_inv)
 
@@ -237,8 +252,8 @@ class InventoryFile:
 
         """
         self.clear_screen()
-        self.inventory_dict['csah']['vars']['compute_nodes'] = []
-        self.inventory_dict['csah']['vars']['num_of_compute_nodes'] = len(self.nodes_inv['compute_nodes'])
+        self.inventory_dict['all']['vars']['compute_nodes'] = []
+        self.inventory_dict['all']['vars']['num_of_compute_nodes'] = len(self.nodes_inv['compute_nodes'])
         self.inventory_dict = get_nodes_info(node_type='compute_nodes', inventory=self.inventory_dict, idrac_user=self.id_user,
                                              idrac_pass=self.id_pass, nodes_info=self.nodes_inv)
 
@@ -254,12 +269,20 @@ class InventoryFile:
                  self.inventory_dict = yaml.load(file, Loader=yaml.FullLoader)
       
             try:
-                self.inventory_dict['csah']['vars']['compute_nodes']
-                self.inventory_file = get_nodes_info(node_type='new_compute_nodes', inventory=self.inventory_dict, add=True, 
-                                                     idrac_user=self.id_user, idrac_pass=self.id_pass, nodes_info=self.nodes_inv)
-                self.yaml_inventory(inventory_file=current_inventory_file)
+                self.inventory_dict['all']['vars']['compute_nodes']
             except KeyError:
                 logging.error('Inventory file does not contain worker nodes info')
+                self.inventory_dict['all']['vars']['cluster_install'] = '6+ node'
+                self.inventory_dict['all']['vars']['compute_nodes'] = []
+                default = 'nvme0n1'
+                worker_install_device = input('specify the compute node device that will be installed\n'
+                                              'default [nvme0n1]: ')
+                worker_install_device = set_values(worker_install_device, default)
+                self.inventory_dict['all']['vars']['worker_install_device'] = worker_install_device
+
+            self.inventory_dict = get_nodes_info(node_type='new_compute_nodes', inventory=self.inventory_dict, add=True, 
+                                                 idrac_user=self.id_user, idrac_pass=self.id_pass, nodes_info=self.nodes_inv)
+            self.yaml_inventory(inventory_file=current_inventory_file)
 
             sys.exit(2)
         else:
@@ -272,8 +295,8 @@ class InventoryFile:
         
         """
         self.clear_screen()
-        self.inventory_dict['csah']['vars']['default_lease_time'] = 8000
-        self.inventory_dict['csah']['vars']['max_lease_time'] = 72000
+        self.inventory_dict['all']['vars']['default_lease_time'] = 8000
+        self.inventory_dict['all']['vars']['max_lease_time'] = 72000
 
     def get_dns_details(self):
         """ 
@@ -290,8 +313,8 @@ class InventoryFile:
         default = '/var/named/{}.zones'.format(cluster_name)
         zone_file = set_values(zone_file, default)
         logging.info('adding zone_file: {} cluster: {}'.format(zone_file, cluster_name))
-        self.inventory_dict['csah']['vars']['default_zone_file'] = zone_file
-        self.inventory_dict['csah']['vars']['cluster'] = cluster_name
+        self.inventory_dict['all']['vars']['default_zone_file'] = zone_file
+        self.inventory_dict['all']['vars']['cluster'] = cluster_name
 
     def get_http_details(self):
         """ 
@@ -310,10 +333,10 @@ class InventoryFile:
         default = 'ignition'
         ignition_dir = set_values(ignition_dir, default)
         logging.info('adding http_port: {} http_ignition: {} version: {}'.format(port, ignition_dir, self.version))
-        self.inventory_dict['csah']['vars']['http_port'] = int(port)
-        self.inventory_dict['csah']['vars']['os'] = 'rhcos'
-        self.inventory_dict['csah']['vars']['http_ignition'] = ignition_dir
-        self.inventory_dict['csah']['vars']['version'] = self.version
+        self.inventory_dict['all']['vars']['http_port'] = int(port)
+        self.inventory_dict['all']['vars']['os'] = 'rhcos'
+        self.inventory_dict['all']['vars']['http_ignition'] = ignition_dir
+        self.inventory_dict['all']['vars']['version'] = self.version
 
     def get_disk_name(self):
         """ 
@@ -323,19 +346,19 @@ class InventoryFile:
         self.clear_screen()
         default = 'nvme0n1'
         logging.info('ensure disknames are absolutely available. Otherwise OpenShift install fails')
-        master_install_device = input('specify the master device that will be installed\n'
+        master_install_device = input('specify the control plane device that will be installed\n'
                                       'default [nvme0n1]: ')
         master_install_device = set_values(master_install_device, default)
-        self.inventory_dict['csah']['vars']['master_install_device'] = master_install_device
+        self.inventory_dict['all']['vars']['master_install_device'] = master_install_device
         if self.cluster_install == 1:
             pass
         else:
-            worker_install_device = input('specify the worker device that will be installed\n'
+            worker_install_device = input('specify the compute node device that will be installed\n'
                                           'default [nvme0n1]: ')
             worker_install_device = set_values(worker_install_device, default)
             logging.info('adding master_install_device: {} worker_install_device: {}'.format(master_install_device, 
                           worker_install_device))
-            self.inventory_dict['csah']['vars']['worker_install_device'] = worker_install_device
+            self.inventory_dict['all']['vars']['worker_install_device'] = worker_install_device
 
     def set_haproxy(self):
         """ 
@@ -343,12 +366,12 @@ class InventoryFile:
 
         """
         logging.info('currently only haproxy is supported for load balancing')
-        self.inventory_dict['csah']['vars']['proxy'] = 'haproxy'
-        self.inventory_dict['csah']['vars']['haproxy_conf'] = '/etc/haproxy/haproxy.cfg'
-        self.inventory_dict['csah']['vars']['master_ports'] = [{'port': 6443, 'description': 'apiserver'},
-                                                               {'port': 22623 , 'description': 'configserver'}]
-        self.inventory_dict['csah']['vars']['worker_ports'] = [{'port': 80, 'description': 'http'},
-                                                               {'port': 443, 'description': 'https'}]
+        self.inventory_dict['all']['vars']['proxy'] = 'haproxy'
+        self.inventory_dict['all']['vars']['haproxy_conf'] = '/etc/haproxy/haproxy.cfg'
+        self.inventory_dict['all']['vars']['master_ports'] = [{'port': 6443, 'description': 'apiserver'},
+                                                              {'port': 22623 , 'description': 'configserver'}]
+        self.inventory_dict['all']['vars']['worker_ports'] = [{'port': 80, 'description': 'http'},
+                                                              {'port': 443, 'description': 'https'}]
 
     def get_ignition_details(self):
         """ 
@@ -387,18 +410,17 @@ class InventoryFile:
                       host_prefix: {} service_network_cidr: {}'.format(install_user, install_dir,
                                                                 pod_network_cidr, host_prefix, 
                                                                 service_network_cidr))
-        self.inventory_dict['csah']['vars']['install_user'] = install_user
-        self.inventory_dict['csah']['vars']['install_dir'] = install_dir
-        self.inventory_dict['csah']['vars']['cluster_network_cidr'] = pod_network_cidr
-        self.inventory_dict['csah']['vars']['host_prefix'] = int(host_prefix)
-        self.inventory_dict['csah']['vars']['service_network_cidr'] = service_network_cidr
+        self.inventory_dict['all']['vars']['install_user'] = install_user
+        self.inventory_dict['all']['vars']['install_dir'] = install_dir
+        self.inventory_dict['all']['vars']['cluster_network_cidr'] = pod_network_cidr
+        self.inventory_dict['all']['vars']['host_prefix'] = int(host_prefix)
+        self.inventory_dict['all']['vars']['service_network_cidr'] = service_network_cidr
 
     def yaml_inventory(self, inventory_file=''):
         """ 
         generate yaml file using user inputs
  
         """
-        #inventory_file = 'generated_inventory'
         with open(inventory_file, 'w') as invfile:
             yaml.dump(self.inventory_dict, invfile, default_flow_style=False, sort_keys=False)
 

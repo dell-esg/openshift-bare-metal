@@ -19,9 +19,4 @@ compute_nodes:
   - name: compute-2
     ip_os: 100.82.46.25
     ip_idrac: 100.82.34.25
-    os: rhcos
-new_compute_nodes:
-  - name: compute-3
-    ip_os: 100.82.46.27
-    ip_idrac: 100.82.34.27
     os: rhel

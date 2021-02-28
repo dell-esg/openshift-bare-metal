@@ -11,6 +11,7 @@ $TTL 8600
 
 {{ ansible_hostname }}    IN     A      {{ ansible_default_ipv4.address }}
 
+
 {% if bootstrap_node is defined %}
 {% for node in bootstrap_node %}
 {{ node.name }}   IN     A   {{ node.ip }}
@@ -35,11 +36,9 @@ $ORIGIN {{ cluster }}.{{ ansible_domain }}.
 {% endfor %}
 {% endif %}
 
-{% set index = 0 %}
 
 {% for node in control_nodes %}
-etcd-{{ index }}    IN   CNAME   {{ node.name }}.{{ ansible_domain }}.
-{% set index = index + 1 %}
+{{ node.name }}    IN   CNAME   {{ node.name }}.{{ ansible_domain }}.
 {% endfor %}
 
 {% if compute_nodes is defined %}
@@ -49,13 +48,13 @@ etcd-{{ index }}    IN   CNAME   {{ node.name }}.{{ ansible_domain }}.
 {% endif %}
 
 
+{% if groups['secondary'] is defined %}
+*.apps    IN     A   {{ vip }}
+api       IN     A   {{ vip }}
+api-int   IN     A   {{ vip }}
+{% else %}
 *.apps    IN     A   {{ ansible_default_ipv4.address }}
 api       IN     A   {{ ansible_default_ipv4.address }}
 api-int   IN     A   {{ ansible_default_ipv4.address }}
+{% endif %}
 
-{% set index = 0 %}
-
-{% for node in control_nodes %}
-_etcd-server-ssl._tcp 86400  IN   SRV   0   10 2380  etcd-{{ index }}.{{ cluster }}.{{ ansible_domain }}.
-{% set index = index + 1 %}
-{% endfor %}
