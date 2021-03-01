@@ -12,7 +12,11 @@ vrrp_instance VI_1 {
     state BACKUP
     {% endif %}
     virtual_router_id 51
-    priority 101             # 101 on haproxy1, 100 on haproxy2
+    {% if ansible_fqdn in groups['primary'] %}
+    priority 101             # 101 on MASTER, 100 on BACKUP
+    {% else %}
+    priority 100
+    {% endif %}
     virtual_ipaddress {
         {{ vip }}/{{ net_mask_cidr }}    # virtual ip address
     }
