@@ -55,6 +55,7 @@
     immediate: true
     state: enabled
   when:
+    - groups['secondary'] is defined
     - "'secondary' in groups"
 
 - name: enable {{ proxy }} service
@@ -69,6 +70,7 @@
     enabled: yes
     state: started
   when:
+    - groups['secondary'] is defined
     - "'secondary' in groups"
 
 - name: generate keepalived config file
@@ -77,6 +79,7 @@
     dest: /etc/keepalived/keepalived.conf
   notify: keepalived restart
   when:
+    - groups['secondary'] is defined
     - "'secondary' in groups"
 
 - name: generate haproxy config file

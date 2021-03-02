@@ -67,6 +67,7 @@
     path: /home/ansible/files
     state: directory
   when:
+    - groups['secondary'] is defined
     - ansible_fqdn in groups['secondary']
 
 - name: copy rhel iso to secondary server
@@ -76,6 +77,7 @@
   with_items:
     - { src: "{{ software_src }}/{{ rhel_os }}", dest: "{{ rhel_os }}" }
   when:
+    - groups['secondary'] is defined
     - ansible_fqdn in groups['secondary']
   
 - name: mount rhel iso file

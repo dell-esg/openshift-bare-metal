@@ -30,6 +30,7 @@
   become: yes
   become_user: "{{ install_user }}"
   when: 
+    - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
     - ssh_keygen_result.stat.exists  == false
 
@@ -46,6 +47,7 @@
   stat:
     path: /home/{{ install_user }}/openshift-install
   when: 
+    - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
   register: openshiftinstaller
 
@@ -57,18 +59,21 @@
     owner: "{{ install_user }}"
     group: "{{ install_user }}"
   when: 
+    - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
     - not openshiftinstaller.stat.exists
 
 - name: read contents of pull secret key 
   shell: cat "{{ software_src }}/{{ pull_secret_file }}"
   when: 
+    - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
   register: pull_secret
 
 - name: read contents of ssh key file for user {{ install_user }}
   shell: cat /home/{{ install_user }}/.ssh/id_rsa.pub
   when: 
+    - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
   register: ssh_key
 
@@ -82,6 +87,7 @@
     owner: "{{ install_user }}"
     group: "{{ install_user }}"
   when: 
+    - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
 
 - name: export kuberconfig in secondary management
@@ -93,6 +99,7 @@
     owner: "{{ install_user }}"
     group: "{{ install_user }}"
   when: 
+    - groups['secondary'] is defined
     - ansible_fqdn in groups['secondary']
 
 - name: generate install config file
@@ -102,6 +109,7 @@
     owner: "{{ install_user }}"
     group: "{{ install_user }}"
   when: 
+    - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
 
 - name: copy install-config yaml file to installation directory
@@ -112,6 +120,7 @@
     owner: "{{ install_user }}"
     group: "{{ install_user }}"
   when: 
+    - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
 
 - name: check ignition files in {{ ocp_install_dir.path }}
@@ -122,6 +131,7 @@
     - worker.ign
     - bootstrap.ign
   when: 
+    - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
   register: ign
 
@@ -132,6 +142,7 @@
     cd {{ ocp_install_dir.path }}
     /home/{{ install_user }}/openshift-install create manifests --dir={{ ocp_install_dir.path }}
   when: 
+    - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
     - not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
 
@@ -150,6 +161,7 @@
     - openshift
     - manifests
   when: 
+    - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
     - manifest_dir.stat.exists 
     - manifest_dir.stat.isdir
@@ -161,6 +173,7 @@
     cd {{ ocp_install_dir.path }}
     /home/{{ install_user }}/openshift-install create ignition-configs --dir={{ ocp_install_dir.path }}
   when: 
+    - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
     - not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
   register: create_ignition
@@ -170,6 +183,7 @@
     path: /var/www/html/{{ http_ignition }}
     state: directory
   when: 
+    - groups['secondary'] is defined
     - ansible_fqdn in groups['secondary']
 
 - name: copy ignition config files to primary management
@@ -182,6 +196,7 @@
     - worker.ign
     - bootstrap.ign
   when: 
+    - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
 
 - name: change permissions of ignition config files
@@ -193,6 +208,7 @@
     - worker.ign
     - bootstrap.ign
   when: 
+    - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
 
 - name: copy ignition config files to secondary management
@@ -204,6 +220,7 @@
     - worker.ign
     - bootstrap.ign
   when: 
+    - groups['secondary'] is defined
     - ansible_fqdn in groups['secondary']
 
 - name: copy kubeconfig file in primary management
@@ -215,6 +232,7 @@
     - kubeconfig
     - kubeadmin-password
   when:
+    - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
 
 - name: copy kubeconfig file to secondary management
@@ -225,4 +243,5 @@
     - kubeconfig
     - kubeadmin-password
   when:
+    - groups['secondary'] is defined
     - ansible_fqdn in groups['secondary']
