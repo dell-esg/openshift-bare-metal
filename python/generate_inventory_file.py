@@ -41,7 +41,7 @@ class InventoryFile:
 1: download OpenShift software
 2: cluster install
 3: disk info
-4: bind
+4: dns
 5: http
 6: ignition config
 7: print inventory
@@ -304,6 +304,15 @@ class InventoryFile:
 
         """
         self.clear_screen()
+        response = input('specify a DNS forwarder if necessary (yes/No): ')
+        accepted_response = ['yes', 'No']
+        while response not in accepted_response:
+            response = input('specify a DNS forwarder if necessary (yes/No): ')
+
+        if response == 'yes':
+            dns_forwarder = input('enter the DNS forwarder IP: ')
+            self.inventory_dict['all']['vars']['dns_forwarder'] = dns_forwarder
+
         cluster_name = input('specify cluster name \n'
                              'default [ocp]: ')
         default = 'ocp'

@@ -1,6 +1,6 @@
 workers:
-  hosts: compute-2.oss.labs
+  hosts: com-2.demo.lab
   vars:
-    subscription_user: ***********
+    subscription_user: *****************
     subscription_pass: ***********
-    pool_id: ***************************
+    pool_id: *************************

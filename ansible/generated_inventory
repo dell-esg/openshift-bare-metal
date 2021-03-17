@@ -1,11 +1,11 @@
 all:
   children:
     primary:
-      hosts: r3csah1.oss.labs
+      hosts: csah-pri.demo.lab
     secondary:
-      hosts: r3csah2.oss.labs
+      hosts: csah-sec.demo.lab
   vars:
-    vip: 100.82.46.30
+    vip: 100.67.192.148
     proxy: haproxy
     haproxy_conf: /etc/haproxy/haproxy.cfg
     master_ports:
@@ -28,63 +28,72 @@ all:
     rootfs: rhcos-live-rootfs.x86_64.img
     rhel_os: rhel-server-7.9-x86_64-dvd.iso
     pull_secret_file: pullsecret
-    bootstrap_node:
-    - name: bootstrap
-      ip: 100.82.46.19
-      mac: 52:54:00:82:79:45
     control_nodes:
-    - name: etcd-0
-      ip: 100.82.46.21
-      mac: 98:03:9B:87:0B:F6
+    - name: ctl-1
+      ip: 100.67.192.151
+      mac: 3C:FD:FE:BF:7E:60
       bond: bond0
-      primary: eno1
-      backup: eno2
+      primary: ens2f0
+      backup: ens3f0
       options: mode=active-backup
-    - name: etcd-1
-      ip: 100.82.46.22
-      mac: 98:03:9B:87:12:B6
+    - name: ctl-2
+      ip: 100.67.192.152
+      mac: 3C:FD:FE:BF:BD:50
       bond: bond0
-      primary: eno1
-      backup: eno2
+      primary: ens3f0
+      backup: ens3f1
       options: mode=active-backup
-    - name: etcd-2
-      ip: 100.82.46.23
-      mac: 98:03:9B:87:0F:26
+    - name: ctl-3
+      ip: 100.67.192.153
+      mac: 3C:FD:FE:D9:D5:D0
       bond: bond0
-      primary: eno1
-      backup: eno2
+      primary: ens2f0
+      backup: ens3f0
       options: mode=active-backup
     num_of_control_nodes: 3
     compute_nodes:
-    - name: compute-1
-      ip: 100.82.46.24
-      mac: 98:03:9B:87:05:FE
+    - name: com-1
+      ip: 100.67.192.154
+      mac: 3C:FD:FE:BF:BB:80
       bond: bond0
-      primary: eno1
-      backup: eno2
+      primary: ens2f0
+      backup: ens3f0
       options: mode=active-backup
       interfaces:
-      - eno1
+      - ens2f0
       os: rhcos
-    - name: compute-2
-      ip: 100.82.46.25
-      mac: 98:03:9B:87:0D:7E
+    - name: com-2
+      ip: 100.67.192.155
+      mac: 3C:FD:FE:BF:BB:90
       bond: bond0
-      primary: em1
-      backup: em2
+      primary: p2p1
+      backup: p3p1
       options: mode=active-backup
       interfaces:
       - em1
       - em2
       - p2p1
       - p2p2
+      - p3p1
+      - p3p2
       os: rhel
-    num_of_compute_nodes: 2
+    - name: com-3
+      ip: 100.67.192.156
+      mac: 3C:FD:FE:D9:CD:E0
+      bond: bond0
+      primary: ens2f0
+      backup: ens3f0
+      options: mode=active-backup
+      interfaces:
+      - ens2f0
+      os: rhcos
+    num_of_compute_nodes: 3
     cluster_install: 6+ node
     master_install_device: nvme0n1
     worker_install_device: nvme0n1
-    default_zone_file: /var/named/r3.zones
-    cluster: r3
+    dns_forwarder: 10.8.8.8
+    default_zone_file: /var/named/ocp.zones
+    cluster: ocp
     http_port: 8080
     os: rhcos
     http_ignition: ignition
