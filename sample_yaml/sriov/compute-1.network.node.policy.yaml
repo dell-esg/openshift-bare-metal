@@ -6,7 +6,7 @@ metadata:
 spec:
   resourceName: compute_1_net_devices
   nodeSelector:
-    kubernetes.io/hostname: compute-1.example.com
+    kubernetes.io/hostname: com-1.demo.lab
   priority: 10
   mtu: 1500
   numVfs: 5
