@@ -9,6 +9,21 @@
     name: "{{ proxy }}"
     state: latest
 
+- name: install keepalived
+  yum:
+    name: keepalived
+    state: latest
+  when:
+    - "'secondary' in groups"
+
+- name: display network cidr
+  set_fact:
+    net_mask: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}"
+
+- name: display cidr
+  set_fact:
+    net_mask_cidr: "{{ net_mask | ipaddr('prefix') }}"
+
 - name: allow OCP ports to listen via http
   seport:
     ports: "{{ item }}"
@@ -33,11 +48,39 @@
     - 22623
     - 80
 
+- name: keepalived firewall rich rule
+  firewalld:
+    rich_rule: 'rule protocol value="vrrp" accept'
+    permanent: true
+    immediate: true
+    state: enabled
+  when:
+    - groups['secondary'] is defined
+    - "'secondary' in groups"
+
 - name: enable {{ proxy }} service
   systemd: 
     name: "{{ proxy }}"
     enabled: yes
     state: started
+
+- name: enable keepalived service
+  systemd: 
+    name: keepalived
+    enabled: yes
+    state: started
+  when:
+    - groups['secondary'] is defined
+    - "'secondary' in groups"
+
+- name: generate keepalived config file
+  template:
+    src: keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+  notify: keepalived restart
+  when:
+    - groups['secondary'] is defined
+    - "'secondary' in groups"
 
 - name: generate haproxy config file
   template:

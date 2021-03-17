@@ -11,6 +11,7 @@ $TTL 8600
 
 {{ ansible_hostname }}    IN     A      {{ ansible_default_ipv4.address }}
 
+
 {% if bootstrap_node is defined %}
 {% for node in bootstrap_node %}
 {{ node.name }}   IN     A   {{ node.ip }}
@@ -47,6 +48,13 @@ $ORIGIN {{ cluster }}.{{ ansible_domain }}.
 {% endif %}
 
 
+{% if groups['secondary'] is defined %}
+*.apps    IN     A   {{ vip }}
+api       IN     A   {{ vip }}
+api-int   IN     A   {{ vip }}
+{% else %}
 *.apps    IN     A   {{ ansible_default_ipv4.address }}
 api       IN     A   {{ ansible_default_ipv4.address }}
 api-int   IN     A   {{ ansible_default_ipv4.address }}
+{% endif %}
+

@@ -27,7 +27,7 @@
     dest: /etc/dhcp/dhcpd.conf
   notify: "restart dhcp"
 
-- name: enable and start dhcpd serviec
+- name: enable and start dhcpd service
   systemd:
     name: dhcpd
     enabled: yes

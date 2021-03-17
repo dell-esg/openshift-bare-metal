@@ -1,5 +1,4 @@
----
-- hosts: csah
+- hosts: primary
   become: yes
   roles:
     - http
@@ -9,3 +8,11 @@
     - ignition
     - pxe
     - bootstrap
+- hosts: secondary
+  become: yes
+  roles:
+    - http
+    - dns
+    - proxy
+    - ignition
+    - pxe

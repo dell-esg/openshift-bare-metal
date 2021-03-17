@@ -46,7 +46,7 @@
     - rhel
     - "{{ http_ignition }}"
 
-- name: copy rhcos bare metal uefi files to http location
+- name: copy rhcos files to http
   copy:
     src: "{{ item.src }}"
     dest: "{{ http_os_dir.path }}/{{ item.dest }}"
@@ -55,18 +55,43 @@
     - { src: "{{ software_src }}/{{ initramfs }}", dest: "{{ initramfs }}" }
     - { src: "{{ software_src }}/{{ rootfs }}", dest: "{{ rootfs }}" }
 
+- name: create directory to mount iso
+  file:
+    path: /mnt/{{ item }}
+    state: directory
+  loop:
+    - os
+
+- name: create directory in secondary server
+  file:
+    path: /home/ansible/files
+    state: directory
+  when:
+    - groups['secondary'] is defined
+    - ansible_fqdn in groups['secondary']
+
+- name: copy rhel iso to secondary server
+  copy:
+    src: "{{ item.src }}"
+    dest: "/home/ansible/files/{{ rhel_os }}"
+  with_items:
+    - { src: "{{ software_src }}/{{ rhel_os }}", dest: "{{ rhel_os }}" }
+  when:
+    - groups['secondary'] is defined
+    - ansible_fqdn in groups['secondary']
+  
 - name: mount rhel iso file
   mount:
-    path: /mnt
+    path: /mnt/os
     src: "{{ software_src }}/{{ rhel_os }}"
     fstype: iso9660
     opts: loop,ro
     state: mounted
 
 - name: copy rhel os contents to http dir
-  shell: 'cp -r /mnt/* /var/www/html/rhel/'
+  shell: 'cp -r /mnt/os/* /var/www/html/rhel/'
 
 - name: unmount rhel iso file
   mount:
-    path: /mnt
+    path: /mnt/os
     state: unmounted

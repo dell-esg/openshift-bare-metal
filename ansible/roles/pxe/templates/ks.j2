@@ -6,7 +6,7 @@ eula --agreed
 # System authorization information
 auth --enableshadow --passalgo=sha512
 # Use CDROM installation media
-url --url http://{{ ansible_default_ipv4.address }}:{{ http_port }}/rhel
+url --url http://{{ vip_ip }}:{{ http_port }}/rhel
 # Run the Setup Agent on first boot
 firstboot --enable
 # System services
@@ -76,10 +76,10 @@ kexec-tools
 nmcli conn add type bond ifname {{ item.bond }} con-name {{ item.bond }} bond.options "lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4"
 nmcli conn add type ethernet ifname {{ item.primary }} master {{ item.bond }}
 nmcli conn add type ethernet ifname {{ item.backup }} master {{ item.bond }}
-nmcli conn mod {{ item.bond }} ipv4.method manual ipv4.addresses {{ item.ip }}/{{ net_mask_cidr }} connection.autoconnect yes ipv4.gateway {{ ansible_default_ipv4.gateway }} ipv4.dns {{ ansible_default_ipv4.address }} ipv4.dns-search {{ ansible_domain }}
+nmcli conn mod {{ item.bond }} ipv4.method manual ipv4.addresses {{ item.ip }}/{{ net_mask_cidr }} connection.autoconnect yes ipv4.gateway {{ ansible_default_ipv4.gateway }} ipv4.dns {{ vip_ip }} ipv4.dns-search {{ ansible_domain }}
 {% else %}
 nmcli con add type ethernet ifname {{ item.interface }} con-name {{ item.interface }} 
-nmcli con mod {{ item.interface }} ipv4.method manual ipv4.addresses {{ item.ip }}/{{ net_mask_cidr }} connection.autoconnect yes ipv4.gateway {{ ansible_default_ipv4.gateway }} ipv4.dns {{ ansible_default_ipv4.address }} ipv4.dns-search {{ ansible_domain }}
+nmcli con mod {{ item.interface }} ipv4.method manual ipv4.addresses {{ item.ip }}/{{ net_mask_cidr }} connection.autoconnect yes ipv4.gateway {{ ansible_default_ipv4.gateway }} ipv4.dns {{ vip_ip }} ipv4.dns-search {{ ansible_domain }}
 {% endif %}
 
 #copy network configuration files to the install image

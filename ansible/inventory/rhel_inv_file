@@ -1,6 +1,6 @@
 workers:
-  hosts: compute-3.example.com
+  hosts: com-2.demo.lab
   vars:
-    subscription_user: smuser
-    subscription_pass: smpassword
-    pool_id: ***********************
+    subscription_user: *****************
+    subscription_pass: ***********
+    pool_id: *************************

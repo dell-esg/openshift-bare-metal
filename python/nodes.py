@@ -43,7 +43,7 @@ def set_network_details(node_type='', node_name='', ip='', mac='', bond_name='',
 
     node_pairs = dict(zip(node_keys, node_values))
     logging.debug('node_values {} {} {}'.format(node_type, node_values, node_pairs))
-    inventory['csah']['vars'][node_type].append(node_pairs)
+    inventory['all']['vars'][node_type].append(node_pairs)
 
     return inventory
 
@@ -144,15 +144,15 @@ def get_nodes_info(node_type='', inventory='', add=False, idrac_user='', idrac_p
 
                 logging.debug('{} node values: {}'.format(name, node_values))
                 node_pairs = dict(zip(node_keys, node_values))
-                inventory['csah']['vars'][node_type].append(node_pairs)
+                inventory['all']['vars'][node_type].append(node_pairs)
 
     if node_type in all_compute_nodes and add:
         try:
-            compute_nodes_count = inventory['csah']['vars']['num_of_compute_nodes']
+            compute_nodes_count = inventory['all']['vars']['num_of_compute_nodes']
         except KeyError:
-            inventory['csah']['vars']['num_of_compute_nodes'] = 0
+            inventory['all']['vars']['num_of_compute_nodes'] = 0
             compute_nodes_count = 0
         new_compute_nodes_count = compute_nodes_count + nodes_count
-        inventory['csah']['vars']['num_of_compute_nodes'] = new_compute_nodes_count
+        inventory['all']['vars']['num_of_compute_nodes'] = new_compute_nodes_count
 
     return inventory
