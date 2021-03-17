@@ -5,7 +5,7 @@ all:
     secondary:
       hosts: csah-sec.demo.lab
   vars:
-    vip: 100.67.192.148
+    vip: 192.168.192.148
     proxy: haproxy
     haproxy_conf: /etc/haproxy/haproxy.cfg
     master_ports:
@@ -30,21 +30,21 @@ all:
     pull_secret_file: pullsecret
     control_nodes:
     - name: ctl-1
-      ip: 100.67.192.151
+      ip: 192.168.192.151
       mac: 3C:FD:FE:BF:7E:60
       bond: bond0
       primary: ens2f0
       backup: ens3f0
       options: mode=active-backup
     - name: ctl-2
-      ip: 100.67.192.152
+      ip: 192.168.192.152
       mac: 3C:FD:FE:BF:BD:50
       bond: bond0
       primary: ens3f0
       backup: ens3f1
       options: mode=active-backup
     - name: ctl-3
-      ip: 100.67.192.153
+      ip: 192.168.192.153
       mac: 3C:FD:FE:D9:D5:D0
       bond: bond0
       primary: ens2f0
@@ -53,7 +53,7 @@ all:
     num_of_control_nodes: 3
     compute_nodes:
     - name: com-1
-      ip: 100.67.192.154
+      ip: 192.168.192.154
       mac: 3C:FD:FE:BF:BB:80
       bond: bond0
       primary: ens2f0
@@ -63,7 +63,7 @@ all:
       - ens2f0
       os: rhcos
     - name: com-2
-      ip: 100.67.192.155
+      ip: 192.168.192.155
       mac: 3C:FD:FE:BF:BB:90
       bond: bond0
       primary: p2p1
@@ -78,7 +78,7 @@ all:
       - p3p2
       os: rhel
     - name: com-3
-      ip: 100.67.192.156
+      ip: 192.168.192.156
       mac: 3C:FD:FE:D9:CD:E0
       bond: bond0
       primary: ens2f0
@@ -91,7 +91,7 @@ all:
     cluster_install: 6+ node
     master_install_device: nvme0n1
     worker_install_device: nvme0n1
-    dns_forwarder: 10.8.8.8
+    dns_forwarder: 8.8.8.8
     default_zone_file: /var/named/ocp.zones
     cluster: ocp
     http_port: 8080
