@@ -20,8 +20,3 @@ compute_nodes:
     ip_os: 192.168.192.155
     ip_idrac: 192.168.192.22
     os: rhel
-new_compute_nodes:
-  - name: com-3
-    ip_os: 192.168.192.156
-    ip_idrac: 192.168.192.23
-    os: rhcos
