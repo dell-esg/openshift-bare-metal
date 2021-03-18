@@ -1,0 +1,9 @@
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetwork
+metadata:
+  name: vf1-sriov-net
+  namespace: openshift-sriov-network-operator
+spec:
+  resourceName: intel_sriov_ens2f1
+  networkNamespace: vm-home
+  maxTxRate: 2000
