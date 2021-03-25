@@ -88,7 +88,7 @@ all:
       - ens2f0
       os: rhcos
     num_of_compute_nodes: 3
-    cluster_install: 6+ node
+    cluster_install: 5+ node
     master_install_device: nvme0n1
     worker_install_device: nvme0n1
     dns_forwarder: 8.8.8.8
