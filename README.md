@@ -1,8 +1,4 @@
-# Master branch is updated with OCP46 contents
-```
-For OCP 43 CSI contents - Refer to https://github.com/dell-esg/openshift-bare-metal and checkout branch ocp43_csi
-```
-
+# OCP Telco
 ```
 $ python3 generate_inventory_file.py -h
 usage: generate_inventory_file.py [-h] [--run | --add] --ver {4.6} --nodes NODES [--id_user ID_USER] [--id_pass ID_PASS] [--debug]

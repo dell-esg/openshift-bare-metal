@@ -101,7 +101,7 @@
   when:
     - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
-    - cluster_install == '6+ node'
+    - cluster_install == '5+ node'
 
 - name: dispay compute node names
   debug:
@@ -110,7 +110,7 @@
   when:
     - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
-    - cluster_install == '6+ node'
+    - cluster_install == '5+ node'
 
 - name: dispay rhel compute node names
   debug:
@@ -119,7 +119,7 @@
   when:
     - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
-    - cluster_install == '6+ node'
+    - cluster_install == '5+ node'
     - item.os == 'rhel'
 
 - name: generate kickstart files
@@ -130,7 +130,7 @@
   when:
     - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
-    - cluster_install == '6+ node'
+    - cluster_install == '5+ node'
     - item.os == 'rhel'
 
 - name: generate pxe menu grub.cfg file
