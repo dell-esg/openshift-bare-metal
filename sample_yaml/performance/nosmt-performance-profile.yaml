@@ -1,14 +1,17 @@
+# PerformanceProfile for real time kernel
+# Disabled SMT
+# Hardware Used: PowerEdge XE2420 Servers
 apiVersion: performance.openshift.io/v1
 kind: PerformanceProfile
 metadata:
- name: rt-performanceprofile
+ name: nosmt-performanceprofile
 spec:
  additionalKernelArgs:
   - nosmt # disabling SMT can reduce latency when used alongside the real time kernel
  cpu:
   # number of CPU cores will vary based on hardware configuration and whether SMT is enabled
-  isolated: "6-47"
-  reserved: "0-5"
+  isolated: "1,3,5,7-47"
+  reserved: "0,2,4,6"
  hugepages:
   defaultHugepagesSize: 1G
   pages:
@@ -16,5 +19,8 @@ spec:
     count: 16
  realTimeKernel:
   enabled: true
+ numa:
+  topologyPolicy: "restricted"
+  # topologyPolicy: "best-effort" # Can also use this policy, may change performance
  nodeSelector:
   node-role.kubernetes.io/worker-cnf: ""
