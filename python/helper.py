@@ -347,26 +347,29 @@ def get_network_device_mac(devices, user, passwd, base_api_url):
     return network_device_mac_address
 
 def get_device_enumeration(device, os=''):
-    integrated_nic_pattern = 'Integrated'
-    nic_slot_pattern = 'NIC.Slot.'   
+    integrated_nic_patterns = ['NIC.Integrated.1-', 'NIC.Embedded.']
+    nic_slot_patterns = ['NIC.Slot.', 'NIC.Mezzanine.']
     enumeration = ''
+    integrated_nic_pattern = [integrated_pattern for integrated_pattern in integrated_nic_patterns if integrated_pattern in device]
+    nic_slot_pattern = [nic_slot for nic_slot in nic_slot_patterns if nic_slot in device]
 
-    if integrated_nic_pattern in device:
-        enumeration_postfix = device.split('NIC.Integrated.1-')[1].split('-')[0]
+    if integrated_nic_pattern and integrated_nic_pattern[0] in device:
+        enumeration_postfix = device.split(integrated_nic_pattern[0])[1].split('-')[0]
         if os == 'rhcos':
             enumeration = 'eno' + enumeration_postfix
         if os == 'rhel':
             enumeration = 'em' + enumeration_postfix
-    
-    if nic_slot_pattern in device:
-        slot_number = device.split('NIC.Slot.')[1].split('-')[0]
-        port_number = device.split('NIC.Slot.')[1].split('-')[1]
+
+    if nic_slot_pattern and nic_slot_pattern[0] in device:
+        slot_number = device.split(nic_slot_pattern[0])[1].split('-')[0]
+        port_number = device.split(nic_slot_pattern[0])[1].split('-')[1]
         if os == 'rhcos':
             enumeration = 'ens' + slot_number + 'f' + str(int(port_number)-1)
         if os == 'rhel':
             enumeration = 'p' + slot_number + 'p' + port_number
 
-    return enumeration  
+    return enumeration
+
         
 
 def main():

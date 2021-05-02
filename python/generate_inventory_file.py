@@ -44,7 +44,7 @@ class InventoryFile:
 4: dns
 5: http
 6: ignition config
-7: print inventory
+7: review inventory
 8: generate inventory file
 9: Exit
 """                 
@@ -194,8 +194,8 @@ class InventoryFile:
 
     def get_cluster_nodes(self):
         supported_install = """
-        1. 3 node (control/compute in control nodes)
-        2. 6+ node (3 control and 3+ compute)
+        1. 3 node (converged control/compute nodes)
+        2. 5+ node (3 control and 2+ compute)
         """
         logging.info('supported cluster install options: {}'.format(supported_install))
         valid_choices = [1, 2]
@@ -211,7 +211,7 @@ class InventoryFile:
         self.get_master_nodes()
         if self.cluster_install == 2:
             self.get_worker_nodes()
-            self.inventory_dict['all']['vars']['cluster_install'] = '6+ node'
+            self.inventory_dict['all']['vars']['cluster_install'] = '5+ node'
         else:
             self.inventory_dict['all']['vars']['cluster_install'] = '3 node'
 
@@ -272,7 +272,7 @@ class InventoryFile:
                 self.inventory_dict['all']['vars']['compute_nodes']
             except KeyError:
                 logging.error('Inventory file does not contain worker nodes info')
-                self.inventory_dict['all']['vars']['cluster_install'] = '6+ node'
+                self.inventory_dict['all']['vars']['cluster_install'] = '5+ node'
                 self.inventory_dict['all']['vars']['compute_nodes'] = []
                 default = 'nvme0n1'
                 worker_install_device = input('specify the compute node device that will be installed\n'
@@ -354,7 +354,7 @@ class InventoryFile:
         """
         self.clear_screen()
         default = 'nvme0n1'
-        logging.info('ensure disknames are absolutely available. Otherwise OpenShift install fails')
+        logging.info('ensure disknames are available. Otherwise OpenShift install fails')
         master_install_device = input('specify the control plane device that will be installed\n'
                                       'default [nvme0n1]: ')
         master_install_device = set_values(master_install_device, default)
@@ -388,11 +388,6 @@ class InventoryFile:
 
         """
         self.clear_screen()
-        default = 'core'
-        install_user = input('enter the user used to install openshift\n'
-                             'DONOT CHANGE THIS VALUE\n'
-                             'default [core]: ')
-        install_user = set_values(install_user, default)
         default = 'openshift'
         install_dir = input('enter the directory where openshift installs\n'
                             'directory will be created under /home/core\n'
@@ -415,11 +410,11 @@ class InventoryFile:
                                      'default [172.30.0.0/16]: ')
         service_network_cidr = set_values(service_network_cidr, default)
         service_network_cidr = validate_network_cidr(service_network_cidr)
-        logging.info('adding install_user: {} install_dir: {} cluster_network_cidr: {}\
-                      host_prefix: {} service_network_cidr: {}'.format(install_user, install_dir,
+        logging.info('adding install_dir: {} cluster_network_cidr: {}\
+                      host_prefix: {} service_network_cidr: {}'.format(install_dir,
                                                                 pod_network_cidr, host_prefix, 
                                                                 service_network_cidr))
-        self.inventory_dict['all']['vars']['install_user'] = install_user
+        self.inventory_dict['all']['vars']['install_user'] = 'core'
         self.inventory_dict['all']['vars']['install_dir'] = install_dir
         self.inventory_dict['all']['vars']['cluster_network_cidr'] = pod_network_cidr
         self.inventory_dict['all']['vars']['host_prefix'] = int(host_prefix)
