@@ -20,18 +20,27 @@ from helper import create_dir, check_path, get_ip, get_network_device_mac, \
 from nodes import get_nodes_info
 
 class InventoryFile:
-    def __init__(self, inventory_dict = {}, id_user='', id_pass='', version='', nodes_inventory=''):
+    def __init__(self, inventory_dict = {}, id_user='', id_pass='', version='', z_stream='', rhcos='', nodes_inventory=''):
         self.inventory_dict = inventory_dict
         self.id_user = id_user
         self.id_pass = id_pass
-        self.version = version
+        self.version = str(version)
+
+        if z_stream != 'latest':
+            self.z_stream_release = self.version + '.' + z_stream
+        else:
+            self.z_stream_release = 'latest-{}'.format(self.version)
+        if rhcos != 'latest':
+            self.rhcos_release = self.version + '.' + rhcos
+        else:
+            self.rhcos_release = 'latest'
         self.nodes_inventory = nodes_inventory
         self.nodes_inv = ''
         self.software_dir = ''
         self.input_choice = ''
         self.cluster_install = 0
-        self.ocp_client_base_url = 'https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-{}'.format(self.version)
-        self.ocp_rhcos_base_url = 'https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/{}/latest'.format(self.version)
+        self.ocp_client_base_url = 'https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{}'.format(self.z_stream_release)
+        self.ocp_rhcos_base_url = 'https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/{}/{}'.format(self.version, self.rhcos_release)
         self.ocp_urls = {'openshift_installer': '{}/openshift-install-linux.tar.gz'.format(self.ocp_client_base_url),
                          'initramfs': '{}/rhcos-live-initramfs.x86_64.img'.format(self.ocp_rhcos_base_url),
                          'kernel_file': '{}/rhcos-live-kernel-x86_64'.format(self.ocp_rhcos_base_url),
@@ -162,6 +171,8 @@ class InventoryFile:
         """
 
         logging.info('downloading OCP {} software bits into {}'.format(self.software_dir, self.version))
+        print(self.ocp_client_base_url)
+        print(self.ocp_rhcos_base_url)
         urlretrieve('{}/sha256sum.txt'.format(self.ocp_client_base_url),'{}/client.txt'.format(self.software_dir))
         urlretrieve('{}/sha256sum.txt'.format(self.ocp_rhcos_base_url),'{}/rhcos.txt'.format(self.software_dir))
         shasum = False
@@ -450,7 +461,9 @@ def main():
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--run', help='generate inventory file', action='store_true', required=False)
     group.add_argument('--add', help='number of worker nodes', action='store_true', required=False)
-    parser.add_argument('--ver', type=float, help='specify OpenShift version', required=True, choices=[4.6], default=4.6)
+    parser.add_argument('--release', type=float, help='specify OpenShift release version', required=True, choices=[4.6], default=4.6)
+    parser.add_argument('--z_stream', type=str, help='specify OpenShift z-stream version [DEVELOPMENT ONLY]', required=False, default='latest')
+    parser.add_argument('--rhcos_ver', type=str, help='specify RHCOS version [DEVELOPMENT ONLY]', required=False, default='latest')
     parser.add_argument('--nodes', help='nodes inventory file', required=True)
     parser.add_argument('--id_user', help='specify idrac user', required=False)
     parser.add_argument('--id_pass', help='specify idrac user', required=False)
@@ -460,7 +473,7 @@ def main():
         sys.exit()
     args = parser.parse_args()
     log_setup(log_file='inventory.log', debug=args.debug)
-    gen_inv_file = InventoryFile(id_user=args.id_user, id_pass=args.id_pass, version=args.ver, nodes_inventory=args.nodes)
+    gen_inv_file = InventoryFile(id_user=args.id_user, id_pass=args.id_pass, version=args.ocp_rel, z_stream=args.z_stream, rhcos=args.rhcos_ver, nodes_inventory=args.nodes)
     if args.run:
         gen_inv_file.run()
     
