@@ -473,7 +473,7 @@ def main():
         sys.exit()
     args = parser.parse_args()
     log_setup(log_file='inventory.log', debug=args.debug)
-    gen_inv_file = InventoryFile(id_user=args.id_user, id_pass=args.id_pass, version=args.ocp_rel, z_stream=args.z_stream, rhcos=args.rhcos_ver, nodes_inventory=args.nodes)
+    gen_inv_file = InventoryFile(id_user=args.id_user, id_pass=args.id_pass, version=args.release, z_stream=args.z_stream, rhcos=args.rhcos_ver, nodes_inventory=args.nodes)
     if args.run:
         gen_inv_file.run()
     
