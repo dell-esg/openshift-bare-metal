@@ -2,7 +2,7 @@
 # tasks file for bootstrap
 - name: install kvm pre-requisite packages 
   yum:
-    name: ['qemu-kvm', 'libvirt', 'libvirt-python', 'libguestfs-tools', 'virt-install', 'virt-viewer']
+    name: ['qemu-kvm', 'libvirt', 'python3-libvirt', 'libguestfs-tools', 'virt-install', 'virt-viewer']
     state: latest
 
 - name: enable libvirtd service
@@ -23,7 +23,7 @@
 
 - name: bootstrap kvm command
   set_fact:
-    command: "KVM Command: virt-install --name bootstrapkvm --ram 20480 --vcpu 8 --disk path=/home/bootstrapvm-disk.qcow2,format=qcow2,size=200 --os-variant generic --network=bridge=br0,model=virtio,mac={{ bootstrap_mac_info }}  --pxe --boot hd,network &"
+    command: "KVM Command: virt-install --name bootstrapkvm --ram 20480 --vcpu 8 --disk path=/home/bootstrapvm-disk.qcow2,format=qcow2,size=200 --os-variant generic --network=bridge=br0,model=virtio,mac={{ bootstrap_mac_info }} --pxe --boot uefi,hd,network &"
   when: bootstrap_node is defined
 
 - name: create a file to save bootstrap command

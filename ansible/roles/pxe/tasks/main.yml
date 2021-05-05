@@ -2,7 +2,7 @@
 # tasks file for pxe
 - name: install pxe pre-requisite packages 
   yum:
-    name: ['tftp-server', 'xinetd', 'syslinux']
+    name: ['tftp-server', 'xinetd']
     state: latest
   when:
     - groups['primary'] is defined
@@ -55,11 +55,6 @@
     - uefi
     - rhcos
     - rhcos/{{ version }}
-    - rhel
-    - bios
-    - bios/pxelinux.cfg
-    - bios/rhcos
-    - bios/rhcos/{{ version }}
   when:
     - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
@@ -75,18 +70,10 @@
     - { src: "{{ software_src }}/{{ rootfs }}", dest: "rhcos/{{ version }}/{{ rootfs }}" }
     - { src: /boot/efi/EFI/redhat/shimx64.efi, dest: uefi/shim.efi }
     - { src: /boot/efi/EFI/redhat/grubx64.efi, dest: uefi/grubx64.efi }
-    - { src: /var/www/html/rhel/images/pxeboot/vmlinuz, dest: rhel/vmlinuz }
-    - { src: /var/www/html/rhel/images/pxeboot/initrd.img, dest: rhel/initrd.img }
-    - { src: /var/www/html/rhel/isolinux/vesamenu.c32, dest: bios/vesamenu.c32 }
-    - { src: /usr/share/syslinux/pxelinux.0, dest: bios/pxelinux.0 }
-    - { src: "{{ software_src }}/{{ kernel_file }}", dest: "bios/rhcos/{{ version }}/{{ kernel_file }}" }
-    - { src: "{{ software_src }}/{{ initramfs }}", dest: "bios/rhcos/{{ version }}/{{ initramfs }}" }
-    - { src: "{{ software_src }}/{{ rootfs }}", dest: "bios/rhcos/{{ version }}/{{ rootfs }}" }
   when:
     - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
     
-
 - name: display network cidr
   set_fact:
     net_mask: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}"
@@ -101,7 +88,7 @@
   when:
     - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
-    - cluster_install == '6+ node'
+    - cluster_install == '5+ node'
 
 - name: dispay compute node names
   debug:
@@ -110,7 +97,7 @@
   when:
     - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
-    - cluster_install == '6+ node'
+    - cluster_install == '5+ node'
 
 - name: dispay rhel compute node names
   debug:
@@ -119,7 +106,7 @@
   when:
     - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
-    - cluster_install == '6+ node'
+    - cluster_install == '5+ node'
     - item.os == 'rhel'
 
 - name: generate kickstart files
@@ -130,22 +117,13 @@
   when:
     - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
-    - cluster_install == '6+ node'
+    - cluster_install == '5+ node'
     - item.os == 'rhel'
 
 - name: generate pxe menu grub.cfg file
   template:
     src: menu.j2
     dest: /var/lib/tftpboot/uefi/grub.cfg
-    mode: 0755
-  when:
-    - groups['primary'] is defined
-    - ansible_fqdn in groups['primary']
-
-- name: generate pxe menu bios menu
-  template:
-    src: default.j2
-    dest: /var/lib/tftpboot/bios/pxelinux.cfg/default
     mode: 0755
   when:
     - groups['primary'] is defined

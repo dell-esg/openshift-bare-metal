@@ -5,7 +5,6 @@
     name: "{{ item }}"
     state: latest
   loop:
-    - openshift-ansible
     - openshift-clients
 
 - name: create openshift installer user - {{ install_user }}
@@ -90,7 +89,7 @@
     - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
 
-- name: export kuberconfig in secondary management
+- name: export kubeconfig in secondary management
   blockinfile:
     path: /home/{{ install_user }}/.bash_profile
     insertafter: EOF
@@ -228,6 +227,9 @@
     src: "{{ ocp_install_dir.path }}/auth/{{ item }}"
     dest: /home/ansible
     remote_src: yes
+    owner: ansible
+    group: ansible
+    mode: 0755
   loop:
     - kubeconfig
     - kubeadmin-password
@@ -239,6 +241,9 @@
   copy:
     src: "/home/ansible/{{ item }}"
     dest: "/home/core/{{ install_dir }}/"
+    owner: "{{ install_user }}"
+    group: "{{ install_user }}"
+    mode: 0755
   loop:
     - kubeconfig
     - kubeadmin-password

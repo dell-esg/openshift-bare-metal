@@ -92,7 +92,7 @@ class InventoryFile:
 
         if nodes_inventory_check:
             with open(r'{}'.format(self.nodes_inventory)) as nodes_inv:
-                self.nodes_inv = yaml.load(nodes_inv, Loader=yaml.FullLoader)
+                self.nodes_inv = yaml.safe_load(nodes_inv)
         else:
             logging.error('incorrect nodes inventory specified: {}'.format(self.nodes_inventory))
             sys.exit()
@@ -277,7 +277,7 @@ class InventoryFile:
         file_exists = os.path.exists('{}'.format(current_inventory_file))
         if file_exists:
             with open('{}'.format(current_inventory_file), 'r') as file:
-                 self.inventory_dict = yaml.load(file, Loader=yaml.FullLoader)
+                 self.inventory_dict = yaml.safe_load(file)
       
             try:
                 self.inventory_dict['all']['vars']['compute_nodes']
@@ -437,7 +437,7 @@ class InventoryFile:
  
         """
         with open(inventory_file, 'w') as invfile:
-            yaml.dump(self.inventory_dict, invfile, default_flow_style=False, sort_keys=False)
+            yaml.dump(self.inventory_dict, invfile, default_flow_style=False)
 
     def display_inventory(self):
         """ 
@@ -445,7 +445,7 @@ class InventoryFile:
 
         """
         self.clear_screen()
-        logging.info(yaml.dump(self.inventory_dict, sort_keys=False, default_flow_style=False))
+        logging.info(yaml.dump(self.inventory_dict, default_flow_style=False))
         input('Press Enter to continue ')
 
     def run(self):

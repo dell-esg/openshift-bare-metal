@@ -1,17 +1,8 @@
 ---
 # tasks file for dhcp
-- debug:
-    msg: "{{ ansible_hostname }}"
-
-- debug:
-    msg: "{{ ansible_default_ipv4 }}"
-
-- debug:
-    msg: "{{ ansible_domain }}"
-
 - name: install dhcp server
   yum:
-    name: dhcp
+    name: dhcp-server
     state: latest
 
 - name: add firewalld service for dhcp
