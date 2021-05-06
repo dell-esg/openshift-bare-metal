@@ -48,7 +48,6 @@ def set_network_details(node_type='', node_name='', ip='', mac='', bond_name='',
     return inventory
 
 def get_nodes_info(node_type='', inventory='', add=False, idrac_user='', idrac_pass='', nodes_info=''):
-
     if add:
         nodes_count = len(nodes_info['new_compute_nodes'])
     else:
@@ -124,6 +123,7 @@ def get_nodes_info(node_type='', inventory='', add=False, idrac_user='', idrac_p
                                                 inventory=inventory, os=os)
                 
             else:
+                nodes = 'control_nodes' if node_type == 'control_nodes' else 'compute_nodes'
                 nic_device = generate_network_devices_menu(map_devices, purpose='{} nic port'.format(name))
                 logging.debug('selected {} as nic port: {}'.format(name, nic_device))
                 nic_device_enumeration = get_device_enumeration(nic_device, os=os)
@@ -144,7 +144,7 @@ def get_nodes_info(node_type='', inventory='', add=False, idrac_user='', idrac_p
 
                 logging.debug('{} node values: {}'.format(name, node_values))
                 node_pairs = dict(zip(node_keys, node_values))
-                inventory['all']['vars'][node_type].append(node_pairs)
+                inventory['all']['vars'][nodes].append(node_pairs)
 
     if node_type in all_compute_nodes and add:
         try:
