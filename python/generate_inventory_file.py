@@ -171,8 +171,6 @@ class InventoryFile:
         """
 
         logging.info('downloading OCP {} software bits into {}'.format(self.software_dir, self.version))
-        print(self.ocp_client_base_url)
-        print(self.ocp_rhcos_base_url)
         urlretrieve('{}/sha256sum.txt'.format(self.ocp_client_base_url),'{}/client.txt'.format(self.software_dir))
         urlretrieve('{}/sha256sum.txt'.format(self.ocp_rhcos_base_url),'{}/rhcos.txt'.format(self.software_dir))
         shasum = False

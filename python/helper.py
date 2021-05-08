@@ -249,6 +249,21 @@ def connect_to_idrac(user, passwd, base_api_url):
         return None
 
     return response if status_code == 200 else None
+
+
+def get_server_model(user, passwd, api_url):
+    """
+    get server model using redfish API
+
+    """
+    server_model = None
+    response = connect_to_idrac(user, passwd, api_url)
+    output = response.json()
+    if output:
+        server_model = output['Model']
+
+    return server_model
+
     
 def get_network_devices(user, passwd, base_api_url):
     """ 
@@ -346,7 +361,12 @@ def get_network_device_mac(devices, user, passwd, base_api_url):
     
     return network_device_mac_address
 
-def get_device_enumeration(device, os=''):
+def get_device_enumeration(device, os='', server_model=''):
+    """
+    get device enumeration based on server model
+
+    """
+
     integrated_nic_patterns = ['NIC.Integrated.1-', 'NIC.Embedded.']
     nic_slot_patterns = ['NIC.Slot.', 'NIC.Mezzanine.']
     enumeration = ''
@@ -355,6 +375,14 @@ def get_device_enumeration(device, os=''):
 
     if integrated_nic_pattern and integrated_nic_pattern[0] in device:
         enumeration_postfix = device.split(integrated_nic_pattern[0])[1].split('-')[0]
+        if 'XR11' in server_model or 'XR12' in server_model:
+            enumeration = 'eno' + str(int(8203 + (int(enumeration_postfix) * 100))) + 'np' + str(int(enumeration_postfix) - 1)
+            return enumeration
+
+        elif '650' in server_model:
+            enumeration = 'eno' + str(int(8203 + (int(enumeration_postfix) * 100)))
+            return enumeration
+
         if os == 'rhcos':
             enumeration = 'eno' + enumeration_postfix
         if os == 'rhel':
