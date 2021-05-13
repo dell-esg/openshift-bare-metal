@@ -1,8 +1,18 @@
 ---
 # tasks file for bootstrap
-- name: install kvm pre-requisite packages 
+- name: install virtualization tools
   yum:
-    name: ['qemu-kvm', 'libvirt', 'python3-libvirt', 'libguestfs-tools', 'virt-install', 'virt-viewer']
+    name:
+      - 'qemu-kvm'
+      - 'libvirt'
+      - 'libgcrypt'
+      - 'python3-libvirt'
+      - 'libguestfs-tools'
+      - 'virt-install'
+      - 'virt-viewer'
+      - '@Virtualization Client'
+      - '@Virtualization Hypervisor'
+      - '@Virtualization Tools'
     state: latest
 
 - name: enable libvirtd service
