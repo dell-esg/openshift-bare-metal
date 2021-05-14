@@ -91,7 +91,6 @@ def get_nodes_info(node_type='', inventory='', add=False, idrac_user='', idrac_p
             model_api_url = 'https://{}/redfish/v1/Systems/System.Embedded.1'.format(idrac_ip)
             server_model = get_server_model(user, passwd, model_api_url)
             devices = get_network_devices(user, passwd, base_api_url)
-            print('server model: {} devices: {}'.format(server_model, devices))
         
         if devices:
             map_devices = map_interfaces_network(devices)
