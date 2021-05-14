@@ -1,7 +1,7 @@
 ---
 # tasks file for bootstrap
 - name: install virtualization tools
-  yum:
+  dnf:
     name:
       - 'qemu-kvm'
       - 'libvirt'
