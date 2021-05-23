@@ -150,16 +150,29 @@
     path: "{{ ocp_install_dir.path }}/manifests"
   register: manifest_dir
 
+- name: check openshift directory in {{ ocp_install_dir.path }}
+  stat:
+    path: "{{ ocp_install_dir.path }}/openshift"
+  register: openshift_dir
+
 - name: generate chrony file
   template:
     src: chrony.conf.j2
     dest: /tmp/chrony.conf
     mode: '0644'
+  when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+    - not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
 
 - name: encrypt temporary chrony conf file using base64
   slurp:
     src: /tmp/chrony.conf
   register: chrony_content
+  when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+    - not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
 
 - name: generate chrony for control plane nodes
   template:
@@ -167,6 +180,10 @@
     dest: "{{ ocp_install_dir.path }}/openshift/99-master-chrony-configuration.yaml"
   with_items:
     - { role: "master" }
+  when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+    - not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
 
 - name: generate chrony for compute nodes
   template:
@@ -175,7 +192,10 @@
   with_items:
     - { role: "worker" }
   when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
     - cluster_install == "5+ node"
+    - not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
 
 - name: backup openshift and manifest directory
   copy:
