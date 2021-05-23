@@ -393,7 +393,8 @@ class InventoryFile:
 
     def get_ignition_details(self):
         """ 
-        get details from users used for install-config.yaml file
+        get details from users used for install-config.yaml file 
+        and generating config (manifest and ignition) files
 
         """
         self.clear_screen()
@@ -419,10 +420,25 @@ class InventoryFile:
                                      'default [172.30.0.0/16]: ')
         service_network_cidr = set_values(service_network_cidr, default)
         service_network_cidr = validate_network_cidr(service_network_cidr)
+        default = '0.us.pool.ntp.org'
+        response = False
+        while not response:
+            ntp_server = input('enter the NTP server\n'
+                               'default [0.us.pool.ntp.org]: ')
+            ntp_server = set_values(ntp_server, default)
+            try:
+                response = socket.gethostbyname_ex(ntp_server)
+                logging.info('ntp server: {}'.format(response))
+            except socket.gaierror:
+                logging.error('could not verify NTP server: {}'.format(ntp_server))
+                response = False
+        
         logging.info('adding install_dir: {} cluster_network_cidr: {}\
-                      host_prefix: {} service_network_cidr: {}'.format(install_dir,
+                host_prefix: {} service_network_cidr: {} ntp_server: {} '.format(install_dir,
                                                                 pod_network_cidr, host_prefix, 
-                                                                service_network_cidr))
+                                                                service_network_cidr, ntp_server))
+
+        self.inventory_dict['all']['vars']['ntp_server'] = ntp_server
         self.inventory_dict['all']['vars']['install_user'] = 'core'
         self.inventory_dict['all']['vars']['install_dir'] = install_dir
         self.inventory_dict['all']['vars']['cluster_network_cidr'] = pod_network_cidr

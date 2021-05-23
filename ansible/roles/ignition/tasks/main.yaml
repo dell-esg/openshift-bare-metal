@@ -150,6 +150,33 @@
     path: "{{ ocp_install_dir.path }}/manifests"
   register: manifest_dir
 
+- name: generate chrony file
+  template:
+    src: chrony.conf.j2
+    dest: /tmp/chrony.conf
+    mode: '0644'
+
+- name: encrypt temporary chrony conf file using base64
+  slurp:
+    src: /tmp/chrony.conf
+  register: chrony_content
+
+- name: generate chrony for control plane nodes
+  template:
+    src: 99-chrony-configuration.j2
+    dest: "{{ ocp_install_dir.path }}/openshift/99-master-chrony-configuration.yaml"
+  with_items:
+    - { role: "master" }
+
+- name: generate chrony for compute nodes
+  template:
+    src: 99-chrony-configuration.j2
+    dest: "{{ ocp_install_dir.path }}/openshift/99-worker-chrony-configuration.yaml"
+  with_items:
+    - { role: "worker" }
+  when:
+    - cluster_install == "5+ node"
+
 - name: backup openshift and manifest directory
   copy:
     src: "{{ ocp_install_dir.path }}/{{ item }}"
