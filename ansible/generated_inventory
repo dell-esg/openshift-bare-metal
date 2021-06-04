@@ -1,16 +1,13 @@
 all:
   children:
     primary:
-      hosts: demo-pri.demo.lab
-    secondary:
-      hosts: demo-sec.demo.lab
+      hosts: csah-r192a.oss.labs
   vars:
-    pull_secret_file: pullsecret
-    bootstrap_node:
-    - ip: 192.168.192.69
-      mac: 52:54:00:60:58:81
-      name: bootstrap
-    cluster: ocp46
+    #bootstrap_node:
+    #- ip: 192.168.192.69
+    #  mac: '52:54:00:12:28:35'
+    #  name: bootstrap
+    cluster: r192a
     cluster_install: 5+ node
     cluster_network_cidr: 10.128.0.0/14
     compute_nodes:
@@ -20,7 +17,7 @@ all:
       - eno1
       ip: 192.168.192.74
       mac: 98:03:9B:58:A9:22
-      name: democ1
+      name: com-1
       options: mode=active-backup
       os: rhcos
       primary: eno1
@@ -30,7 +27,7 @@ all:
       - eno1
       ip: 192.168.192.75
       mac: 98:03:9B:58:AD:C2
-      name: democ2
+      name: com-2
       options: mode=active-backup
       os: rhcos
       primary: eno1
@@ -39,26 +36,26 @@ all:
       bond: bond0
       ip: 192.168.192.71
       mac: 98:03:9B:58:AE:D2
-      name: demom1
+      name: con-1
       options: mode=active-backup
       primary: eno1
     - backup: ens2f0
       bond: bond0
       ip: 192.168.192.72
       mac: 98:03:9B:58:AE:F2
-      name: demom2
+      name: con-2
       options: mode=active-backup
       primary: eno1
     - backup: ens2f0
       bond: bond0
       ip: 192.168.192.73
       mac: 98:03:9B:58:AD:92
-      name: demom3
+      name: con-3
       options: mode=active-backup
       primary: eno1
     default_lease_time: 8000
-    default_zone_file: /var/named/ocp46.zones
-    dns_forwarder: 10.8.8.8
+    default_zone_file: /var/named/r192a.zones
+    dns_forwarder: 8.8.8.8
     haproxy_conf: /etc/haproxy/haproxy.cfg
     host_prefix: 23
     http_ignition: ignition
@@ -74,7 +71,6 @@ all:
     - description: configserver
       port: 22623
     max_lease_time: 72000
-    ntp_server: 0.us.pool.ntp.org
     num_of_compute_nodes: 2
     num_of_control_nodes: 3
     openshift_installer: openshift-install-linux.tar.gz
@@ -84,8 +80,8 @@ all:
     service_network_cidr: 172.30.0.0/16
     software_src: /home/ansible/files
     uefi_file: rhcos-metal.x86_64.raw.gz
+    pull_secret_file: pullsecret
     version: '4.6'
-    vip: 192.168.192.68
     worker_install_device: nvme0n1
     worker_ports:
     - description: http

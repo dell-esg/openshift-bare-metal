@@ -1,7 +1,0 @@
-server {{ ansible_default_ipv4.address }} iburst minpoll 6 maxpoll 10
-bindcmdaddress 127.0.0.1
-bindcmdaddress ::1
-driftfile /var/lib/chrony/drift
-logdir /var/log/chrony
-rtcsync
-makestep 1.0 3

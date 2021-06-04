@@ -1,23 +1,5 @@
 ---
 # tasks file for ignition
-- name: display network cidr
-  set_fact:
-    net_mask: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}"
-
-- name: display cidr
-  set_fact:
-    net_mask_cidr: "{{ net_mask | ipaddr('prefix') }}"
-
-- name: enable firewalld chronyd service
-  firewalld:
-    service: ntp
-    permanent: yes
-    immediate: yes
-    state: enabled
-  when:
-    - groups['primary'] is defined
-    - ansible_fqdn in groups['primary']
-
 - name: install openshift rpms
   yum:
     name: "{{ item }}"
@@ -167,72 +149,6 @@
   stat:
     path: "{{ ocp_install_dir.path }}/manifests"
   register: manifest_dir
-
-- name: check openshift directory in {{ ocp_install_dir.path }}
-  stat:
-    path: "{{ ocp_install_dir.path }}/openshift"
-  register: openshift_dir
-
-- name: generate csah chrony file
-  template:
-    src: csah.chrony.conf.j2
-    dest: /etc/chrony.conf
-    mode: '0644'
-  when:
-    - groups['primary'] is defined
-    - ansible_fqdn in groups['primary']
-  notify: "restart chronyd"
-
-- name: generate temporary client chrony config file
-  template:
-    src: client.chrony.conf.j2
-    dest: /tmp/chrony.conf
-    mode: '0644'
-  when:
-    - groups['primary'] is defined
-    - ansible_fqdn in groups['primary']
-
-- name: copy client chrony config file to secondary management
-  copy:
-    src: "/tmp/chrony.conf"
-    dest: "/etc/chrony.conf"
-    mode: '0644'
-  when:
-    - groups['secondary'] is defined
-    - ansible_fqdn in groups['secondary']
-  notify: "restart chronyd"
-
-- name: encrypt temporary chrony conf file using base64
-  slurp:
-    src: /tmp/chrony.conf
-  register: chrony_content
-  when:
-    - groups['primary'] is defined
-    - ansible_fqdn in groups['primary']
-    - not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
-
-- name: generate chrony machine config for control plane nodes
-  template:
-    src: 99-chrony-configuration.j2
-    dest: "{{ ocp_install_dir.path }}/openshift/99-master-chrony-configuration.yaml"
-  with_items:
-    - { role: "master" }
-  when:
-    - groups['primary'] is defined
-    - ansible_fqdn in groups['primary']
-    - not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
-
-- name: generate chrony machine config for compute nodes
-  template:
-    src: 99-chrony-configuration.j2
-    dest: "{{ ocp_install_dir.path }}/openshift/99-worker-chrony-configuration.yaml"
-  with_items:
-    - { role: "worker" }
-  when:
-    - groups['primary'] is defined
-    - ansible_fqdn in groups['primary']
-    - cluster_install == "5+ node"
-    - not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
 
 - name: backup openshift and manifest directory
   copy:

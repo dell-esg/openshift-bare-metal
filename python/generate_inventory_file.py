@@ -393,8 +393,7 @@ class InventoryFile:
 
     def get_ignition_details(self):
         """ 
-        get details from users used for install-config.yaml file 
-        and generating config (manifest and ignition) files
+        get details from users used for install-config.yaml file
 
         """
         self.clear_screen()
@@ -421,10 +420,9 @@ class InventoryFile:
         service_network_cidr = set_values(service_network_cidr, default)
         service_network_cidr = validate_network_cidr(service_network_cidr)
         logging.info('adding install_dir: {} cluster_network_cidr: {}\
-                host_prefix: {} service_network_cidr: {} '.format(install_dir,
-                                                           pod_network_cidr, host_prefix, 
-                                                           service_network_cidr))
-
+                      host_prefix: {} service_network_cidr: {}'.format(install_dir,
+                                                                pod_network_cidr, host_prefix, 
+                                                                service_network_cidr))
         self.inventory_dict['all']['vars']['install_user'] = 'core'
         self.inventory_dict['all']['vars']['install_dir'] = install_dir
         self.inventory_dict['all']['vars']['cluster_network_cidr'] = pod_network_cidr
