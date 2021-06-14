@@ -1,0 +1,47 @@
+apiVersion: snapshot.storage.k8s.io/v1beta1
+kind: VolumeSnapshot
+metadata:
+  name: powermax-iscsi-snapshot
+  namespace: powermax
+spec:
+  volumeSnapshotClassName: powermax-snap
+  source:
+    persistentVolumeClaimName: dynamic-iscsi-powermax-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: powermax-iscsi-snapshot-pvc
+  namespace: powermax
+spec:
+  storageClassName: powermax-iscsi
+  dataSource:
+    name: powermax-iscsi-snapshot
+    kind: VolumeSnapshot
+    apiGroup: snapshot.storage.k8s.io
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: powermax-iscsi-snapshot-pod
+  namespace: powermax
+spec:
+  containers:
+  - name: task-pv-container
+    image: quay.io/centos/centos
+    ports:
+      - containerPort: 80
+        name: "http-server"
+    volumeMounts:
+      - mountPath: "/mnt"
+        name: iscsi
+    command: ["/bin/bash", "-c", "sleep 2000000000000"]
+  volumes:
+    - name: iscsi
+      persistentVolumeClaim:
+        claimName: powermax-iscsi-snapshot-pvc

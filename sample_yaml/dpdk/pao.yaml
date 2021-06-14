@@ -1,0 +1,19 @@
+apiVersion: performance.openshift.io/v1
+kind: PerformanceProfile
+metadata:
+ name: smt-performanceprofile
+spec:
+ cpu:
+  isolated: "1,3,5-35,37,39,41-70"
+  reserved: "0,36,2,38,4,40"
+ hugepages:
+  defaultHugepagesSize: 1G
+  pages:
+  - size: "1G"
+    count: 16
+ realTimeKernel:
+  enabled: false
+ numa:
+  topologyPolicy: "restricted"
+ nodeSelector:
+  node-role.kubernetes.io/dpdk: ""
