@@ -10,7 +10,7 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - democ1.oss.labs
+          - edge.demo.lab
   storageClassDevices:
     - storageClassName: "local-sc"
       volumeMode: Filesystem
