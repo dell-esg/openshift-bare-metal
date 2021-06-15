@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dynamic-nfs-powerscale-pvc
+  namespace: isilon
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: isilon-nfs
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo
+  namespace: isilon
+data:
+  sample: file data
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: powerscale-nfs-pod
+  namespace: isilon
+spec:
+  containers:
+  - name: task-pv-container
+    image: quay.io/centos/centos
+    ports:
+      - containerPort: 80
+        name: "http-server"
+    volumeMounts:
+      - mountPath: "/mnt"
+        name: nfs
+      - mountPath: "/tmp"
+        name: confmap
+    command: ["/bin/bash", "-c", "cp /tmp/keys /mnt/keys && sleep 2000000000"]
+  volumes:
+    - name: nfs
+      persistentVolumeClaim:
+        claimName: dynamic-nfs-powerscale-pvc
+    - name: confmap
+      configMap:
+        name: demo
+        items:
+        - key: sample
+          path: keys

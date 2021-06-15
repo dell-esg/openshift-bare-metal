@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dynamic-nfs-unity-pvc
+  namespace: unity
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: unity-nfs
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo
+  namespace: unity
+data:
+  sample: |
+    unity nfs
+    test content
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: unity-nfs-pod
+  namespace: unity
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: compute1.dsp.lab
+  containers:
+  - name: task-pv-container
+    image: quay.io/centos/centos
+    ports:
+      - containerPort: 80
+        name: "http-server"
+    volumeMounts:
+      - mountPath: "/mnt"
+        name: dynfs
+      - mountPath: "/tmp"
+        name: confmap
+    command: ["/bin/bash", "-c", "cp /tmp/keys /mnt/keys && sleep 2000000000"]
+  volumes:
+    - name: dynfs
+      persistentVolumeClaim:
+        claimName: dynamic-nfs-unity-pvc
+    - name: confmap
+      configMap:
+        name: demo
+        items:
+        - key: sample
+          path: keys

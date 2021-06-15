@@ -1,0 +1,47 @@
+apiVersion: snapshot.storage.k8s.io/v1beta1
+kind: VolumeSnapshot
+metadata:
+  name: powerscale-nfs-snapshot
+  namespace: isilon
+spec:
+  volumeSnapshotClassName: isilon-snap
+  source:
+    persistentVolumeClaimName: dynamic-nfs-powerscale-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: powerscale-nfs-snapshot-pvc
+  namespace: isilon
+spec:
+  storageClassName: isilon-nfs
+  dataSource:
+    name: powerscale-nfs-snapshot
+    kind: VolumeSnapshot
+    apiGroup: snapshot.storage.k8s.io
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: powerscale-nfs-snapshot-pod
+  namespace: isilon
+spec:
+  containers:
+  - name: task-pv-container
+    image: quay.io/centos/centos
+    ports:
+      - containerPort: 80
+        name: "http-server"
+    volumeMounts:
+      - mountPath: "/mnt"
+        name: nfs
+    command: ["/bin/bash", "-c", "sleep 2000000000000"]
+  volumes:
+    - name: nfs
+      persistentVolumeClaim:
+        claimName: powerscale-nfs-snapshot-pvc
