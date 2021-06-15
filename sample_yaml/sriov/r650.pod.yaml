@@ -7,7 +7,7 @@ metadata:
     k8s.v1.cni.cncf.io/networks: r650-1-vf0-sriov-network
 spec:
   nodeSelector:
-    kubernetes.io/hostname: compute-1.example.com
+    kubernetes.io/hostname: 650-1.oss.labs
   containers:
   - name: example-pod
     command: ["/bin/bash", "-c", "sleep 2000000000000"]
