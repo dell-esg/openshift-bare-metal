@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: n3000-pod
+  namespace: my-ripsaw
+spec:
+  containers:
+  - name: n3000-test
+    image: quay.io/centos/centos:7.9.2009
+    command: ["/bin/bash", "-c", "--" ]
+    args: [ "while true; do sleep 300000; done;" ]
+    resources:
+      requests:
+        intel.com/intel_fec_5g: '1'
+      limits:
+        intel.com/intel_fec_5g: '1'
