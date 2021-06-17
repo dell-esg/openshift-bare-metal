@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dpdk-pod
+  namespace: dpdk
+  annotations:
+    k8s.v1.cni.cncf.io/networks: mellanox-dpdk-network
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: 650-1.demo.lab
+  containers:
+  - name: dpdk-pod
+    command: ["/bin/bash", "-c", "sleep 2000000000000"]
+    image: centos/tools
