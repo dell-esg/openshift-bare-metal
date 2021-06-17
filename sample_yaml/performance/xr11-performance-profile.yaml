@@ -1,0 +1,28 @@
+apiVersion: performance.openshift.io/v1
+kind: PerformanceProfile
+metadata:
+  name: xr11-performanceprofile
+spec:
+  additionalKernelArgs:
+    - nmi_watchdog=0
+    - audit=0
+    - mce=off
+    - processor.max_cstate=1
+    - idle=poll
+    - intel_idle.max_cstate=0
+    #- nosmt
+  cpu:
+    isolated: "3-23,27-46"
+    reserved: "0,24,1,25,2,26"
+  hugepages:
+    defaultHugepagesSize: 1G
+    pages:
+    - size: "1G"
+      count: 8
+      #node: 0
+  realTimeKernel:
+    enabled: true
+  numa:
+    topologyPolicy: "restricted"
+  nodeSelector:
+    node-role.kubernetes.io/worker-xr11: ""

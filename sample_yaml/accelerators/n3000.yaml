@@ -1,0 +1,16 @@
+apiVersion: fpga.intel.com/v1
+kind: N3000Cluster
+metadata:
+  name: n3000
+  namespace: vran-acceleration-operators
+spec:
+  nodes:
+    - nodeName: "compute-1.oss.labs"
+      fortville:
+        firmwareURL: "http://<http_server>/path/to/<firmware_file>"
+        MACs:
+          - MAC: "64:4c:36:12:46:74"
+          - MAC: "64:4c:36:12:46:70"
+      fpga:
+        - userImageURL: "http://<http_server>/path/to/<fpga_image>"
+          PCIAddr: "0000:b4:00.0"
