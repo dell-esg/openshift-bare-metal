@@ -1,0 +1,5 @@
+- name: restart chronyd service
+  systemd:
+    name: chronyd
+    state: restarted
+  listen: "restart chronyd"
