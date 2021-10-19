@@ -21,25 +21,15 @@ policy-map type application policy-iscsi
 interface vlan1
  no shutdown
 !
-interface vlan34
+interface vlan10
  description iDRACs
  no shutdown
 !
-interface vlan47
- description "storage network"
- shutdown
- ip address 192.168.47.4/24
-!
-interface vlan461
- description "OCP 4.3"
- no shutdown
- ip address 192.168.46.5/26
-!
 interface port-channel51
- description Up-S5232F-1
+ description Uplink-Leaf
  no shutdown
  switchport mode trunk
- switchport trunk allowed vlan 34,47,461
+ switchport trunk allowed vlan 10
  mtu 9216
  lacp fallback enable
  lacp fallback preemption disable
@@ -53,233 +43,240 @@ interface mgmt1/1/1
  ipv6 address autoconfig
 !
 interface ethernet1/1/1
+ description cash->iDRAC
  no shutdown
- switchport access vlan 34
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/2
+description ctl1->iDRAC
  no shutdown
- switchport access vlan 34
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/3
+description ctl2->iDRAC
  no shutdown
- switchport access vlan 34
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/4
+description ctl3->iDRAC
  no shutdown
- switchport access vlan 34
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/5
+description com1->iDRAC
  no shutdown
- switchport access vlan 34
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/6
+description com2->iDRAC
  no shutdown
- switchport access vlan 34
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/7
+description com3->iDRAC
  no shutdown
- switchport access vlan 34
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/8
  no shutdown
- switchport access vlan 34
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/9
  no shutdown
- switchport access vlan 34
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/10
  no shutdown
- switchport access vlan 34
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/11
  no shutdown
- switchport access vlan 34
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/12
  no shutdown
- switchport access vlan 34
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/13
  no shutdown
- switchport access vlan 34
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/14
  no shutdown
- switchport access vlan 34
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/15
  no shutdown
- switchport access vlan 34
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/16
  no shutdown
- switchport access vlan 34
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/17
  no shutdown
- switchport access vlan 461
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/18
  no shutdown
- switchport access vlan 461
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/19
  no shutdown
- switchport access vlan 461
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/20
  no shutdown
- switchport access vlan 461
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/21
  no shutdown
- switchport access vlan 461
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/22
  no shutdown
- switchport access vlan 461
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/23
  no shutdown
- switchport access vlan 461
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/24
  no shutdown
- switchport access vlan 461
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/25
  no shutdown
- switchport access vlan 461
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/26
  no shutdown
- switchport access vlan 461
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/27
  no shutdown
- switchport access vlan 461
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/28
  no shutdown
- switchport access vlan 461
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/29
  no shutdown
- switchport access vlan 461
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/30
  no shutdown
- switchport access vlan 461
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/31
  no shutdown
- switchport access vlan 461
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/32
  no shutdown
- switchport access vlan 461
- flowcontrol receive on
-!
-interface ethernet1/1/33
- no shutdown
- switchport access vlan 47
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/34
  no shutdown
- switchport access vlan 47
+ switchport access vlan 10
+ flowcontrol receive on
+!
+interface ethernet1/1/10
+ no shutdown
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/35
  no shutdown
- switchport access vlan 47
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/36
  no shutdown
- switchport access vlan 47
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/37
  no shutdown
- switchport access vlan 47
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/38
  no shutdown
- switchport access vlan 47
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/39
  no shutdown
- switchport access vlan 47
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/40
  no shutdown
- switchport access vlan 47
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/41
  no shutdown
- switchport access vlan 47
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/42
  no shutdown
- switchport access vlan 47
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/43
  no shutdown
- switchport access vlan 47
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/44
  no shutdown
- switchport access vlan 47
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/45
  no shutdown
- switchport access vlan 47
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/46
  no shutdown
- switchport access vlan 47
+ switchport access vlan 10
  flowcontrol receive on
 !
 interface ethernet1/1/47
@@ -323,3 +320,4 @@ management route 0.0.0.0/0 192.168.33.1
 snmp-server contact "Contact Support"
 !
 telemetry
+
