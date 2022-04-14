@@ -431,7 +431,13 @@ def main():
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--run', help='generate inventory file', action='store_true', required=False)
     group.add_argument('--add', help='number of worker nodes', action='store_true', required=False)
+<<<<<<< HEAD
+    parser.add_argument('--release', type=str, help='specify OpenShift release version', required=True, choices=["4.10"], default=4.10)
+    parser.add_argument('--z_stream', type=str, help='specify OpenShift z-stream version [DEVELOPMENT ONLY]', required=False, default='latest')
+    parser.add_argument('--rhcos_ver', type=str, help='specify RHCOS version [DEVELOPMENT ONLY]', required=False, default='latest')
+=======
     parser.add_argument('--ver', type=str, help='specify OpenShift version', required=True, choices=["4.10"], default="4.10")
+>>>>>>> efd049068546ab18d5c0f72a384d703dccc94ed6
     parser.add_argument('--nodes', help='nodes inventory file', required=True)
     parser.add_argument('--id_user', help='specify idrac user', required=False)
     parser.add_argument('--id_pass', help='specify idrac user', required=False)
