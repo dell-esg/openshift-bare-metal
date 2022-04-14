@@ -1,34 +1,13 @@
 bootstrap_kvm:
   - name: bootstrap
-    ip_os: 192.168.192.149
+    ip_os: 192.168.32.61
 control_nodes:
   - name: 650m3
-    ip_os: 192.168.192.151
-    ip_idrac: 192.167.192.25
+    ip_os: 192.168.32.51
+    ip_idrac: 172.168.0.51
   - name: 650m2
-    ip_os: 192.168.192.152
-    ip_idrac: 192.167.192.26
+    ip_os: 192.168.32.52
+    ip_idrac: 172.168.0.52
   - name: 650m1
-    ip_os: 192.168.192.153
-    ip_idrac: 192.167.192.27
-compute_nodes:
-  - name: 650c1
-    ip_os: 192.168.192.154
-    ip_idrac: 192.167.192.28
-    os: rhcos
-  - name: 650c2
-    ip_os: 192.168.192.155
-    ip_idrac: 192.167.192.29
-    os: rhel
-  - name: xe2420
-    ip_os: 192.168.192.156
-    ip_idrac: 192.167.190.20
-    os: rhcos
-  - name: xr12
-    ip_os: 192.168.192.158
-    ip_idrac: 192.167.190.22
-    os: rhcos
-  - name: xr11
-    ip_os: 192.168.192.157
-    ip_idrac: 192.167.190.23
-    os: rhcos
+    ip_os: 192.168.32.54
+    ip_idrac: 172.168.0.54

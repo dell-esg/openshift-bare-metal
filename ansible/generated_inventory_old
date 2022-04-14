@@ -6,7 +6,7 @@ all:
     pull_secret_file: pullsecret
     bootstrap_node:
     - ip: 192.168.32.61
-      mac: 52:54:00:56:75:36
+      mac: '52:54:00:43:31:12'
       name: bootstrap
     cluster: intel-ocp
     cluster_install: 3 node
@@ -59,7 +59,7 @@ all:
     service_network_cidr: 172.30.0.0/16
     software_src: /home/ansible/files
     uefi_file: rhcos-metal.x86_64.raw.gz
-    version: '4.10'
+    version: '4.6'
     worker_ports:
     - description: http
       port: 80

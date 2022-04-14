@@ -3,7 +3,6 @@ all:
     primary:
       hosts: intel15-csah.dcws.lab
   vars:
-    pull_secret_file: pullsecret
     bootstrap_node:
     - ip: 192.168.32.61
       mac: 52:54:00:56:75:36
@@ -11,28 +10,7 @@ all:
     cluster: intel-ocp
     cluster_install: 3 node
     cluster_network_cidr: 10.128.0.0/14
-    control_nodes:
-    - name: etcd-0
-      ip: 192.168.32.51
-      mac: 24:6E:96:52:BB:A2
-      bond: bond0
-      primary: eno1
-      backup: eno2
-      options: mode=active-backup
-    - name: etcd-1
-      ip: 192.168.32.52
-      mac: 24:6E:96:52:C8:40
-      bond: bond0
-      primary: eno1
-      backup: eno2
-      options: mode=active-backup
-    - name: etcd-2
-      ip: 192.168.32.54
-      mac: 24:6E:96:52:A1:78
-      bond: bond0
-      primary: eno1
-      backup: eno2
-      options: mode=active-backup
+    control_nodes: []
     default_lease_time: 8000
     default_zone_file: /var/named/intel-ocp.zones
     dns_forwarder: 10.8.8.8
