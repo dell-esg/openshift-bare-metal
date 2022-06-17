@@ -1,0 +1,22 @@
+all:
+  children:
+    primary:
+      hosts: rhel83.dcws.lab
+  vars:
+    pull_secret_file: pullsecret
+    cluster: sno-test
+    cluster_network_cidr: 10.128.0.0/14
+    sno_nodes:
+    - name: sno1
+      ip: 192.168.32.174
+      mac: B8:CE:F6:0D:07:08
+      bond: bond0
+      primary: eno12399
+      backup: eno12409
+      options: mode=active-backup
+    default_lease_time: 8000
+    default_zone_file: /var/named/sno-test.zones
+    dns_forwarder: 10.8.8.8
+    host_prefix: 23
+    max_lease_time: 72000
+

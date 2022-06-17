@@ -6,60 +6,29 @@ all:
     pull_secret_file: pullsecret
     bootstrap_node:
     - ip: 192.168.32.19
-      mac: B8:CE:F6:13:09:D5 
+      mac: 52:54:00:59:64:60
       name: bootstrap
     cluster: ocp-410
     cluster_install: 3 node
     cluster_network_cidr: 10.128.0.0/14
-    compute_nodes:
-    - backup: eno12409
-      bond: bond0
-      interfaces:
-      - eno12399
-      ip: 192.168.32.30
-      mac: B8:CE:F6:0E:BF:86
-      name: compute1
-      options: mode=active-backup
-      os: rhcos
-      primary: eno12399
-    - backup: eno12409
-      bond: bond0
-      interfaces:
-      - eno12399
-      ip: 192.168.32.33
-      mac: B8:CE:F6:0E:BF:EE
-      name: compute2
-      options: mode=active-backup
-      os: rhcos
-      primary: eno12399
-    - backup: eno12409
-      bond: bond0
-      interfaces:
-      - eno12399
-      ip: 192.168.32.34
-      mac: B8:CE:F6:0E:BD:56
-      name: compute3
-      options: mode=active-backup
-      os: rhcos
-      primary: eno12399
     control_nodes:
-    - name: etcd-1
-      ip: 192.168.32.24
-      mac: B8:CE:F6:13:0A:1C
+    - name: intel-compute-01
+      ip: 192.168.32.40
+      mac: B8:CE:F6:0D:07:08
       bond: bond0
       primary: eno12399
       backup: eno12409
       options: mode=active-backup
-    - name: etcd-2
-      ip: 192.168.32.25
-      mac: B8:CE:F6:13:09:C4
+    - name: intel-compute-02
+      ip: 192.168.32.41
+      mac: B8:CE:F6:0D:10:C8
       bond: bond0
       primary: eno12399
       backup: eno12409
       options: mode=active-backup
-    - name: etcd-3
-      ip: 192.168.32.26
-      mac: B8:CE:F6:0E:C0:96
+    - name: intel-compute-03
+      ip: 192.168.32.42
+      mac: B8:CE:F6:0D:10:C0
       bond: bond0
       primary: eno12399
       backup: eno12409
@@ -75,7 +44,7 @@ all:
     install_dir: openshift
     install_user: core
     kernel_file: rhcos-live-kernel-x86_64
-    master_install_device: nvme0n1
+    master_install_device: sda
     master_ports:
     - description: apiserver
       port: 6443
@@ -83,7 +52,6 @@ all:
       port: 22623
     max_lease_time: 72000
     num_of_control_nodes: 3
-    num_of_compute_nodes: 3
     openshift_installer: openshift-install-linux.tar.gz
     os: rhcos
     proxy: haproxy
