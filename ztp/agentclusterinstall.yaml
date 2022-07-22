@@ -1,0 +1,23 @@
+apiVersion: extensions.hive.openshift.io/v1beta1
+kind: AgentClusterInstall
+metadata:
+  # Only include the annotation if using OVN, otherwise omit the annotation
+  name: sno-node
+  namespace: sno-node
+spec:
+  clusterDeploymentRef:
+    name: sno-node
+  imageSetRef:
+    name: img4.9.18-x86-64-appsub
+  networking:
+    clusterNetwork:
+    - cidr: 10.128.0.0/14
+      hostPrefix: 23
+    machineNetwork:
+    - cidr: 192.168.32.0/24
+    serviceNetwork:
+    - 172.30.0.0/16 
+  provisionRequirements:
+    controlPlaneAgents: 1
+    workerAgents: 0
+  sshPublicKey: 'ssh-rsa '  

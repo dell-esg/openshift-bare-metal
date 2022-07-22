@@ -1,0 +1,20 @@
+apiVersion: hive.openshift.io/v1
+kind: ClusterDeployment
+metadata:
+  name: sno-node
+  namespace: sno-node
+spec:
+  baseDomain: dcws.lab
+  clusterInstallRef:
+    group: extensions.hive.openshift.io
+    kind: AgentClusterInstall
+    name: sno-node
+    version: v1beta1
+  clusterName: sno-node
+  platform:
+    agentBareMetal:
+      agentSelector:
+        matchLabels:
+          cluster-name: sno-node
+  pullSecretRef:
+    name: assisted-deployment-pull-secret
