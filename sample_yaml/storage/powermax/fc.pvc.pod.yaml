@@ -8,8 +8,8 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
-  storageClassName: powermax-fc
+      storage: 10Gi
+  storageClassName: powermaxscfc
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -37,6 +37,8 @@ spec:
       - mountPath: "/tmp"
         name: confmap
     command: ["/bin/bash", "-c", "cp /tmp/keys /mnt/keys && sleep 2000000000"]
+  nodeSelector:
+    kubernetes.io/hostname: compute-1.dcws.lab
   volumes:
     - name: fc
       persistentVolumeClaim:

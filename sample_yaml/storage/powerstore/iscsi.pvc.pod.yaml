@@ -1,29 +1,31 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: powermax-iscsi-pvc
-  namespace: powermax
+  name: powerstore-pvc-iscsi
+  namespace: powerstore
 spec:
   accessModes:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 2Gi
-  storageClassName: powermaxsc-iscsi
+      storage: 20Gi
+  storageClassName: dellcsi-powerstore-sc
+
 ---
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: demo
-  namespace: powermax
+  namespace: powerstore
 data:
   sample: file data
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: powermax-iscsi-pod
-  namespace: powermax
+  name: test-pod
+  namespace: powerstore
 spec:
   containers:
   - name: task-pv-container
@@ -33,16 +35,15 @@ spec:
         name: "http-server"
     volumeMounts:
       - mountPath: "/mnt"
-        name: iscsi
+        name: vol
       - mountPath: "/tmp"
         name: confmap
-    command: ["/bin/bash", "-c", "sleep 2000000000"]
-  nodeSelector:
-    kubernetes.io/hostname: compute-1.dcws.lab
+    command: ["/bin/bash", "-c", " sleep 2000000000"]
+  nodeName: compute-2.dcws.lab
   volumes:
-    - name: iscsi
+    - name: vol
       persistentVolumeClaim:
-        claimName: powermax-iscsi-pvc
+        claimName: powerstore-pvc-iscsi
     - name: confmap
       configMap:
         name: demo

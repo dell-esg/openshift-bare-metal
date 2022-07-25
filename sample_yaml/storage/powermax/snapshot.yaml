@@ -1,0 +1,61 @@
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshotClass
+metadata:
+  name: powermax-snap-class
+driver: csi-powermax.dellemc.com
+deletionPolicy: Delete
+
+---
+
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata:
+  name: powermax-snapshot
+spec:
+  volumeSnapshotClassName: powermax-snap-class
+  source:
+    persistentVolumeClaimName: dynamic-fc-powermax-pvc
+
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: powermax-restore
+spec:
+  storageClassName: powermaxscfc
+  dataSource:
+    name: powermax-snapshot
+    kind: VolumeSnapshot
+    apiGroup: snapshot.storage.k8s.io
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: restore-pod
+  namespace: powermax
+spec:
+  containers:
+  - name: task-pv-container
+    image: quay.io/centos/centos
+    ports:
+      - containerPort: 80
+        name: "http-server"
+    volumeMounts:
+      - mountPath: "/home"
+        name: restore-pvc
+    command: ["/bin/bash", "-c", "sleep 2000000000"]
+  nodeSelector:
+    kubernetes.io/hostname: compute-1.dcws.lab
+  volumes:
+    - name: restore-pvc
+      persistentVolumeClaim:
+        claimName: powermax-restore
