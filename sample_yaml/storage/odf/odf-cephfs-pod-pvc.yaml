@@ -1,7 +1,8 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: ocs-ds-pvc
+  name: odf-cephfs-pod-pvc
+  namespace: odf-test
 spec:
   accessModes:
     - ReadWriteOnce
