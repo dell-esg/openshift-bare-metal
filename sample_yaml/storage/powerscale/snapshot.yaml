@@ -1,34 +1,39 @@
-apiVersion: snapshot.storage.k8s.io/v1beta1
+---
+
+apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshot
 metadata:
-  name: powerscale-nfs-snapshot
+  name: isilon-snapshot
   namespace: isilon
 spec:
-  volumeSnapshotClassName: isilon-snap
+  volumeSnapshotClassName: csi-hostpath-snap-isilon
   source:
-    persistentVolumeClaimName: dynamic-nfs-powerscale-pvc
+    persistentVolumeClaimName: dynamic-nfs-isilon-pvc
+
 ---
+
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: powerscale-nfs-snapshot-pvc
-  namespace: isilon
+  name: isilon-restore
 spec:
-  storageClassName: isilon-nfs
+  storageClassName: isilon-sc
   dataSource:
-    name: powerscale-nfs-snapshot
+    name: isilon-snapshot
     kind: VolumeSnapshot
     apiGroup: snapshot.storage.k8s.io
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 4Gi
+
 ---
+
 apiVersion: v1
 kind: Pod
 metadata:
-  name: powerscale-nfs-snapshot-pod
+  name: restore-pods
   namespace: isilon
 spec:
   containers:
@@ -38,10 +43,12 @@ spec:
       - containerPort: 80
         name: "http-server"
     volumeMounts:
-      - mountPath: "/mnt"
-        name: nfs
-    command: ["/bin/bash", "-c", "sleep 2000000000000"]
+      - mountPath: "/mnt/snapshot"
+        name: restore-pvc
+    command: ["/bin/bash", "-c", "sleep 2000000000"]
+  nodeSelector:
+    kubernetes.io/hostname: compute-1.dcws.lab
   volumes:
-    - name: nfs
+    - name: restore-pvc
       persistentVolumeClaim:
-        claimName: powerscale-nfs-snapshot-pvc
+        claimName: isilon-restore
