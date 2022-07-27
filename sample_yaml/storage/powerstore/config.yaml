@@ -10,13 +10,3 @@ arrays:
      nfsAcls: "0777"                           # (Optional) defines permissions - POSIX mode bits or NFSv4 ACLs, to be set on NFS target mount directory.
                                                # NFSv4 ACls are supported for NFSv4 shares on NFSv4 enabled NAS servers only. POSIX ACLs are not supported and only POSIX mode bits are supported for NFSv3 shares.
 
----
-
-apiVersion: v1
-kind: Secret
-metadata:
-   name: powerstore-config
-   namespace: powerstore
-type: Opaque
-data:
-   config: CONFIG_YAML
