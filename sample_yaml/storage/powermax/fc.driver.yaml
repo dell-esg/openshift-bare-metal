@@ -1,7 +1,7 @@
 apiVersion: storage.dell.com/v1
 kind: CSIPowerMax
 metadata:
-  name: powermax-iscsi
+  name: powermax-fc
   namespace: powermax
 spec:
   driver:
