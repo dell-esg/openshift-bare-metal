@@ -1,0 +1,30 @@
+alertmanager:
+  enabled: false
+nodeExporter:
+  enabled: false
+pushgateway:
+  enabled: false
+kubeStateMetrics:
+  enabled: false
+configmapReload:
+  prometheus:
+    enabled: false
+server:
+  enabled: true
+  image:
+    repository: quay.io/prometheus/prometheus
+    tag: v2.34.0
+    pullPolicy: IfNotPresent
+  persistentVolume:
+    enabled: false
+  service:
+    type: NodePort
+    servicePort: 9090
+extraScrapeConfigs: |
+  - job_name: 'karavi-metrics-powerstore'
+    scrape_interval: 5s
+    scheme: https
+    static_configs:
+      - targets: ['otel-collector:8443']
+    tls_config:
+      insecure_skip_verify: true

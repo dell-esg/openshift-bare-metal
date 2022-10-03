@@ -1,0 +1,58 @@
+image:
+  repository: grafana/grafana
+  tag: 8.5.0
+  sha: ""
+  pullPolicy: IfNotPresent
+service:
+  type: NodePort
+
+## Administrator credentials when not using an existing Secret
+adminUser: admin
+adminPassword: admin
+
+## Pass the plugins you want to be installed as a list.
+##
+plugins:
+  - grafana-simple-json-datasource
+  - briangann-datatable-panel
+  - grafana-piechart-panel
+
+## Configure grafana datasources
+## ref: http://docs.grafana.org/administration/provisioning/#datasources
+##
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+    - name: Karavi-Topology
+      type: grafana-simple-json-datasource
+      access: proxy
+      url: 'https://karavi-topology:8443'
+      isDefault: null
+      version: 1
+      editable: true
+      jsonData:
+        tlsSkipVerify: true
+    - name: Prometheus
+      type: prometheus
+      access: proxy
+      url: 'http://prometheus-server:9090'
+      isDefault: null
+      version: 1
+      editable: true
+testFramework:
+  enabled: false
+sidecar:
+  datasources:
+    enabled: true
+  dashboards:
+    enabled: true
+
+## Additional grafana server CofigMap mounts
+## Defines additional mounts with CofigMap. CofigMap must be manually created in the namespace.
+extraConfigmapMounts: [] # If you created a ConfigMap on the previous step, delete [] and uncomment the lines below
+#   - name: certs-configmap
+#     mountPath: /etc/ssl/certs/ca-certificates.crt
+#     subPath: ca-certificates.crt
+#     configMap: certs-configmap
+#     readOnly: true
