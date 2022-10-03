@@ -1,0 +1,51 @@
+---
+apiVersion: ran.openshift.io/v1
+kind: PolicyGenTemplate
+metadata:
+  name: "example-multinode-site"
+  namespace: "ztp-site-v4.10"
+spec:
+  bindingRules:
+    # These policies will correspond to all clusters with this label:
+    sites: "example-multinode"
+    du-profile: "v4.10"
+  mcp: "worker"
+  sourceFiles:
+    - fileName: SriovNetwork.yaml
+      policyName: "config-policy"
+      metadata:
+        name: "sriov-nw-du-fh"
+      spec:
+        resourceName: du_fh
+        vlan: 140
+    - fileName: SriovNetworkNodePolicy.yaml
+      policyName: "config-policy"
+      metadata:
+        name: "sriov-nnp-du-fh"
+      spec:
+        deviceType: netdevice
+        isRdma: true
+        nicSelector:
+          pfNames: ["ens5f0"]
+        numVfs: 8
+        priority: 10
+        resourceName: du_fh
+    - fileName: SriovNetwork.yaml
+      policyName: "config-policy"
+      metadata:
+        name: "sriov-nw-du-mh"
+      spec:
+        resourceName: du_mh
+        vlan: 150
+    - fileName: SriovNetworkNodePolicy.yaml
+      policyName: "config-policy"
+      metadata:
+        name: "sriov-nnp-du-mh"
+      spec:
+        deviceType: vfio-pci
+        isRdma: false
+        nicSelector:
+          pfNames: ["ens7f0"]
+        numVfs: 8
+        priority: 10
+        resourceName: du_mh

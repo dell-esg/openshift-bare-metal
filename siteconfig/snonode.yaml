@@ -1,0 +1,85 @@
+# example-node1-bmh-secret & assisted-deployment-pull-secret need to be created under same namespace example-sno
+---
+apiVersion: ran.openshift.io/v1
+kind: SiteConfig
+metadata:
+  name: "snonode"
+  namespace: "snonode"
+spec:
+  baseDomain: "dcws.lab"
+  pullSecretRef:
+    name: "assisted-deployment-pull-secret"
+  clusterImageSetNameRef: "img4.10.16-x86-64-appsub"
+  sshPublicKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCsX4iW3o8TaKXrslYoGSveBXyKnSPC6ksaCuJFI2FtUhXa4u3FZfm/rMi0gHNAO1sfG9UWK88hTuK51QVV3DNZchgjVnSio2RcmSesxTji3dKpCjnK9/H+LXRQJsSnOlTMdgwDREBk1erAJPlpBdsrped5BEsfWZt2Bwxjoh7zEdN678q7LAP91m/i/oiEquWTR34Jle8TPukL4jjGUyiZ4PHTtyTBffBkJltkVlQ8KxPRVjO9v/T5bDm6pWRe7sfdXfbbFWByXykDuSLo7ObNoDu7lqAG/yykWqYxNlaUO6CzRHO7NxrafzipJn8d0BgFSwCdvbPewWDzvnuv2yQl7lZIDmX8FJ0QYA/3ZlabzlEVhTE1JB7D+3V6fFbHx4TTStbm3amDTM457Mg6PuG2qBUUudaYjSiITOlbxiL1s5Q8y5lwv+Qzv/GlZoPmcxHqT5btdFh1zqx8G27Kh7BrvSXYMij/lmYXGbsZ7WM0eILLRfCNAs+9dE+L0iBk0j0= ansible@amd-csah.dcws.lab
+"
+  clusters:
+  - clusterName: "snonode"
+    networkType: "OVNKubernetes"
+    clusterLabels:
+      # These example cluster labels correspond to the bindingRules in the PolicyGenTemplate examples
+      du-profile: "v4.10"
+      # These example cluster labels correspond to the bindingRules in the PolicyGenTemplate examples in ../policygentemplates:
+      # ../policygentemplates/common-ranGen.yaml will apply to all clusters with 'common: true'
+      common: true
+      # ../policygentemplates/group-du-sno-ranGen.yaml will apply to all clusters with 'group-du-sno: ""'
+      group-du-sno: ""
+      # ../policygentemplates/example-sno-site.yaml will apply to all clusters with 'sites: "example-sno"'
+      # Normally this should match or contain the cluster name so it only applies to a single cluster
+      sites : "snonode"
+    clusterNetwork:
+      - cidr: 10.128.0.0/14
+        hostPrefix: 24
+    machineNetwork:
+      - cidr: 192.168.32.0/24
+    serviceNetwork:
+      - 172.30.0.0/16
+        #    additionalNTPSources:
+        #      - 1111:2222:3333:4444::2
+    # Optionally; This can be used to override the KlusterletAddonConfig that is creted for this cluster:
+    #crTemplates:
+    #  KlusterletAddonConfig: "KlusterletAddonConfigOverride.yaml"
+    nodes:
+      - hostName: "sno-amd.dcws.lab"
+        role: "master"
+        bmcAddress: "idrac-virtualmedia+https://172.16.0.31/redfish/v1/Systems/System.Embedded.1"
+        bmcCredentialsName:
+          name: "sno-amd-bmh-secret"
+        bootMACAddress: "B8:CE:F6:0E:C0:07"
+        bootMode: "UEFI"
+        rootDeviceHints:
+          hctl: '0:1:0'
+        cpuset: "0-1,52-53"
+#commenting nmstate parameters       
+        nodeNetwork:
+#          interfaces:
+#            - name: eno12409
+#              macAddress: "B8:CE:F6:0E:C0:07"
+#          config:
+#            interfaces:
+#              - name: eno12409
+#                type: ethernet
+#                state: up
+#                macAddress: "B8:CE:F6:0E:C0:07"
+#                ipv4:
+#                  enabled: false
+#                ipv6:
+#                  enabled: true
+#                  address:
+                  # For SNO sites with static IP addresses, the node-specific,
+                  # API and Ingress IPs should all be the same and configured on
+                  # the interface
+                  #                  - ip: 1111:2222:3333:4444::aaaa:1
+                  #prefix-length: 64
+            dns-resolver:
+              config:
+                search:
+                - dcws.lab
+                server:
+                - 192.168.31.50
+#                  
+#            routes:
+#              config:
+#              - destination: ::/0
+#                next-hop-interface: eno12409
+#                next-hop-address: 
+#                table-id: 254
