@@ -81,9 +81,9 @@ spec:
                 server:
                 - 192.168.31.50
 #                  
-#            routes:
-#              config:
-#              - destination: ::/0
-#                next-hop-interface: eno12409
-#                next-hop-address: 
-#                table-id: 254
+            routes:
+              config:
+              - destination: 0.0.0.0/0
+                next-hop-interface: eno1
+                next-hop-address: 192.168.32.1
+                table-id: 254
