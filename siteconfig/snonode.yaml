@@ -51,19 +51,23 @@ spec:
         cpuset: "0-1,52-53"
 #commenting nmstate parameters       
         nodeNetwork:
-#          interfaces:
-#            - name: eno12409
-#              macAddress: "B8:CE:F6:0E:C0:07"
-#          config:
-#            interfaces:
-#              - name: eno12409
-#                type: ethernet
-#                state: up
-#                macAddress: "B8:CE:F6:0E:C0:07"
-#                ipv4:
-#                  enabled: false
-#                ipv6:
-#                  enabled: true
+          interfaces:
+            - name: eno1
+              macAddress: "24:6E:96:52:BB:A2"
+          config:
+            interfaces:
+              - name: eno1
+                type: ethernet
+                state: up
+                macAddress: "24:6E:96:52:BB:A2"
+                ipv4:
+                  enabled: true
+                  address:
+                    - ip: 192.168.32.51
+                      prefix-length: 24
+                  dhcp: false       
+                ipv6:
+                  enabled: false
 #                  address:
                   # For SNO sites with static IP addresses, the node-specific,
                   # API and Ingress IPs should all be the same and configured on
