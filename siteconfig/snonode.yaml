@@ -50,7 +50,7 @@ spec:
           hctl: '0:1:0'
         cpuset: "0-1,52-53"
 #commenting nmstate parameters       
-#        nodeNetwork:
+        nodeNetwork:
 #          interfaces:
 #            - name: eno12409
 #              macAddress: "B8:CE:F6:0E:C0:07"
