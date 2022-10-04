@@ -1,0 +1,18 @@
+all:
+  children:
+    primary:
+      hosts: amd-prov.dcws.lab
+  vars:
+    cluster: sno-ocp
+    default_lease_time: 8000
+    default_zone_file: /var/named/sno-ocp.zones
+    dns_forwarder: 10.8.8.8
+    max_lease_time: 72000
+    sno_nodes:
+    - backup: eno12399
+      bond: bond0
+      ip: 192.168.32.51
+      mac: 24:6E:96:52:BB:A2
+      name: snonode
+      options: mode=active-backup
+      primary: eno12399

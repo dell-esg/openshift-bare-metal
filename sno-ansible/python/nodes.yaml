@@ -1,0 +1,4 @@
+sno_nodes:
+  - name: snonode
+    ip_os: 192.168.32.51
+    ip_idrac: 172.16.0.51
