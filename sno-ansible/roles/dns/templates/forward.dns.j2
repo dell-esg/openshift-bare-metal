@@ -26,8 +26,8 @@ $ORIGIN {{ cluster }}.{{ ansible_domain }}.
 {% endfor %}
 
 
-
-*.apps    IN     A   {{  }}
-api       IN     A   {{ ansible_default_ipv4.address }}
-api-int   IN     A   {{ ansible_default_ipv4.address }}
-
+{% for node in sno_nodes %}
+*.apps    IN     A   {{ node.ip }}
+api       IN     A   {{ node.ip }}
+api-int   IN     A   {{ node.ip }}
+{% endfor %}
