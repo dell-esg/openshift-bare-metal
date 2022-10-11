@@ -5,6 +5,13 @@
     name: dhcp-server
     state: latest
 
+- name: install openshift rpms
+  yum:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - openshift-clients
+    
 - name: add firewalld service for dhcp
   firewalld:
     service: dhcp
