@@ -19,7 +19,7 @@ compute_nodes:
   - name: compute2
     ip_os: 192.168.32.33
     ip_idrac: 172.168.0.33
-    os: rhel
+    os: rhcos
   - name: compute3
     ip_os: 192.168.32.34
     ip_idrac: 172.168.0.34
