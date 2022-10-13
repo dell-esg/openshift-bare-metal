@@ -12,24 +12,49 @@ $TTL 8600
 {{ ansible_hostname }}    IN     A      {{ ansible_default_ipv4.address }}
 
 
+{% if bootstrap_node is defined %}
+{% for node in bootstrap_node %}
+{{ node.name }}   IN     A   {{ node.ip }}
+{% endfor %}
+{% endif %}
 
-{% for node in sno_nodes %}
+{% for node in control_nodes %}
 {{ node.name }}  IN    A    {{ node.ip }}
 {% endfor %}
 
+{% if compute_nodes is defined %}
+{% for node in compute_nodes %}
+{{ node.name }}  IN    A    {{ node.ip }}
+{% endfor %}
+{% endif %}
 
 $ORIGIN {{ cluster }}.{{ ansible_domain }}.
 
+{% if bootstrap_node is defined %}
+{% for node in bootstrap_node %}
+{{ node.name }}    IN   CNAME   {{ node.name }}.{{ ansible_domain }}.
+{% endfor %}
+{% endif %}
 
-{% for node in sno_nodes %}
+
+{% for node in control_nodes %}
 {{ node.name }}    IN   CNAME   {{ node.name }}.{{ ansible_domain }}.
 {% endfor %}
 
-
-{% for node in sno_nodes %}
-
-*.apps    IN     A   {{ node.ip }}
-api       IN     A   {{ node.ip }}
-api-int   IN     A   {{ node.ip }}
+{% if compute_nodes is defined %}
+{% for node in compute_nodes %}
+{{ node.name }}    IN   CNAME   {{ node.name }}.{{ ansible_domain }}.
 {% endfor %}
+{% endif %}
+
+
+{% if groups['secondary'] is defined %}
+*.apps    IN     A   {{ vip }}
+api       IN     A   {{ vip }}
+api-int   IN     A   {{ vip }}
+{% else %}
+*.apps    IN     A   {{ ansible_default_ipv4.address }}
+api       IN     A   {{ ansible_default_ipv4.address }}
+api-int   IN     A   {{ ansible_default_ipv4.address }}
+{% endif %}
 
