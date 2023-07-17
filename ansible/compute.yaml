@@ -1,5 +1,0 @@
----
-- hosts: workers
-  become: yes
-  roles:
-    - rhel_compute
