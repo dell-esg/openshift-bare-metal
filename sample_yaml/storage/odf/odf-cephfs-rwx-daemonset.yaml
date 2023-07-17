@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: odf-cephfs-daemonset
+  namespace: odf-test
+spec:
+  selector:
+      matchLabels:
+        name: odf-cephfs-daemonset
+  template:
+    metadata:
+      labels:
+        name: odf-cephfs-daemonset
+    spec:
+      containers:
+        - name: odf-cephfs-ds
+          image: quay.io/centos/centos
+          ports:
+            - containerPort: 80
+              name: "http-server"
+          command: ["/bin/bash", "-c", "sleep 2000000000"]
+          volumeMounts:
+            - name: odf-cephfs-daemonset-pv
+              mountPath: /data-nfs
+      volumes:
+        - name: odf-cephfs-daemonset-pv
+          persistentVolumeClaim:
+            claimName: odf-cephfs-daemonset-pvc
+

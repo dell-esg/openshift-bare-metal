@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: unityfc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dynamic-fc-unity-pvc
+  namespace: unityfc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: unity-fc
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo
+  namespace: unityfc
+data:
+  sample: |
+    unity fc
+    test content
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: unity-fc-pod
+  namespace: unityfc
+spec:
+  containers:
+  - name: task-pv-container
+    image: quay.io/centos/centos
+    ports:
+      - containerPort: 80
+        name: "http-server"
+    volumeMounts:
+      - mountPath: "/mnt"
+        name: fc
+      - mountPath: "/tmp"
+        name: confmap
+    command: ["/bin/bash", "-c", "cp /tmp/keys /mnt/keys && sleep 2000000000"]
+  volumes:
+    - name: fc
+      persistentVolumeClaim:
+        claimName: dynamic-fc-unity-pvc
+    - name: confmap
+      configMap:
+        name: demo
+        items:
+        - key: sample
+          path: keys

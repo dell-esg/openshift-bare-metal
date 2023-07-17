@@ -1,0 +1,89 @@
+# if enabled, nginx ingress controller will be deployed
+# if you have your own ingress controller, keep this false and set the appropriate annotations for the ingresses in the authorization section
+ingress-nginx:
+  enabled: true
+
+# if enabled, cert-manager will be deployed
+# if cert-manager is already deployed, keep this false
+cert-manager:
+  enabled: true
+
+authorization:
+  # images to use in installation
+  images:
+    proxyService: dellemc/csm-authorization-proxy:v1.3.0
+    tenantService: dellemc/csm-authorization-tenant:v1.3.0
+    roleService: dellemc/csm-authorization-role:v1.3.0
+    storageService: dellemc/csm-authorization-storage:v1.3.0
+    opa: openpolicyagent/opa
+    opaKubeMgmt: openpolicyagent/kube-mgmt:0.11
+
+  # base hostname for the ingress rules that expose the services
+  # the proxy-server ingress will use this hostname
+  # the tenant-service ingress will use tenant.hostname
+  # the role-service ingress will use role.hostname
+  hostname: csm-authorization-amd.dcws.lab
+
+  # log level for csm-authorization
+  logLevel: debug
+
+  # tracing configuration
+  # this can be updated on the fly via the csm-config-params configMap
+  zipkin: {}
+    # collectoruri: http://DNS-hostname:9411/api/v2/spans
+    # probability: 1
+
+  # proxy-server ingress configuration
+  proxyServerIngress:
+    ingressClassName: nginx
+
+    # additional host rules for the proxy-server ingress
+    hosts: []
+      # - namespace-ingress-nginx-controller.namespace.svc.cluster.local
+
+    # additional annotations for the proxy-server ingress
+    annotations: {}
+
+  # tenant-service ingress configuration
+  tenantServiceIngress:
+    ingressClassName: nginx
+
+    # additional host rules for the tenant-service ingress
+    hosts: []
+
+    # additional annotations for the tenant-service ingress
+    # if applicable, an annotation supporting grpc for your ingress controller must be supplied
+    annotations: 
+      nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+
+  # role-service ingress configuration
+  roleServiceIngress:
+    ingressClassName: nginx
+
+    # additional host rules for the role-service ingress
+    hosts: []
+
+    # additional annotations for the role-service ingress
+    # an annotation supporting grpc for your ingress controller must be supplied, if applicable
+    annotations:
+      nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+
+  # storage-service ingress configuration
+  storageServiceIngress:
+    ingressClassName: nginx
+
+    # additional host rules for the storage-service ingress
+    hosts: []
+
+    # additional annotations for the storage-service ingress
+    # an annotation supporting grpc for your ingress controller must be supplied, if applicable
+    annotations:
+      nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+
+redis:
+  images:
+    redis: redis:6.0.8-alpine
+    commander: rediscommander/redis-commander:latest
+
+  # set the storageClass for redis to use. otherwise, the default storage class is used
+  # storageClass: local-storage

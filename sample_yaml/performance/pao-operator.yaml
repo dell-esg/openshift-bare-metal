@@ -1,0 +1,28 @@
+# running oc create -f pao-operator.yaml will create the namespace, OperatorGroup, and Subscription
+# needed for the PAO Operator installation
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: openshift-performance-addon-operator
+  labels:
+    openshift.io/run-level: "1"
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: openshift-performance-addon-operator
+  namespace: openshift-performance-addon-operator
+spec:
+  targetNamespaces:
+  - openshift-performance-addon-operator
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: openshift-performance-addon-operator-subscription
+  namespace: openshift-performance-addon-operator
+spec:
+  channel: "4.6" 
+  name: performance-addon-operator
+  source: redhat-operators 
+  sourceNamespace: openshift-marketplace

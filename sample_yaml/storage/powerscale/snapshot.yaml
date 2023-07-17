@@ -1,47 +1,40 @@
-apiVersion: snapshot.storage.k8s.io/v1
-kind: VolumeSnapshotClass
-metadata:
-  name: powermax-snap-class
-driver: csi-powermax.dellemc.com
-deletionPolicy: Delete
-
 ---
 
 apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshot
 metadata:
-  name: powermax-snapshot
+  name: isilon-snapshot
+  namespace: isilon
 spec:
-  volumeSnapshotClassName: powermax-snap-class
+  volumeSnapshotClassName: csi-hostpath-snap-isilon
   source:
-    persistentVolumeClaimName: dynamic-fc-powermax-pvc
-
+    persistentVolumeClaimName: dynamic-nfs-isilon-pvc
 
 ---
 
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: powermax-restore
+  name: isilon-restore
 spec:
-  storageClassName: powermaxscfc
+  storageClassName: isilon-sc
   dataSource:
-    name: powermax-snapshot
+    name: isilon-snapshot
     kind: VolumeSnapshot
     apiGroup: snapshot.storage.k8s.io
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi
+      storage: 4Gi
 
 ---
 
 apiVersion: v1
 kind: Pod
 metadata:
-  name: restore-pod
-  namespace: powermax
+  name: restore-pods
+  namespace: isilon
 spec:
   containers:
   - name: task-pv-container
@@ -50,7 +43,7 @@ spec:
       - containerPort: 80
         name: "http-server"
     volumeMounts:
-      - mountPath: "/home"
+      - mountPath: "/mnt/snapshot"
         name: restore-pvc
     command: ["/bin/bash", "-c", "sleep 2000000000"]
   nodeSelector:
@@ -58,4 +51,4 @@ spec:
   volumes:
     - name: restore-pvc
       persistentVolumeClaim:
-        claimName: powermax-restore
+        claimName: isilon-restore

@@ -1,8 +1,8 @@
 apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshotClass
 metadata:
-  name: powermax-snap-class
-driver: csi-powermax.dellemc.com
+  name: powerstore-snap-class
+driver: csi-powerstore.dellemc.com
 deletionPolicy: Delete
 
 ---
@@ -10,30 +10,29 @@ deletionPolicy: Delete
 apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshot
 metadata:
-  name: powermax-snapshot
+  name: powerstore-snapshot
 spec:
-  volumeSnapshotClassName: powermax-snap-class
+  volumeSnapshotClassName: powerstore-snap-class
   source:
-    persistentVolumeClaimName: dynamic-fc-powermax-pvc
-
+    persistentVolumeClaimName: powerstore-pvc-iscsi
 
 ---
 
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: powermax-restore
+  name: powerstore-restore
 spec:
-  storageClassName: powermaxscfc
+  storageClassName: dellcsi-powerstore-sc
   dataSource:
-    name: powermax-snapshot
+    name: powerstore-snapshot
     kind: VolumeSnapshot
     apiGroup: snapshot.storage.k8s.io
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi
+      storage: 20Gi
 
 ---
 
@@ -41,7 +40,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: restore-pod
-  namespace: powermax
+  namespace: powerstore
 spec:
   containers:
   - name: task-pv-container
@@ -58,4 +57,4 @@ spec:
   volumes:
     - name: restore-pvc
       persistentVolumeClaim:
-        claimName: powermax-restore
+        claimName: powerstore-restore

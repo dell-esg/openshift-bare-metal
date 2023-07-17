@@ -1,0 +1,13 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: odf-cephfs-pod-pvc
+  namespace: odf-test
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ocs-storagecluster-cephfs
+  volumeMode: Filesystem
