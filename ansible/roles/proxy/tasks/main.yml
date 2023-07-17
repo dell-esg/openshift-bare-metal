@@ -8,6 +8,16 @@
   yum:
     name: "{{ proxy }}"
     state: latest
+  when:
+    - proxy == "haproxy"
+
+- name: display network cidr
+  set_fact:
+    net_mask: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}"
+
+- name: display cidr
+  set_fact:
+    net_mask_cidr: "{{ net_mask | ipaddr('prefix') }}"
 
 - name: allow OCP ports to listen via http
   seport:
@@ -38,6 +48,7 @@
     name: "{{ proxy }}"
     enabled: yes
     state: started
+  when: proxy == "haproxy"
 
 - name: generate haproxy config file
   template:

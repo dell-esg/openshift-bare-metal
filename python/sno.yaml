@@ -1,0 +1,4 @@
+control_nodes:
+  - name: sno
+    ip_os: 192.168.52.21
+    ip_idrac: 172.16.0.21

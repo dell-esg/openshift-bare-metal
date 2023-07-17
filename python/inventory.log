@@ -1,0 +1,3209 @@
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root get_ntp_details(): 
+
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/c1.zones cluster: c1
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/cs.zones cluster: cs
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 1
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root get_ntp_details(): 
+
+
+[INFO] root get_http_details(): 
+
+
+[INFO] root get_http_details(): adding http_port: 8080 http_ignition: ignition version: 4.11
+[INFO] root set_haproxy(): 
+
+
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 1
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root get_ntp_details(): 
+
+
+[INFO] root get_http_details(): 
+
+
+[INFO] root get_http_details(): adding http_port: 8080 http_ignition: ignition version: 4.11
+[INFO] root set_haproxy(): 
+
+
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root get_dns_details(): adding api_ip: 2
+[INFO] root get_dns_details(): adding wildcard_ip: 3
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root get_dns_details(): adding api_ip: 1.1.1.1
+[INFO] root get_dns_details(): adding wildcard_ip: 2.2.2.2
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root get_nodes_info(): 
+select network interfaces for node c1w1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node c1w2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Embedded.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node c1w3
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Embedded.2-1-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root get_dns_details(): adding api_ip: 1
+[INFO] root get_dns_details(): adding wildcard_ip: 2
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root get_dns_details(): adding api_ip: 1
+[INFO] root get_dns_details(): adding wildcard_ip: 2
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root get_nodes_info(): 
+select network interfaces for node c1w1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node c1w2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node c1w3
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Embedded.2-1-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root get_ntp_details(): 
+
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root get_ntp_details(): 
+
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root get_ntp_details(): 
+
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root get_dns_details(): adding api_ip: 1
+[INFO] root get_dns_details(): adding wildcard_ip: 2
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root get_dns_details(): adding api_ip: 2
+[INFO] root get_dns_details(): adding wildcard_ip: 3
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root get_dns_details(): adding api_ip: 1
+[INFO] root get_dns_details(): adding wildcard_ip: 2
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root get_dns_details(): adding api_ip: 1
+[INFO] root get_dns_details(): adding wildcard_ip: 2
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root get_nodes_info(): 
+select network interfaces for node c1w1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node c1w2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Embedded.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node c1w3
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Embedded.2-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node c1w1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/test-a1.zones cluster: test-a1
+[INFO] root get_dns_details(): adding api_ip: 192.168.31.191
+[INFO] root get_dns_details(): adding wildcard_ip: 192.168.31.192
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root get_dns_details(): adding api_ip: 192.168.32.2
+[INFO] root get_dns_details(): adding wildcard_ip: 192.168.32.3
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root get_nodes_info(): 
+select network interfaces for node c1w1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node c1w2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node c1w3
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Embedded.2-1-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root get_nodes_info(): 
+select network interfaces for node c1w1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node c1w2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Embedded.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node c1w3
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root get_dns_details(): adding api_ip: 1.1.1.1
+[INFO] root get_dns_details(): adding wildcard_ip: 2.2.2.2
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root get_dns_details(): adding api_ip: 1.1.1.1
+[INFO] root get_dns_details(): adding wildcard_ip: 2.2.2.2
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root get_nodes_info(): 
+select network interfaces for node c1w1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node c1w2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node c1w3
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 3
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root get_dns_details(): adding api_ip: 1.1.1.1
+[INFO] root get_dns_details(): adding wildcard_ip: 2.2.2.2
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root get_nodes_info(): 
+select network interfaces for node sno
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Embedded.1-1-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 1
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root get_software_download_dir(): directory /home/ansible/files already exists
+[INFO] root get_software_download_dir(): 
+Download may take few minutes depending on the network speed.
+
+[INFO] root get_software(): 
+downloading OCP /home/ansible/files software bits into 4.12
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 1
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root get_software_download_dir(): directory /home/ansible/files already exists
+[INFO] root get_software_download_dir(): 
+Download may take few minutes depending on the network speed.
+
+[INFO] root get_software(): 
+downloading OCP /home/ansible/files software bits into 4.12
+[INFO] root get_software(): file openshift-install-linux.tar.gz already exists in /home/ansible/files
+[INFO] root validate_file(): validating file openshift-install-linux.tar.gz in /home/ansible/files
+[INFO] root validate_file(): sha256 for file openshift-install-linux.tar.gz is f80c9e8ccbbdd2a2390a73e0813dc1d5347022bdc8ff3e81428f9cbd0ab90871
+[INFO] root validate_file(): sha256sum for file openshift-install-linux.tar.gz is validated in client.txt
+[INFO] root get_software(): Skipping downloading file openshift-install-linux.tar.gz.
+[INFO] root get_software(): file openshift-client-linux.tar.gz already exists in /home/ansible/files
+[INFO] root validate_file(): validating file openshift-client-linux.tar.gz in /home/ansible/files
+[INFO] root validate_file(): sha256 for file openshift-client-linux.tar.gz is a41ffd0a3c109447fee77b41708a1b62416222eb8d23c0f783beb91714554b7b
+[INFO] root validate_file(): sha256sum for file openshift-client-linux.tar.gz is validated in client.txt
+[INFO] root get_software(): Skipping downloading file openshift-client-linux.tar.gz.
+[INFO] root get_software(): file rhcos-live-initramfs.x86_64.img already exists in /home/ansible/files
+[INFO] root validate_file(): validating file rhcos-live-initramfs.x86_64.img in /home/ansible/files
+[INFO] root validate_file(): sha256 for file rhcos-live-initramfs.x86_64.img is 151767175142b95d2a2baccf8d638d8b10af4840c0435f6d379e6da37d8d2b5d
+[INFO] root validate_file(): sha256sum for file rhcos-live-initramfs.x86_64.img is validated in rhcos.txt
+[INFO] root get_software(): Skipping downloading file rhcos-live-initramfs.x86_64.img.
+[INFO] root get_software(): file rhcos-live-kernel-x86_64 already exists in /home/ansible/files
+[INFO] root validate_file(): validating file rhcos-live-kernel-x86_64 in /home/ansible/files
+[INFO] root validate_file(): sha256 for file rhcos-live-kernel-x86_64 is a8bef9cd5240db50d7fa56734f082411aff35c5ba689f7a1c0eb7b3e6aef677f
+[INFO] root validate_file(): sha256sum for file rhcos-live-kernel-x86_64 is validated in rhcos.txt
+[INFO] root get_software(): Skipping downloading file rhcos-live-kernel-x86_64.
+[INFO] root get_software(): file rhcos-metal.x86_64.raw.gz already exists in /home/ansible/files
+[INFO] root validate_file(): validating file rhcos-metal.x86_64.raw.gz in /home/ansible/files
+[INFO] root validate_file(): sha256 for file rhcos-metal.x86_64.raw.gz is 43b0248e303df7b85671c48830cf21800062feb2dce76f7a4089fe75776a9c08
+[INFO] root validate_file(): sha256sum for file rhcos-metal.x86_64.raw.gz is validated in rhcos.txt
+[INFO] root get_software(): Skipping downloading file rhcos-metal.x86_64.raw.gz.
+[INFO] root get_software(): file rhcos-live-rootfs.x86_64.img already exists in /home/ansible/files
+[INFO] root validate_file(): validating file rhcos-live-rootfs.x86_64.img in /home/ansible/files
+[INFO] root validate_file(): sha256 for file rhcos-live-rootfs.x86_64.img is fb0cf5cc840c79da08e3bea8a64dc76c0635861a2086dac6fd51a7e628b4eefa
+[INFO] root validate_file(): sha256sum for file rhcos-live-rootfs.x86_64.img is validated in rhcos.txt
+[INFO] root get_software(): Skipping downloading file rhcos-live-rootfs.x86_64.img.
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): etcd0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd3 iDRAC is reachable.
+[INFO] root get_bootstrap_node(): adding bootstrap_node values as name: bootstrap ip: 192.168.32.18 mac: 52:54:00:51:45:88
+[INFO] root get_bootstrap_node(): If using an external DHCP server, add an IP reservation entry in the DHCP server.
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B4:83:51:08:E3:00
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B4:83:51:08:E1:C8
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd3
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B4:83:51:08:E0:5C
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_master_nodes_disk_info(): ensure disknames are available. Otherwise OpenShift install fails
+[INFO] root get_ignition_details(): pod network cidr: 10.128.0.0/14
+[INFO] root get_ignition_details(): adding install_dir: openshift cluster_network_cidr: 10.128.0.0/14                      host_prefix: 23 service_network_cidr: 172.30.0.0/16
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp16g.zones cluster: ocp16g
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root get_ntp_details(): 
+
+
+[INFO] root get_http_details(): 
+
+
+[INFO] root get_http_details(): adding http_port: 8080 http_ignition: ignition version: 4.12
+[INFO] root set_haproxy(): 
+
+
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: intel16g0.dcws.lab
+  vars:
+    bootstrap_node:
+    - ip: 192.168.32.18
+      mac: 52:54:00:51:45:88
+      name: bootstrap
+    cluster: ocp16g
+    cluster_install: 3 node
+    cluster_network_cidr: 10.128.0.0/14
+    control_nodes:
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.66
+      mac: B4:83:51:08:E3:00
+      name: etcd0
+      options: mode=active-backup
+      primary: eno12399
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.67
+      mac: B4:83:51:08:E1:C8
+      name: etcd1
+      options: mode=active-backup
+      primary: eno12399
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.68
+      mac: B4:83:51:08:E0:5C
+      name: etcd3
+      options: mode=active-backup
+      primary: eno12399
+    default_lease_time: 8000
+    default_zone_file: /var/named/ocp16g.zones
+    dhcp: managed
+    dns_forwarder: 10.8.8.8
+    haproxy_conf: /etc/haproxy/haproxy.cfg
+    host_prefix: 23
+    http: managed
+    http_ignition: ignition
+    http_port: 8080
+    initramfs: rhcos-live-initramfs.x86_64.img
+    install_dir: openshift
+    install_type: UPI
+    install_user: core
+    kernel_file: rhcos-live-kernel-x86_64
+    master_install_device: nvme0n1
+    master_ports:
+    - description: apiserver
+      port: 6443
+    - description: configserver
+      port: 22623
+    max_lease_time: 72000
+    network_type: OpenShiftSDN
+    ntp: managed
+    num_of_control_nodes: 3
+    openshift_client: openshift-client-linux.tar.gz
+    openshift_installer: openshift-install-linux.tar.gz
+    os: rhcos
+    proxy: haproxy
+    pull_secret_file: pullsecret
+    rootfs: rhcos-live-rootfs.x86_64.img
+    service_network_cidr: 172.30.0.0/16
+    software_src: /home/ansible/files
+    uefi_file: rhcos-metal.x86_64.raw.gz
+    version: '4.12'
+    worker_ports:
+    - description: http
+      port: 80
+    - description: https
+      port: 443
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - http
+    - ignition
+    - dns
+    - bootstrap
+    - pxe
+    - proxy
+    - dhcp
+
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root log_setup(): setting log file as: inventory.log
+[ERROR] root add_new_worker_nodes(): Inventory file does not contain worker nodes info
+[INFO] root log_setup(): setting log file as: inventory.log
+[ERROR] root add_new_worker_nodes(): Inventory file does not contain worker nodes info
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B4:83:51:08:D8:C0
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[ERROR] root add_new_worker_nodes(): Inventory file does not contain worker nodes info
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.3-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.3-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B8:CE:F6:0E:C0:96
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[ERROR] root add_new_worker_nodes(): Inventory file does not contain worker nodes info
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.3-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.3-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B8:CE:F6:0E:C0:96
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[ERROR] root add_new_worker_nodes(): Inventory file does not contain worker nodes info
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.3-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.3-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B8:CE:F6:0E:C0:96
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[ERROR] root add_new_worker_nodes(): Inventory file does not contain worker nodes info
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.3-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.3-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B8:CE:F6:0E:C0:96
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[ERROR] root add_new_worker_nodes(): Inventory file does not contain worker nodes info
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.3-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.3-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B8:CE:F6:0E:C0:96
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[ERROR] root add_new_worker_nodes(): Inventory file does not contain worker nodes info
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.3-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.3-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B8:CE:F6:0E:C0:96
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[ERROR] root add_new_worker_nodes(): Inventory file does not contain worker nodes info
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.3-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.3-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B8:CE:F6:0E:C0:96
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[ERROR] root add_new_worker_nodes(): Inventory file does not contain worker nodes info
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.3-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.3-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B8:CE:F6:0E:C0:96
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.3-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.3-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B8:CE:F6:0E:C0:96
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.3-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.3-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B8:CE:F6:0E:C0:96
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.3-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.3-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B8:CE:F6:0E:C0:96
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.3-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.3-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B8:CE:F6:0E:C0:96
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.3-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.3-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B8:CE:F6:0E:C0:96
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.3-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.3-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B8:CE:F6:0E:C0:96
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[DEBUG] root get_nodes_info(): selected etcd2 active bond interface: NIC.Integrated.1-1-1
+[DEBUG] root get_nodes_info(): etcd2 active bond enumeration: eno12399
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[DEBUG] root get_nodes_info(): selected etcd2 backup bond interface: NIC.Integrated.1-2-1
+[DEBUG] root set_network_details(): adding interfaces in etcd2 node: ['eno12399']
+[DEBUG] root set_network_details(): node_values compute_nodes ['etcd2', '192.168.32.40', 'B8:CE:F6:0E:C0:96', 'bond0', 'eno12399', 'eno12409', 'mode=active-backup', ['eno12399'], 'rhcos'] {'name': 'etcd2', 'ip': '192.168.32.40', 'mac': 'B8:CE:F6:0E:C0:96', 'bond': 'bond0', 'primary': 'eno12399', 'backup': 'eno12409', 'options': 'mode=active-backup', 'interfaces': ['eno12399'], 'os': 'rhcos'}
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.3-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.3-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B8:CE:F6:0E:C0:96
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root log_setup(): setting log file as: inventory.log
+[ERROR] root add_new_worker_nodes(): Inventory file does not contain worker nodes info
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.3-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.3-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B8:CE:F6:0E:C0:96
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: intel16g0.dcws.lab
+  vars:
+    bootstrap_node:
+    - ip: 192.168.32.18
+      mac: 52:54:00:51:45:88
+      name: bootstrap
+    cluster: testocp16g
+    cluster_install: 5+ node
+    cluster_network_cidr: 10.128.0.0/14
+    compute_nodes:
+    - backup: eno12409
+      bond: bond0
+      installation_disk: /dev/sda
+      interfaces:
+      - eno12399
+      ip: 192.168.32.40
+      mac: B8:CE:F6:0E:C0:96
+      name: etcd2
+      options: mode=active-backup
+      os: rhcos
+      primary: eno12399
+    control_nodes:
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.66
+      mac: B4:83:51:08:E3:00
+      name: etcd0
+      options: mode=active-backup
+      primary: eno12399
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.67
+      mac: B4:83:51:08:E1:C8
+      name: etcd1
+      options: mode=active-backup
+      primary: eno12399
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.68
+      mac: B4:83:51:08:E0:5C
+      name: etcd3
+      options: mode=active-backup
+      primary: eno12399
+    default_lease_time: 8000
+    default_zone_file: /var/named/testocp16g.zones
+    dhcp: managed
+    dns_forwarder: 10.8.8.8
+    haproxy_conf: /etc/haproxy/haproxy.cfg
+    host_prefix: 23
+    http: managed
+    http_ignition: ignition
+    http_port: 8080
+    initramfs: rhcos-live-initramfs.x86_64.img
+    install_dir: openshift
+    install_type: UPI
+    install_user: core
+    kernel_file: rhcos-live-kernel-x86_64
+    master_install_device: nvme0n1
+    master_ports:
+    - description: apiserver
+      port: 6443
+    - description: configserver
+      port: 22623
+    max_lease_time: 72000
+    network_type: OpenShiftSDN
+    ntp: managed
+    num_of_compute_nodes: 2
+    num_of_control_nodes: 3
+    openshift_client: openshift-client-linux.tar.gz
+    openshift_installer: openshift-install-linux.tar.gz
+    os: rhcos
+    proxy: haproxy
+    pull_secret_file: pullsecret
+    rootfs: rhcos-live-rootfs.x86_64.img
+    service_network_cidr: 172.30.0.0/16
+    software_src: /home/ansible/files
+    uefi_file: rhcos-metal.x86_64.raw.gz
+    version: '4.12'
+    worker_ports:
+    - description: http
+      port: 80
+    - description: https
+      port: 443
+
+[INFO] root display_inventory(): 
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[ERROR] root add_new_worker_nodes(): Inventory file does not contain worker nodes info
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.3-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.3-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B8:CE:F6:0E:C0:96
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[ERROR] root add_new_worker_nodes(): Inventory file does not contain worker nodes info
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.3-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.3-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B8:CE:F6:0E:C0:96
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root log_setup(): setting log file as: inventory.log
+[ERROR] root add_new_worker_nodes(): Inventory file does not contain worker nodes info
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.3-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.3-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_network_device_mac(): device NIC.Integrated.1-1-1 mac address is B8:CE:F6:0E:C0:96
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): etcd0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd2 iDRAC is reachable.
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 1
+[ERROR] root get_cluster_nodes(): No compute nodes specified. Fix the issue and retry.
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): etcd0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd2 iDRAC is reachable.
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): etcd0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd2 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_master_nodes_disk_info(): ensure disknames are available. Otherwise OpenShift install fails
+[WARNING] root validate_network_cidr(): input should be in format x.x.x.x/x
+[WARNING] root validate_network_cidr(): input should be in format x.x.x.x/x
+[WARNING] root validate_network_cidr(): input should be in format x.x.x.x/x
+[WARNING] root validate_network_cidr(): input should be in format x.x.x.x/x
+[INFO] root get_ipi_ignition_details(): adding machine_network_cidr: 172.16.0.1/32
+[INFO] root get_ipi_ignition_details(): adding api_ip: 192.168.32.199
+[INFO] root get_ipi_ignition_details(): adding wildcard_ip: 192.168.32.198
+[INFO] root get_ipi_ignition_details(): adding pull_secret_file: /home/ansible/files/pullsecret
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/testipi.zones cluster: testipi
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: intel16g0.dcws.lab
+  vars:
+    api_ip: 192.168.32.199
+    cluster: testipi
+    cluster_install: 3 node
+    compute_nodes: []
+    control_nodes:
+    - backup: eno12399
+      bond: bond0
+      ip: 192.168.32.66
+      mac: B4:83:51:08:E3:00
+      name: etcd0
+      oob: 172.16.0.66
+      options: mode=active-backup
+      primary: eno12399
+    - backup: eno12399
+      bond: bond0
+      ip: 192.168.32.67
+      mac: B4:83:51:08:E1:C9
+      name: etcd1
+      oob: 172.16.0.67
+      options: mode=active-backup
+      primary: eno12409
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.68
+      mac: B4:83:51:08:E0:5C
+      name: etcd2
+      oob: 172.16.0.68
+      options: mode=active-backup
+      primary: eno12399
+    default_zone_file: /var/named/testipi.zones
+    dns_forwarder: 10.8.8.8
+    install_type: IPI
+    machine_network_cidr: 172.16.0.1/32
+    master_install_device: /dev/nvme0n1
+    network_type: OVNKubernetes
+    num_of_compute_nodes: 0
+    num_of_control_nodes: 3
+    pull_secret_file: /home/ansible/files/pullsecret
+    version: latest-4.12
+    wildcard_ip: 192.168.32.198
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - dns
+    - ipi
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): etcd0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd2 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_master_nodes_disk_info(): ensure disknames are available. Otherwise OpenShift install fails
+[INFO] root get_ipi_ignition_details(): adding machine_network_cidr: 192.168.32.0/24
+[INFO] root get_ipi_ignition_details(): adding api_ip: 1.1.1.1
+[INFO] root get_ipi_ignition_details(): adding wildcard_ip: 2.2.2.2
+[INFO] root get_ipi_ignition_details(): adding pull_secret_file: /home/ansible/files/pullsecret
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/testipi.zones cluster: testipi
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: intel16g0.dcws.lab
+  vars:
+    api_ip: 1.1.1.1
+    cluster: testipi
+    cluster_install: 3 node
+    compute_nodes: []
+    control_nodes:
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.66
+      mac: B4:83:51:08:E3:00
+      name: etcd0
+      oob: 172.16.0.66
+      options: mode=active-backup
+      primary: eno12399
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.67
+      mac: B4:83:51:08:E1:C8
+      name: etcd1
+      oob: 172.16.0.67
+      options: mode=active-backup
+      primary: eno12399
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.68
+      mac: B4:83:51:08:E0:5C
+      name: etcd2
+      oob: 172.16.0.68
+      options: mode=active-backup
+      primary: eno12399
+    default_zone_file: /var/named/testipi.zones
+    dns_forwarder: 10.8.8.8
+    install_type: IPI
+    machine_network_cidr: 192.168.32.0/24
+    master_install_device: /dev/nvme0n1
+    network_type: OVNKubernetes
+    num_of_compute_nodes: 0
+    num_of_control_nodes: 3
+    pull_secret_file: /home/ansible/files/pullsecret
+    version: latest-4.12
+    wildcard_ip: 2.2.2.2
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - ipi
+    - dns
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): etcd0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd3 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd3
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_master_nodes_disk_info(): ensure disknames are available. Otherwise OpenShift install fails
+[INFO] root get_ipi_ignition_details(): adding machine_network_cidr: 192.168.32.0/24
+[INFO] root get_ipi_ignition_details(): adding api_ip: 1.1.1.1
+[INFO] root get_ipi_ignition_details(): adding wildcard_ip: 2.2.2.2
+[INFO] root get_ipi_ignition_details(): adding pull_secret_file: /home/ansible/files/pullsecret
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/testipi.zones cluster: testipi
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: intel16g0.dcws.lab
+  vars:
+    api_ip: 1.1.1.1
+    bootstrap_gateway: 192.168.32.1
+    bootstrap_ip: 192.168.32.18
+    cluster: testipi
+    cluster_install: 3 node
+    compute_nodes: []
+    control_nodes:
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.66
+      mac: B4:83:51:08:E3:00
+      name: etcd0
+      oob: 172.16.0.66
+      options: mode=active-backup
+      primary: eno12399
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.67
+      mac: B4:83:51:08:E1:C8
+      name: etcd1
+      oob: 172.16.0.67
+      options: mode=active-backup
+      primary: eno12399
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.68
+      mac: B4:83:51:08:E0:5C
+      name: etcd3
+      oob: 172.16.0.68
+      options: mode=active-backup
+      primary: eno12399
+    default_zone_file: /var/named/testipi.zones
+    dns_forwarder: 10.8.8.8
+    install_type: IPI
+    machine_network_cidr: 192.168.32.0/24
+    master_install_device: /dev/nvme0n1
+    network_type: OVNKubernetes
+    num_of_compute_nodes: 0
+    num_of_control_nodes: 3
+    pull_secret_file: /home/ansible/files/pullsecret
+    version: latest-4.12
+    wildcard_ip: 2.2.2.2
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - dns
+    - ipi
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): etcd0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd3 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd3
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_master_nodes_disk_info(): ensure disknames are available. Otherwise OpenShift install fails
+[INFO] root get_ipi_ignition_details(): adding machine_network_cidr: 192.168.32.0/24
+[INFO] root get_ipi_ignition_details(): adding api_ip: 192.168.32.140
+[INFO] root get_ipi_ignition_details(): adding wildcard_ip: 192.168.32.141
+[INFO] root get_ipi_ignition_details(): adding pull_secret_file: /home/ansible/files/pullsecret
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/testipi.zones cluster: testipi
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: intel16g0.dcws.lab
+  vars:
+    api_ip: 192.168.32.140
+    bootstrap_gateway: 192.168.32.1
+    bootstrap_ip: 192.168.32.18
+    cluster: testipi
+    cluster_install: 3 node
+    compute_nodes: []
+    control_nodes:
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.66
+      mac: B4:83:51:08:E3:00
+      name: etcd0
+      oob: 172.16.0.66
+      options: mode=active-backup
+      primary: eno12399
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.67
+      mac: B4:83:51:08:E1:C8
+      name: etcd1
+      oob: 172.16.0.67
+      options: mode=active-backup
+      primary: eno12399
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.68
+      mac: B4:83:51:08:E0:5C
+      name: etcd3
+      oob: 172.16.0.68
+      options: mode=active-backup
+      primary: eno12399
+    default_zone_file: /var/named/testipi.zones
+    dns_forwarder: 10.8.8.8
+    install_type: IPI
+    machine_network_cidr: 192.168.32.0/24
+    master_install_device: /dev/nvme0n1
+    network_type: OpenShiftSDN
+    num_of_compute_nodes: 0
+    num_of_control_nodes: 3
+    pull_secret_file: /home/ansible/files/pullsecret
+    version: latest-4.12
+    wildcard_ip: 192.168.32.141
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - ipi
+    - dns
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): etcd0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd3 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-3-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-4-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Slot.6-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Slot.6-2-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd3
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_master_nodes_disk_info(): ensure disknames are available. Otherwise OpenShift install fails
+[INFO] root get_ipi_ignition_details(): adding machine_network_cidr: 192.168.32.0/24
+[INFO] root get_ipi_ignition_details(): adding api_ip: 192.168.32.140
+[INFO] root get_ipi_ignition_details(): adding wildcard_ip: 192.168.32.141
+[INFO] root get_ipi_ignition_details(): adding pull_secret_file: /home/ansible/files/pullsecret
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ipitest.zones cluster: ipitest
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: intel16g0.dcws.lab
+  vars:
+    api_ip: 192.168.32.140
+    bootstrap_gateway: 192.168.32.1
+    bootstrap_ip: 192.168.32.18
+    cluster: ipitest
+    cluster_install: 3 node
+    compute_nodes: []
+    control_nodes:
+    - backup: ens6f1
+      bond: bond0
+      ip: 192.168.32.69
+      mac: 10:70:FD:F5:D6:68
+      name: etcd0
+      oob: 172.16.0.69
+      options: mode=active-backup
+      primary: ens6f0
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.67
+      mac: B4:83:51:08:E1:C8
+      name: etcd1
+      oob: 172.16.0.67
+      options: mode=active-backup
+      primary: eno12399
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.68
+      mac: B4:83:51:08:E0:5C
+      name: etcd3
+      oob: 172.16.0.68
+      options: mode=active-backup
+      primary: eno12399
+    default_zone_file: /var/named/ipitest.zones
+    dns_forwarder: 10.8.8.8
+    install_type: IPI
+    machine_network_cidr: 192.168.32.0/24
+    master_install_device: /dev/nvme0n1
+    network_type: OpenShiftSDN
+    num_of_compute_nodes: 0
+    num_of_control_nodes: 3
+    pull_secret_file: /home/ansible/files/pullsecret
+    version: latest-4.12
+    wildcard_ip: 192.168.32.141
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - ipi
+    - dns
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): etcd0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd3 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-3-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-4-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Slot.6-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd3
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_master_nodes_disk_info(): ensure disknames are available. Otherwise OpenShift install fails
+[INFO] root get_ipi_ignition_details(): adding machine_network_cidr: 192.168.32.0/24
+[INFO] root get_ipi_ignition_details(): adding api_ip: 192.168.32.220
+[INFO] root get_ipi_ignition_details(): adding wildcard_ip: 192.168.32.221
+[INFO] root get_ipi_ignition_details(): adding pull_secret_file: /home/ansible/files/pullsecret
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: intel16g0.dcws.lab
+  vars:
+    api_ip: 192.168.32.220
+    bootstrap_gateway: 192.168.32.1
+    bootstrap_ip: 192.168.32.18
+    cluster: ocp
+    cluster_install: 3 node
+    compute_nodes: []
+    control_nodes:
+    - interface: ens6f0
+      ip: 192.168.32.69
+      mac: 10:70:FD:F5:D6:68
+      name: etcd0
+      os: rhcos
+    - interface: eno12399
+      ip: 192.168.32.67
+      mac: B4:83:51:08:E1:C8
+      name: etcd1
+      os: rhcos
+    - interface: eno12399
+      ip: 192.168.32.68
+      mac: B4:83:51:08:E0:5C
+      name: etcd3
+      os: rhcos
+    default_zone_file: /var/named/ocp.zones
+    dns_forwarder: 10.8.8.8
+    install_type: IPI
+    machine_network_cidr: 192.168.32.0/24
+    master_install_device: /dev/nvme0n1
+    network_type: OVNKubernetes
+    num_of_compute_nodes: 0
+    num_of_control_nodes: 3
+    pull_secret_file: /home/ansible/files/pullsecret
+    version: latest-4.12
+    wildcard_ip: 192.168.32.221
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - ipi
+    - dns
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): etcd0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd3 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-3-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-4-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Slot.6-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd3
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_master_nodes_disk_info(): ensure disknames are available. Otherwise OpenShift install fails
+[WARNING] root validate_network_cidr(): input should be in format x.x.x.x/x
+[INFO] root get_ipi_ignition_details(): adding machine_network_cidr: 192.168.32.0/24
+[INFO] root get_ipi_ignition_details(): adding api_ip: 192.168.32.200
+[INFO] root get_ipi_ignition_details(): adding wildcard_ip: 192.168.32.201
+[INFO] root get_ipi_ignition_details(): adding pull_secret_file: /home/ansible/files/pullsecret
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: intel16g0.dcws.lab
+  vars:
+    api_ip: 192.168.32.200
+    bootstrap_gateway: 192.168.32.1
+    bootstrap_ip: 192.168.32.18
+    cluster_install: 3 node
+    compute_nodes: []
+    control_nodes:
+    - interface: ens6f0
+      ip: 192.168.32.69
+      mac: 10:70:FD:F5:D6:68
+      name: etcd0
+      os: rhcos
+    - interface: eno12399
+      ip: 192.168.32.67
+      mac: B4:83:51:08:E1:C8
+      name: etcd1
+      os: rhcos
+    - interface: eno12399
+      ip: 192.168.32.68
+      mac: B4:83:51:08:E0:5C
+      name: etcd3
+      os: rhcos
+    install_type: IPI
+    machine_network_cidr: 192.168.32.0/24
+    master_install_device: /dev/nvme0n1
+    network_type: OVNKubernetes
+    num_of_compute_nodes: 0
+    num_of_control_nodes: 3
+    pull_secret_file: /home/ansible/files/pullsecret
+    version: latest-4.12
+    wildcard_ip: 192.168.32.201
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - ipi
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[DEBUG] root set_keys(): Is there a backup management node. user choice is No
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[DEBUG] root generate_inputs_menu(): user choice is 1
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): etcd0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd3 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-3-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-4-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkUp]
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): etcd0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd3 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-3-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-4-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Slot.6-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Slot.6-2-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd3
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.5-1 [None]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.5-2 [None]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_master_nodes_disk_info(): ensure disknames are available. Otherwise OpenShift install fails
+[INFO] root get_ipi_ignition_details(): adding machine_network_cidr: 192.168.32.0/24
+[INFO] root get_ipi_ignition_details(): adding api_ip: 192.168.32.200
+[INFO] root get_ipi_ignition_details(): adding wildcard_ip: 192.168.32.201
+[INFO] root get_ipi_ignition_details(): adding pull_secret_file: /home/ansible/files/pullsecret
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: intel16g0.dcws.lab
+  vars:
+    api_ip: 192.168.32.200
+    bootstrap_gateway: 192.168.32.1
+    bootstrap_ip: 192.168.32.18
+    cluster_install: 3 node
+    compute_nodes: []
+    control_nodes:
+    - backup: ens6f1
+      bond: bond0
+      ip: 192.168.32.69
+      mac: 10:70:FD:F5:D6:68
+      name: etcd0
+      oob: 172.16.0.69
+      options: mode=active-backup
+      passwd: calvin
+      primary: ens6f0
+      user: root
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.67
+      mac: B4:83:51:08:E1:C8
+      name: etcd1
+      oob: 172.16.0.67
+      options: mode=active-backup
+      passwd: calvin
+      primary: eno12399
+      user: root
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.68
+      mac: B4:83:51:08:E0:5C
+      name: etcd3
+      oob: 172.16.0.68
+      options: mode=active-backup
+      passwd: calvin
+      primary: eno12399
+      user: root
+    install_type: IPI
+    machine_network_cidr: 192.168.32.0/24
+    master_install_device: /dev/nvme0n1
+    network_type: OVNKubernetes
+    num_of_compute_nodes: 0
+    num_of_control_nodes: 3
+    pull_secret_file: /home/ansible/files/pullsecret
+    version: latest-4.12
+    wildcard_ip: 192.168.32.201
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - ipi
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): etcd0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd2 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-3-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-4-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Slot.6-1-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): etcd0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd2 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-3-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-4-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Slot.6-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_master_nodes_disk_info(): ensure disknames are available. Otherwise OpenShift install fails
+[INFO] root get_ipi_ignition_details(): adding machine_network_cidr: 192.168.32.0/24
+[INFO] root get_ipi_ignition_details(): adding api_ip: 192.168.32.200
+[INFO] root get_ipi_ignition_details(): adding wildcard_ip: 192.168.32.201
+[INFO] root get_ipi_ignition_details(): adding pull_secret_file: /home/ansible/files/pullsecret
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: intel16g0.dcws.lab
+  vars:
+    api_ip: 192.168.32.200
+    bootstrap_gateway: 192.168.32.1
+    bootstrap_ip: 192.168.32.18
+    cluster_install: 3 node
+    compute_nodes: []
+    control_nodes:
+    - interface: ens6f0
+      ip: 192.168.32.69
+      mac: 10:70:FD:F5:D6:68
+      name: etcd0
+      oob: 172.16.0.69
+      os: rhcos
+      passwd: calvin
+      user: root
+    - interface: eno12399
+      ip: 192.168.32.62
+      mac: B4:83:51:06:21:04
+      name: etcd1
+      oob: 172.16.0.62
+      os: rhcos
+      passwd: calvin
+      user: root
+    - interface: eno12399
+      ip: 192.168.32.63
+      mac: B4:83:51:06:25:F0
+      name: etcd2
+      oob: 172.16.0.63
+      os: rhcos
+      passwd: calvin
+      user: root
+    install_type: IPI
+    machine_network_cidr: 192.168.32.0/24
+    master_install_device: /dev/nvme0n1
+    network_type: OVNKubernetes
+    num_of_compute_nodes: 0
+    num_of_control_nodes: 3
+    pull_secret_file: /home/ansible/files/pullsecret
+    version: latest-4.12
+    wildcard_ip: 192.168.32.201
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - ipi
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): etcd0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd2 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-3-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-4-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Slot.6-1-1
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): etcd0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd2 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-3-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-4-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Slot.6-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_master_nodes_disk_info(): ensure disknames are available. Otherwise OpenShift install fails
+[INFO] root get_ipi_ignition_details(): adding machine_network_cidr: 192.168.32.0/24
+[INFO] root get_ipi_ignition_details(): adding api_ip: 192.168.32.200
+[INFO] root get_ipi_ignition_details(): adding wildcard_ip: 192.168.32.201
+[INFO] root get_ipi_ignition_details(): adding pull_secret_file: /home/ansible/files/pullsecret
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/test200.zones cluster: test200
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: intel16g0.dcws.lab
+  vars:
+    api_ip: 192.168.32.200
+    bootstrap_gateway: 192.168.32.1
+    bootstrap_ip: 192.168.32.18
+    cluster: test200
+    cluster_install: 3 node
+    compute_nodes: []
+    control_nodes:
+    - interface: ens6f0
+      ip: 192.168.32.69
+      mac: 10:70:FD:F5:D6:68
+      name: etcd0
+      oob: 172.16.0.69
+      os: rhcos
+      passwd: calvin
+      user: root
+    - interface: eno12399
+      ip: 192.168.32.62
+      mac: B4:83:51:06:21:04
+      name: etcd1
+      oob: 172.16.0.62
+      os: rhcos
+      passwd: calvin
+      user: root
+    - interface: eno12399
+      ip: 192.168.32.63
+      mac: B4:83:51:06:25:F0
+      name: etcd2
+      oob: 172.16.0.63
+      os: rhcos
+      passwd: calvin
+      user: root
+    default_zone_file: /var/named/test200.zones
+    dns_forwarder: 10.8.8.8
+    install_type: IPI
+    machine_network_cidr: 192.168.32.0/24
+    master_install_device: /dev/nvme0n1
+    network_type: OVNKubernetes
+    num_of_compute_nodes: 0
+    num_of_control_nodes: 3
+    pull_secret_file: /home/ansible/files/pullsecret
+    version: latest-4.12
+    wildcard_ip: 192.168.32.201
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - ipi
+    - dns
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): etcd0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd2 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-3-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-4-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Slot.6-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_master_nodes_disk_info(): ensure disknames are available. Otherwise OpenShift install fails
+[INFO] root get_ipi_ignition_details(): adding machine_network_cidr: 192.168.32.0/24
+[INFO] root get_ipi_ignition_details(): adding api_ip: 192.168.32.200
+[INFO] root get_ipi_ignition_details(): adding wildcard_ip: 192.168.32.201
+[INFO] root get_ipi_ignition_details(): adding pull_secret_file: /home/ansible/files/pullsecret
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: intel16g0.dcws.lab
+  vars:
+    api_ip: 192.168.32.200
+    bootstrap_gateway: 192.168.32.1
+    bootstrap_ip: 192.168.32.18
+    cluster_install: 3 node
+    compute_nodes: []
+    control_nodes:
+    - interface: ens6f0
+      ip: 192.168.32.69
+      mac: 10:70:FD:F5:D6:68
+      name: etcd0
+      oob: 172.16.0.69
+      os: rhcos
+      passwd: calvin
+      user: root
+    - interface: eno12399
+      ip: 192.168.32.62
+      mac: B4:83:51:06:21:04
+      name: etcd1
+      oob: 172.16.0.62
+      os: rhcos
+      passwd: calvin
+      user: root
+    - interface: eno12399
+      ip: 192.168.32.63
+      mac: B4:83:51:06:25:F0
+      name: etcd2
+      oob: 172.16.0.63
+      os: rhcos
+      passwd: calvin
+      user: root
+    install_type: IPI
+    machine_network_cidr: 192.168.32.0/24
+    master_install_device: /dev/nvme0n1
+    network_type: OVNKubernetes
+    num_of_compute_nodes: 0
+    num_of_control_nodes: 3
+    pull_secret_file: /home/ansible/files/pullsecret
+    version: latest-4.12
+    wildcard_ip: 192.168.32.201
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - ipi
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): etcd0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd2 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-3-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-4-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Slot.6-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_master_nodes_disk_info(): ensure disknames are available. Otherwise OpenShift install fails
+[INFO] root get_ipi_ignition_details(): adding machine_network_cidr: 192.168.32.0/24
+[INFO] root get_ipi_ignition_details(): adding api_ip: 192.168.32.200
+[INFO] root get_ipi_ignition_details(): adding wildcard_ip: 192.168.32.201
+[INFO] root get_ipi_ignition_details(): adding pull_secret_file: /home/ansible/files/pullsecret
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: intel16g0.dcws.lab
+  vars:
+    api_ip: 192.168.32.200
+    bootstrap_gateway: 192.168.32.1
+    bootstrap_ip: 192.168.32.18
+    cluster_install: 3 node
+    compute_nodes: []
+    control_nodes:
+    - interface: ens6f0
+      ip: 192.168.32.69
+      mac: 10:70:FD:F5:D6:68
+      name: etcd0
+      oob: 172.16.0.69
+      os: rhcos
+      passwd: calvin
+      user: root
+    - interface: eno12399
+      ip: 192.168.32.62
+      mac: B4:83:51:06:21:04
+      name: etcd1
+      oob: 172.16.0.62
+      os: rhcos
+      passwd: calvin
+      user: root
+    - interface: eno12399
+      ip: 192.168.32.63
+      mac: B4:83:51:06:25:F0
+      name: etcd2
+      oob: 172.16.0.63
+      os: rhcos
+      passwd: calvin
+      user: root
+    install_type: IPI
+    machine_network_cidr: 192.168.32.0/24
+    master_install_device: /dev/nvme0n1
+    network_type: OVNKubernetes
+    num_of_compute_nodes: 0
+    num_of_control_nodes: 3
+    pull_secret_file: /home/ansible/files/pullsecret
+    version: latest-4.12
+    wildcard_ip: 192.168.32.201
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - ipi
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): etcd0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd2 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-3-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-4-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Slot.6-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_master_nodes_disk_info(): ensure disknames are available. Otherwise OpenShift install fails
+[INFO] root get_ipi_ignition_details(): adding machine_network_cidr: 192.168.32.0/24
+[INFO] root get_ipi_ignition_details(): adding api_ip: 192.168.32.200
+[INFO] root get_ipi_ignition_details(): adding wildcard_ip: 192.168.32.201
+[INFO] root get_ipi_ignition_details(): adding pull_secret_file: /home/ansible/files/pullsecret
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: intel16g0.dcws.lab
+  vars:
+    api_ip: 192.168.32.200
+    bootstrap_gateway: 192.168.32.1
+    bootstrap_ip: 192.168.32.18
+    cluster_install: 3 node
+    compute_nodes: []
+    control_nodes:
+    - interface: ens6f0
+      ip: 192.168.32.69
+      mac: 10:70:FD:F5:D6:68
+      name: etcd0
+      oob: 172.16.0.69
+      os: rhcos
+      passwd: Y2Fsdmlu
+      user: root
+    - interface: eno12399
+      ip: 192.168.32.62
+      mac: B4:83:51:06:21:04
+      name: etcd1
+      oob: 172.16.0.62
+      os: rhcos
+      passwd: Y2Fsdmlu
+      user: root
+    - interface: eno12399
+      ip: 192.168.32.63
+      mac: B4:83:51:06:25:F0
+      name: etcd2
+      oob: 172.16.0.63
+      os: rhcos
+      passwd: Y2Fsdmlu
+      user: root
+    install_type: IPI
+    machine_network_cidr: 192.168.32.0/24
+    master_install_device: /dev/nvme0n1
+    network_type: OVNKubernetes
+    num_of_compute_nodes: 0
+    num_of_control_nodes: 3
+    pull_secret_file: /home/ansible/files/pullsecret
+    version: latest-4.12
+    wildcard_ip: 192.168.32.201
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - ipi
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/test200.zones cluster: test200
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): etcd0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): etcd2 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-3-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-4-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Slot.6-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Slot.6-2-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node etcd2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_master_nodes_disk_info(): ensure disknames are available. Otherwise OpenShift install fails
+[INFO] root get_ipi_ignition_details(): adding machine_network_cidr: 192.168.32.0/24
+[INFO] root get_ipi_ignition_details(): adding api_ip: 192.168.32.200
+[INFO] root get_ipi_ignition_details(): adding wildcard_ip: 192.168.32.201
+[INFO] root get_ipi_ignition_details(): adding pull_secret_file: /home/ansible/files/pullsecret
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/test200.zones cluster: test200
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+

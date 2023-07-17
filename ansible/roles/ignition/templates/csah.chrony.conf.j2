@@ -1,0 +1,6 @@
+pool 0.centos.pool.ntp.org
+pool 1.centos.pool.ntp.org
+pool 2.centos.pool.ntp.org
+pool 3.centos.pool.ntp.org
+allow {{ ansible_default_ipv4.network }}/{{ net_mask_cidr }}
+local stratum 10

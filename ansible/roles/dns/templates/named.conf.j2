@@ -10,7 +10,7 @@
 // configuration located in /usr/share/doc/bind-{version}/Bv9ARM.html
 
 options {
-        listen-on port 53 { {{ ansible_default_ipv4.address }}; };
+        listen-on port 53 { any; };
         listen-on-v6 port 53 { ::1; };
         directory       "/var/named";
         dump-file       "/var/named/data/cache_dump.db";
@@ -19,6 +19,9 @@ options {
         recursing-file  "/var/named/data/named.recursing";
         secroots-file   "/var/named/data/named.secroots";
         allow-query     { any; };
+        {% if dns_forwarder is defined %}
+        forwarders { {{ dns_forwarder }}; };
+        {%endif %}
 
         /*
          - If you are building an AUTHORITATIVE DNS server, do NOT enable recursion.

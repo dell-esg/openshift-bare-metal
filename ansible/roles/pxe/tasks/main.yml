@@ -2,8 +2,11 @@
 # tasks file for pxe
 - name: install pxe pre-requisite packages 
   yum:
-    name: ['tftp-server', 'xinetd', 'syslinux']
+    name: ['tftp-server', 'xinetd']
     state: latest
+  when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
 
 - name: enable services
   systemd:
@@ -13,6 +16,9 @@
   with_items:
     - xinetd
     - tftp
+  when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
 
 - name: add firewalld service for tftp
   firewalld:
@@ -20,6 +26,23 @@
     permanent: yes
     immediate: yes
     state: enabled
+  when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+
+- name: use http vip if defined
+  set_fact: 
+    http_ip: "{% if http_ip is defined %}{{ http_ip }}{% elif vip is defined %}{{ vip }}{% else %}{{ ansible_default_ipv4.address }}{% endif %}"
+
+- name: use dns vip if defined
+  set_fact: 
+    dns_ip: "{% if dns_ip is defined %}{{ dns_ip }}{% elif vip is defined %}{{ vip }}{% else %}{{ ansible_default_ipv4.address }}{% endif %}"
+
+- debug:
+    msg: "HTTP server - {{ http_ip }}"
+
+- debug:
+    msg: "DNS server - {{ dns_ip }}"
 
 - name: update dhcpd config file with pxe details
   blockinfile:
@@ -27,6 +50,10 @@
     insertafter: "subnet"
     block: "{{ lookup('template', 'pxe.config.j2') }}"
   notify: "restart dhcp"
+  when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+    - dhcp == 'managed'
 
 - name: create required directories for pxe uefi/bios
   file:
@@ -36,11 +63,9 @@
     - uefi
     - rhcos
     - rhcos/{{ version }}
-    - rhel
-    - bios
-    - bios/pxelinux.cfg
-    - bios/rhcos
-    - bios/rhcos/{{ version }}
+  when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
 
 - name: copy required files for pxe uefi/bios
   copy:
@@ -53,15 +78,10 @@
     - { src: "{{ software_src }}/{{ rootfs }}", dest: "rhcos/{{ version }}/{{ rootfs }}" }
     - { src: /boot/efi/EFI/redhat/shimx64.efi, dest: uefi/shim.efi }
     - { src: /boot/efi/EFI/redhat/grubx64.efi, dest: uefi/grubx64.efi }
-    - { src: /var/www/html/rhel/images/pxeboot/vmlinuz, dest: rhel/vmlinuz }
-    - { src: /var/www/html/rhel/images/pxeboot/initrd.img, dest: rhel/initrd.img }
-    - { src: /var/www/html/rhel/isolinux/vesamenu.c32, dest: bios/vesamenu.c32 }
-    - { src: /usr/share/syslinux/pxelinux.0, dest: bios/pxelinux.0 }
-    - { src: "{{ software_src }}/{{ kernel_file }}", dest: "bios/rhcos/{{ version }}/{{ kernel_file }}" }
-    - { src: "{{ software_src }}/{{ initramfs }}", dest: "bios/rhcos/{{ version }}/{{ initramfs }}" }
-    - { src: "{{ software_src }}/{{ rootfs }}", dest: "bios/rhcos/{{ version }}/{{ rootfs }}" }
+  when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
     
-
 - name: display network cidr
   set_fact:
     net_mask: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}"
@@ -73,38 +93,69 @@
 - name: get worker nodes details
   set_fact:
     nodes: "{{ hostvars[inventory_hostname]['compute_nodes'] }}"
-  when: cluster_install == '6+ node'
+  when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+    - cluster_install == '5+ node'
 
 - name: dispay compute node names
   debug:
     msg: "{{ item.name }}"
   loop: "{{ nodes }}"
-  when: cluster_install == '6+ node'
+  when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+    - cluster_install == '5+ node'
 
-- name: dispay rhel compute node names
-  debug:
-    msg: "{{ item.name }}"
-  loop: "{{ nodes }}"
-  when: cluster_install == '6+ node' and item.os == 'rhel'
+- name: get bootstrap node details
+  set_fact:
+    bootstrap_info: "{{ hostvars[inventory_hostname]['bootstrap_node'] }}"
+  when: bootstrap_node is defined
 
-- name: generate kickstart files
+- name: get controplane node details
+  set_fact:
+    control_plane: "{{ hostvars[inventory_hostname]['control_nodes'] }}"
+  when: control_nodes is defined
+
+- name: get compute node details
+  set_fact:
+    compute_node: "{{ hostvars[inventory_hostname]['compute_nodes'] }}"
+  when: compute_nodes is defined
+
+- name: generate pxe menu grub.cfg file for bootstrap
   template:
-    src: ks.j2
-    dest: /var/www/html/kickstart/{{ item.name }}.ks.cfg
-  loop: "{{ nodes }}"
-  when: cluster_install == '6+ node' and item.os == 'rhel'
-
-- name: generate pxe menu grub.cfg file
-  template:
-    src: menu.j2
-    dest: /var/lib/tftpboot/uefi/grub.cfg
+    src: bootstrap.j2
+    dest: "/var/lib/tftpboot/uefi/grub.cfg-01-{{ bootstrap_info[0].mac | lower | replace(':','-') }}"
     mode: 0755
+  when:
+    - bootstrap_node is defined
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
 
-- name: generate pxe menu bios menu
+- name: generate pxe menu grub.cfg file for master nodes
   template:
-    src: default.j2
-    dest: /var/lib/tftpboot/bios/pxelinux.cfg/default
+    src: master.j2
+    dest: "/var/lib/tftpboot/uefi/grub.cfg-01-{{ item.mac | lower | replace(':','-') }}"
     mode: 0755
+  vars:
+    node: item
+  loop: "{{ control_plane }}"
+  when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+
+- name: generate pxe menu grub.cfg file for worker nodes
+  template:
+    src: worker.j2
+    dest: "/var/lib/tftpboot/uefi/grub.cfg-01-{{ item.mac | lower | replace(':','-') }}"
+    mode: 0755
+  vars:
+    node: item
+  loop: "{{ compute_node }}"
+  when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+    - compute_nodes is defined
 
 - name: create tftp file under /etc/xinetd.d
   copy:
@@ -121,3 +172,7 @@
          disable         = no
       }
   notify: "restart xinetd"
+  when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+

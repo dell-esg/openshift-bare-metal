@@ -1,0 +1,82 @@
+apiVersion: v1
+baseDomain: {{ ansible_domain }}
+metadata:
+  name: {{ cluster }}
+networking:
+  machineNetwork:
+  - cidr: {{ machine_network_cidr }}
+  networkType: {{ network_type }}
+compute:
+- name: worker
+  replicas:  {{ num_of_compute_nodes }}
+controlPlane:
+  name: master
+  replicas: {{ num_of_control_nodes }}
+  platform:
+    baremetal: {}
+platform:
+  baremetal:
+    apiVIP: {{ api_ip }}
+    ingressVIP: {{ wildcard_ip }}
+    provisioningNetwork: Disabled
+    #bootstrapExternalStaticIP: {{ bootstrap_ip }}              --- correct DNS IP not getting assigned if using these options, update the bootstrap.ign later with static IP details 
+    #bootstrapExternalStaticGateway: {{ bootstrap_gateway }}
+    hosts:
+{% for node in control_nodes %}
+      - name: {{ node.name }}
+        role: master
+        bmc:
+          address: idrac-virtualmedia://{{ node.oob }}/redfish/v1/Systems/System.Embedded.1
+          username: {{ node.user }}
+          password: {{ node.passwd | b64decode }}
+          disableCertificateVerification: True
+        bootMACAddress: {{ node.mac }}
+        rootDeviceHints:
+          deviceName: {{ master_install_device }}
+        networkConfig:
+          interfaces:
+{% if node.bond is defined %}
+          - name: {{ node.bond }}
+            type: bond
+            state: up
+            ipv4:
+              address:
+              - ip: {{ node.ip }}
+                prefix-length: 24
+              enabled: True
+            link-aggregation:
+              mode: {{ node.options.split("=")[1] }}
+              port:
+              - {{ node.primary }}
+              - {{ node.backup }}
+          dns-resolver:
+            config:
+              server:
+              - {{ dns_ip }}
+          routes:
+            config:
+            - destination: 0.0.0.0/0
+              next-hop-address: {{ ansible_default_ipv4.gateway }}
+              next-hop-interface: {{ node.bond }}
+{% else %}
+          - name: {{ node.interface }}
+            type: ethernet
+            state: up
+            ipv4:
+              address:
+              - ip: {{ node.ip }}
+                prefix-length: 24
+              enabled: True
+          dns-resolver:
+            config:
+              server:
+              - {{ dns_ip }}
+          routes:
+            config:
+            - destination: 0.0.0.0/0
+              next-hop-address: {{ ansible_default_ipv4.gateway }}
+              next-hop-interface: {{ node.interface }}
+{% endif %}
+{% endfor %}
+pullSecret: '{{ pull_secret.stdout }}'
+sshKey: '{{ ssh_key.stdout }}'

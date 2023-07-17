@@ -1,0 +1,13 @@
+set timeout=3
+
+{% if item.bond is defined %}
+menuentry '{{ item.name }}' --class fedora --class gnu-linux --class gnu --class os {
+  linuxefi {{ os }}/{{ version }}/{{ kernel_file }} nomodeset rd.neednet=1 coreos.inst.insecure coreos.live.rootfs_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ os }}/{{ version }}/{{ rootfs }} coreos.inst.install_dev={{ item.installation_disk }} coreos.inst.image_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ os }}/{{ version }}/{{ uefi_file }} coreos.inst.ignition_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ http_ignition }}/worker.ign ip={{ item.ip}}::{{ ansible_default_ipv4.gateway }}:{{ ansible_default_ipv4.netmask }}:{{ item.name }}.{{ ansible_domain }}:{{ item.bond }}:none bond={{ item.bond }}:{{ item.primary }},{{ item.backup }}:{{ item.options }} nameserver={{ ansible_default_ipv4.address }}
+  initrdefi {{ os }}/{{ version }}/{{ initramfs }}
+}
+{% elif item.os == 'rhcos' and item.bond is not defined %}
+menuentry '{{ item.name }}' --class fedora --class gnu-linux --class gnu --class os {
+  linuxefi {{ os }}/{{ version }}/{{ kernel_file }} nomodeset rd.neednet=1 coreos.inst.insecure coreos.live.rootfs_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ os }}/{{ version }}/{{ rootfs }} coreos.inst.install_dev={{ item.installation_disk }} coreos.inst.image_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ os }}/{{ version }}/{{ uefi_file }} coreos.inst.ignition_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ http_ignition }}/worker.ign ip={{ item.ip}}::{{ ansible_default_ipv4.gateway }}:{{ ansible_default_ipv4.netmask }}:{{ item.name }}.{{ ansible_domain }}:{{ item.interface }}:none nameserver={{ ansible_default_ipv4.address }}
+  initrdefi {{ os }}/{{ version }}/{{ initramfs }}
+}
+{% endif %}

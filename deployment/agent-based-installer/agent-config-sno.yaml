@@ -1,0 +1,36 @@
+apiVersion: v1alpha1
+kind: AgentConfig
+metadata:
+  name: sno
+rendezvousIP: 192.168.32.20
+hosts:
+  - hostname: sno-1
+    interfaces:
+      - name: eno12399
+        macAddress: B8:CE:F6:06:97:CA
+    rootDeviceHints:
+      deviceName: /dev/sdb
+    networkConfig:
+      interfaces:
+        - name: eno12399
+          type: ethernet
+          state: up
+          mac-address: B8:CE:F6:06:97:CA
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.32.20
+                prefix-length: 23
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 192.168.32.44
+          search:
+            - dcws.lab
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.32.1
+            next-hop-interface: eno12399
+            table-id: 254

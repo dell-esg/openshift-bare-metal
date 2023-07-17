@@ -1,17 +1,8 @@
 ---
 # tasks file for dhcp
-- debug:
-    msg: "{{ ansible_hostname }}"
-
-- debug:
-    msg: "{{ ansible_default_ipv4 }}"
-
-- debug:
-    msg: "{{ ansible_domain }}"
-
 - name: install dhcp server
   yum:
-    name: dhcp
+    name: dhcp-server
     state: latest
 
 - name: add firewalld service for dhcp
@@ -21,13 +12,20 @@
     immediate: yes
     state: enabled
 
+- name: set dns ip
+  set_fact:
+    dns_ip_address: "{% if dns_ip is defined %}{{ dns_ip }}{% elif vip is defined %}{{ vip }}{% else %}{{ ansible_default_ipv4.address }}{% endif %}"
+
+- debug:
+    msg: "{{ dns_ip_address }}"
+
 - name: generate dhcpd config
   template:
     src: dhcpd.conf.j2
     dest: /etc/dhcp/dhcpd.conf
   notify: "restart dhcp"
 
-- name: enable and start dhcpd serviec
+- name: enable and start dhcpd service
   systemd:
     name: dhcpd
     enabled: yes

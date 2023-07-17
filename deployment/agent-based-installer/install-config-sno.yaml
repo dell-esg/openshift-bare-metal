@@ -1,0 +1,60 @@
+apiVersion: v1
+baseDomain: dcws.lab
+compute:
+- architecture: "amd64"
+  hyperthreading: Enabled
+  name: worker
+  replicas: 0
+controlPlane:
+  architecture: "amd64"
+  hyperthreading: Enabled
+  name: master
+  replicas: 1
+metadata:
+  name: sno
+networking:
+  clusterNetwork:
+  - cidr: 10.128.0.0/14
+    hostPrefix: 23
+  machineNetwork:
+  - cidr: 192.168.32.0/24
+  networkType: OVNKubernetes
+  serviceNetwork:
+  - 172.30.0.0/16
+platform:
+  baremetal:
+    apiVIP: 192.168.32.80
+    ingressVIP: 192.168.32.81  
+pullSecret: '{"auths":{"ipi-prov.dcws.lab:8443":{"auth":"aW5pdDpwTFF1NjN6WUVSMThYOTdHMlZ0MHdqaGFTVWs1TTRQcQ==","email":"nitesh_mehra@dell.com"},"cloud.openshift.com":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfNmZiZjM2ZWEyNTUxNDhmMTllODk.........................1Qg==","email":"nitesh_mehra@dell.com"},"quay.io":{"auth":"b3BlbnNoaWZ0LXJlb,..................GV1Qg==","email":"nitesh_mehra@dell.com"},"registry.connect.redhat.com":{"auth":"fHVoYy1wb29sLTM5OWVlqdzA4UTVzcw==","email":"nitesh_mehra@dell.com"}}}'
+sshKey: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMSK2+NjOg11nWUCEBFrrlce1WUhHGiB/acRathL5W80 kni@ipi-prov.dcws.lab'
+imageContentSources:
+- mirrors:
+  - ipi-prov.dcws.lab:8443/ocp4/openshift412
+  source: quay.io/openshift-release-dev/ocp-release
+- mirrors:
+  - ipi-prov.dcws.lab:8443/ocp4/openshift412
+  source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+
+additionalTrustBundle: |
+  -----BEGIN CERTIFICATE-----
+  MIIDujCCAqKgAwIBAgIUJniSVkdof+B2h7H4wxIKu4EcbkMwDQYJKoZIhvcNAQEL
+  BQAwazELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAlZBMREwDwYDVQQHDAhOZXcgWW9y
+  azENMAsGA1UECgwEUXVheTERMA8GA1UECwwIRGl2aXNpb24xGjAYBgNVBAMMEWlw
+  aS1wcm92LmRjd3MubGFiMB4XDTIzMDUwMjA4MjE1MVoXDTI2MDIxOTA4MjE1MVow
+  azELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAlZBMREwDwYDVQQHDAhOZXcgWW9yazEN
+  MAsGA1UECgwEUXVheTERMA8GA1UECwwIRGl2aXNpb24xGjAYBgNVBAMMEWlwaS1w
+  cm92LmRjd3MubGFiMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxX1x
+  sK03gcddfdHcFwx3ng+wHxj86SVzll7VpCHQutsf4dD11zDTGKwSynwO3r9CB71N
+  jf5//mD1cjUVHEvUzT4xkjuWbsLXM8nn4N1UO0Js5yRxLC544bsgjPcp4Be0nsKW
+  DijxWUh1WQurRh92uVgpoOhvVoTih/jWqKNsvN9ZjnPepay8mpQk2Pm41/furpc0
+  Qlwsu5oCd4gXJR8LIG8FMPXSaAQfNh4K45M8wAz6/s81hS91E4TYiExre0tgT8zT
+  XiEEvWqUvObURhcpQTQmT8hOhUOucFS1OX9RVMXRO9VOhp3/6yhN55CfOCivs7k0
+  0eU70yG4sBjZ3J8gcwIDAQABo1YwVDALBgNVHQ8EBAMCAuQwEwYDVR0lBAwwCgYI
+  KwYBBQUHAwEwHAYDVR0RBBUwE4IRaXBpLXByb3YuZGN3cy5sYWIwEgYDVR0TAQH/
+  BAgwBgEB/wIBATANBgkqhkiG9w0BAQsFAAOCAQEAcYunmMEHj6JHGoQDIq65KuQc
+  xs3uhwa344C6oSRP/nh6AhhLsStf1nMlRG6IoaoF1FbqY8qJX1gMkH17nZVg1PmE
+  dg555V66KIS4rFQFXp2lOS3bVoN/IF/+9Bhcg8sE2z0I1TErinBqHxULlIbzO92v
+  xzJWCSfmLP8WGanVO2Lxlv50c1hLa0WND/Eu3Js9825F+278vMVbWMyqsEkfkjpy
+  YELZbQWsbPwJ0BLZiAJsyjH1TVxK+mgB7Bwyg6X1P74PcKhrNrYm+mPyxiekXvRO
+  ULxUytF8WHgyG0GL44lubZ1q2nOyyBw+rZchf3tQdVeKlvVIF24WMWsEtVjVCQ==
+  -----END CERTIFICATE-----

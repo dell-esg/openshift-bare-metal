@@ -1,0 +1,33 @@
+$ORIGIN {{ ansible_domain }}.
+$TTL 8600
+@       IN        SOA      {{ ansible_hostname }}.{{ ansible_domain }}. {{ ansible_domain }}. (
+                  50         ;  serial
+                  604800     ;  Refresh after 1 week
+                  3600       ;  Retry after 1 hour
+                  604800     ;  Expire after 1 week
+                  86400      ;  Minimum TTL of 1 day
+         )
+         IN        NS        {{ ansible_hostname }}.{{ ansible_domain}}.
+
+{{ ansible_hostname }}    IN     A      {{ ansible_default_ipv4.address }}
+
+
+
+{% for node in control_nodes %}
+{{ node.name }}  IN    A    {{ node.ip }}
+{% endfor %}
+
+
+$ORIGIN {{ cluster }}.{{ ansible_domain }}.
+
+
+{% for node in control_nodes %}
+{{ node.name }}    IN   CNAME   {{ node.name }}.{{ ansible_domain }}.
+{% endfor %}
+
+
+{% for node in control_nodes %}
+*.apps    IN     A   {{ node.ip }}
+api       IN     A   {{ node.ip }}
+api-int   IN     A   {{ node.ip }}
+{% endfor %}

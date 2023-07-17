@@ -1,12 +1,34 @@
 ---
 # tasks file for ignition
-- name: install openshift rpms
-  yum:
-    name: "{{ item }}"
-    state: latest
-  loop:
-    - openshift-ansible
-    - openshift-clients
+- name: display network cidr
+  set_fact:
+    net_mask: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}"
+
+- name: display cidr
+  set_fact:
+    net_mask_cidr: "{{ net_mask | ipaddr('prefix') }}"
+
+- name: enable firewalld chronyd service
+  firewalld:
+    service: ntp
+    permanent: yes
+    immediate: yes
+    state: enabled
+  when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+
+      #- name: install openshift rpms
+      #  yum:
+      #name: "{{ item }}"
+      #state: latest
+      #loop:
+      #- openshift-clients
+
+- name: Extract oc client
+  unarchive:
+    src: "{{ software_src }}/openshift-client-linux.tar.gz"
+    dest: /usr/local/bin/
 
 - name: create openshift installer user - {{ install_user }}
   user:
@@ -18,6 +40,8 @@
 - name: check if ssh-keygen already exists for user - {{ install_user }}
   stat: 
     path: /home/{{ install_user }}/.ssh/id_rsa
+  when:
+    - ansible_fqdn in groups['primary']
   register: ssh_keygen_result
 
 - name: start ssh-agent as user {{ install_user }}
@@ -27,7 +51,10 @@
     ssh-add ~/.ssh/id_rsa
   become: yes
   become_user: "{{ install_user }}"
-  when: ssh_keygen_result.stat.exists  == false
+  when: 
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+    - ssh_keygen_result.stat.exists  == false
 
 - name: create openshift install directory under /home/{{ install_user }}
   file:
@@ -41,6 +68,9 @@
 - name: check openshift-install tool in /home/{{ install_user }}
   stat:
     path: /home/{{ install_user }}/openshift-install
+  when: 
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
   register: openshiftinstaller
 
 - name: copy openshift-install tool to /home/{{ install_user }}
@@ -50,14 +80,24 @@
     remote_src: yes
     owner: "{{ install_user }}"
     group: "{{ install_user }}"
-  when: not openshiftinstaller.stat.exists
+  when: 
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+    - not openshiftinstaller.stat.exists
 
 - name: read contents of pull secret key 
+      #  shell: cat "/home/ansible/pullsecret"
   shell: cat "{{ software_src }}/{{ pull_secret_file }}"
+  when: 
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
   register: pull_secret
 
 - name: read contents of ssh key file for user {{ install_user }}
   shell: cat /home/{{ install_user }}/.ssh/id_rsa.pub
+  when: 
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
   register: ssh_key
 
 - name: export kubeconfig 
@@ -69,6 +109,21 @@
       export PATH=$PATH:/home/{{ install_user }}
     owner: "{{ install_user }}"
     group: "{{ install_user }}"
+  when: 
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+
+- name: export kubeconfig in secondary management
+  blockinfile:
+    path: /home/{{ install_user }}/.bash_profile
+    insertafter: EOF
+    block: |
+      export KUBECONFIG={{ ocp_install_dir.path }}/kubeconfig
+    owner: "{{ install_user }}"
+    group: "{{ install_user }}"
+  when: 
+    - groups['secondary'] is defined
+    - ansible_fqdn in groups['secondary']
 
 - name: generate install config file
   template:
@@ -76,6 +131,9 @@
     dest: "/home/{{ install_user }}/install-config.yaml"
     owner: "{{ install_user }}"
     group: "{{ install_user }}"
+  when: 
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
 
 - name: copy install-config yaml file to installation directory
   copy:
@@ -84,6 +142,9 @@
     remote_src: yes
     owner: "{{ install_user }}"
     group: "{{ install_user }}"
+  when: 
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
 
 - name: check ignition files in {{ ocp_install_dir.path }}
   stat:
@@ -92,6 +153,9 @@
     - master.ign
     - worker.ign
     - bootstrap.ign
+  when: 
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
   register: ign
 
 - name: generate manifests directory in {{ ocp_install_dir.path }}
@@ -100,12 +164,81 @@
   shell: |
     cd {{ ocp_install_dir.path }}
     /home/{{ install_user }}/openshift-install create manifests --dir={{ ocp_install_dir.path }}
-  when: not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
+  when: 
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+    - not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
 
 - name: check manifest directory in {{ ocp_install_dir.path }}
   stat:
     path: "{{ ocp_install_dir.path }}/manifests"
   register: manifest_dir
+
+- name: check openshift directory in {{ ocp_install_dir.path }}
+  stat:
+    path: "{{ ocp_install_dir.path }}/openshift"
+  register: openshift_dir
+
+- name: generate csah chrony file
+  template:
+    src: csah.chrony.conf.j2
+    dest: /etc/chrony.conf
+    mode: '0644'
+  when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+  notify: "restart chronyd"
+
+- name: generate temporary client chrony config file
+  template:
+    src: client.chrony.conf.j2
+    dest: /tmp/chrony.conf
+    mode: '0644'
+  when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+
+- name: copy client chrony config file to secondary management
+  copy:
+    src: "/tmp/chrony.conf"
+    dest: "/etc/chrony.conf"
+    mode: '0644'
+  when:
+    - groups['secondary'] is defined
+    - ansible_fqdn in groups['secondary']
+  notify: "restart chronyd"
+
+- name: encrypt temporary chrony conf file using base64
+  slurp:
+    src: /tmp/chrony.conf
+  register: chrony_content
+  when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+    - not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
+
+- name: generate chrony machine config for control plane nodes
+  template:
+    src: 99-chrony-configuration.j2
+    dest: "{{ ocp_install_dir.path }}/openshift/99-master-chrony-configuration.yaml"
+  with_items:
+    - { role: "master" }
+  when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+    - not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
+
+- name: generate chrony machine config for compute nodes
+  template:
+    src: 99-chrony-configuration.j2
+    dest: "{{ ocp_install_dir.path }}/openshift/99-worker-chrony-configuration.yaml"
+  with_items:
+    - { role: "worker" }
+  when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+    - cluster_install == "5+ node"
+    - not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
 
 - name: backup openshift and manifest directory
   copy:
@@ -116,7 +249,11 @@
   loop:
     - openshift
     - manifests
-  when: manifest_dir.stat.exists and manifest_dir.stat.isdir
+  when: 
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+    - manifest_dir.stat.exists 
+    - manifest_dir.stat.isdir
 
 - name: generate ignition config files
   become: yes
@@ -124,10 +261,22 @@
   shell: |
     cd {{ ocp_install_dir.path }}
     /home/{{ install_user }}/openshift-install create ignition-configs --dir={{ ocp_install_dir.path }}
-  when: not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
+  when: 
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+    - not ign.results[0].stat.exists or not ign.results[1].stat.exists or not ign.results[2].stat.exists
   register: create_ignition
 
-- name: copy ignition config files to /var/www/html/{{http_ignition}}
+- name: create ignition directory in secondary management
+  file: 
+    path: /var/www/html/{{ http_ignition }}
+    state: directory
+  when: 
+    - groups['secondary'] is defined
+    - ansible_fqdn in groups['secondary']
+    - http == 'managed'
+
+- name: copy ignition config files to primary management
   copy:
     src: "{{ ocp_install_dir.path }}/{{ item }}"
     dest: /var/www/html/{{ http_ignition }}
@@ -136,18 +285,61 @@
     - master.ign
     - worker.ign
     - bootstrap.ign
+  when: 
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+    - http == 'managed'
 
-- name: copy kubeconfig file to /home/ansible
+- name: change permissions of ignition config files
+  file:
+    path: "{{ ocp_install_dir.path }}/{{ item }}"
+    mode: o+r
+  loop:
+    - master.ign
+    - worker.ign
+    - bootstrap.ign
+  when: 
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
+
+- name: copy ignition config files to secondary management
+  copy:
+    src: "/var/www/html/{{ http_ignition }}/{{ item }}"
+    dest: "/var/www/html/{{ http_ignition }}/"
+  loop:
+    - master.ign
+    - worker.ign
+    - bootstrap.ign
+  when: 
+    - groups['secondary'] is defined
+    - ansible_fqdn in groups['secondary']
+    - http == 'managed'
+
+- name: copy kubeconfig file in primary management
   copy:
     src: "{{ ocp_install_dir.path }}/auth/{{ item }}"
     dest: /home/ansible
     remote_src: yes
+    owner: ansible
+    group: ansible
+    mode: 0755
   loop:
     - kubeconfig
     - kubeadmin-password
+  when:
+    - groups['primary'] is defined
+    - ansible_fqdn in groups['primary']
 
-- name: copy core user ssh key to /home/ansible
+- name: copy kubeconfig file to secondary management
   copy:
-    src: /home/core/.ssh/id_rsa.pub
-    dest: /home/ansible/core_id_rsa.pub
-    remote_src: yes
+    src: "/home/ansible/{{ item }}"
+    dest: "/home/core/{{ install_dir }}/"
+    owner: "{{ install_user }}"
+    group: "{{ install_user }}"
+    mode: 0755
+  loop:
+    - kubeconfig
+    - kubeadmin-password
+  when:
+    - groups['secondary'] is defined
+    - ansible_fqdn in groups['secondary']

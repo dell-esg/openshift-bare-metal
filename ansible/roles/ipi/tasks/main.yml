@@ -1,0 +1,178 @@
+---
+- name: create kni user
+  user:
+    name: kni
+    state: present
+    shell: /bin/bash
+    createhome: yes
+
+- name: create tmp directory
+  file:
+    path: /home/kni/.ansible/tmp
+    state: directory
+    owner: kni
+    group: kni
+    mode: 0775
+    recurse: yes
+
+- name: add kni to sudoers list
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/kni
+    line: "kni ALL=(root) NOPASSWD:ALL"
+    create: yes
+
+- name: update file permissions
+  ansible.builtin.file:
+    path: /etc/sudoers.d/kni
+    mode: '0440'
+
+- name: create ssh key
+  become_user: kni
+  shell: |
+    ssh-keygen -t ed25519 -f /home/kni/.ssh/id_rsa -N ''
+
+- name: install required packages
+  dnf:
+    name:
+      - 'libvirt'
+      - 'qemu-kvm'
+      - 'mkisofs'
+      - 'python3-devel'
+      - 'jq'
+      - 'ipmitool'
+      - 'dhclient'
+      - 'tmux'
+      - 'podman'
+      - 'virt-viewer'
+    state: latest
+
+- name: update kni user
+  ansible.builtin.user:
+    name: kni
+    groups: libvirt,kni
+    append: yes
+
+- name: poweroff control plane nodes
+  shell: |
+    if [[ $(ipmitool -I lanplus -U root -P calvin -H {{ item.oob }} power status) == *"on"* ]]; then
+      ipmitool -I lanplus -U {{ item.user }} -P {{ item.passwd | b64decode }} -H {{ item.oob }} power off
+    fi
+  args:
+    executable: /bin/bash
+  with_items:
+    - "{{ control_nodes }}"
+
+- name: poweroff compute nodes
+  shell: |
+    if [[ $(ipmitool -I lanplus -U root -P calvin -H {{ item.oob }} power status) == *"on"* ]]; then
+      ipmitool -I lanplus -U {{ item.user }} -P {{ item.passwd | b64decode }} -H {{ item.oob }} power off
+    fi
+  args:
+    executable: /bin/bash
+  with_items:
+    - "{{ compute_nodes }}"
+  when:
+    - num_of_compute_nodes > 0
+
+- name: enable firewalld service
+  systemd:
+    name: firewalld
+    enabled: yes
+    state: started
+
+- name: configure firewalld
+  shell: |
+    firewall-cmd --zone=public --add-service=http --permanent
+
+- name: reload service firewalld
+  systemd:
+    name: firewalld
+    state: reloaded
+
+- name: enable libvirtd service
+  systemd:
+    name: libvirtd
+    enabled: yes
+    state: started
+
+- name: create images directory
+  file:
+    path: /var/lib/libvirt/images
+    state: directory
+
+- name: define new storage pool
+  become_user: root
+  shell: |
+    virsh pool-define-as --name default --type dir --target /var/lib/libvirt/images
+    virsh pool-start default
+    virsh pool-autostart default
+
+- name: create RHCOS images cache
+  become_user: kni
+  become: true
+  script: createImagesCache.sh {{ version }} {{ pull_secret_file }}
+  register: output
+  failed_when: "'error' in output.stdout|lower"
+
+- debug:
+    var: output.stdout_lines
+
+- name: get pullsecret
+  shell: cat {{ pull_secret_file }}
+  register: pull_secret
+
+- name: get ssh key
+  shell: cat /home/kni/.ssh/id_rsa.pub
+  register: ssh_key
+
+- name: use dns vip if defined
+  set_fact:
+    dns_ip: "{% if dns_ip is defined %}{{ dns_ip }}{% elif vip is defined %}{{ vip }}{% else %}{{ ansible_default_ipv4.address }}{% endif %}"
+
+- name: create installation directory
+  file:
+    path: /home/kni/clusterconfigs
+    state: directory
+    owner: kni
+    group: kni
+  register: ocp_install_dir
+
+- name: generate install-config
+  template:
+    src: install-config.j2
+    dest: "{{ ocp_install_dir.path }}/install-config.yaml"
+    owner: kni
+    group: kni
+
+- name: create copy of install-config
+  copy:
+    src: "{{ ocp_install_dir.path }}/install-config.yaml"
+    remote_src: true
+    dest: "{{ ocp_install_dir.path }}/install-config-bkp.yaml"
+
+- name: create manifest file
+  become_user: kni
+  shell: /usr/local/bin/openshift-baremetal-install --dir {{ ocp_install_dir.path }} create ignition-configs
+
+- name: bootstrap static ip configuration
+  become_user: kni
+  script: bootstrap_config.sh {{ ocp_install_dir.path }} {{ bootstrap_ip }}/24 {{ bootstrap_gateway }} {{ dns_ip }}
+
+- name: generate deploy cluster command
+  set_fact:
+    command: "/usr/local/bin/openshift-baremetal-install --dir {{ ocp_install_dir.path }} --log-level debug create cluster"
+
+- name: create a file to save deploy cluster command
+  file:
+    path: "/home/kni/cluster_install_command"
+    state: touch
+
+- name: add deploy cluster command in file
+  blockinfile:
+    path: "/home/kni/cluster_install_command"
+    block: |
+      "{{ command }}"
+
+- name: deploy cluster command
+  debug:
+    msg: "{{ command }}"

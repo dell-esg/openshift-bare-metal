@@ -1,0 +1,57 @@
+---
+#- name: install openshift rpms
+#  yum:
+#    name: "{{ item }}"
+#    state: latest
+#  loop:
+#    - openshift-clients
+
+- name: Extract oc client
+  unarchive:
+    src: "{{ software_src }}/openshift-client-linux.tar.gz"
+    dest: /usr/local/bin/
+  when:
+    - "'secondary' in groups"
+
+- name: install keepalived
+  yum:
+    name: keepalived
+    state: latest
+  when:
+    - "'secondary' in groups"
+
+- name: display network cidr
+  set_fact:
+    net_mask: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}"
+
+- name: display cidr
+  set_fact:
+    net_mask_cidr: "{{ net_mask | ipaddr('prefix') }}"
+
+- name: keepalived firewall rich rule
+  firewalld:
+    rich_rule: 'rule protocol value="vrrp" accept'
+    permanent: true
+    immediate: true
+    state: enabled
+  when:
+    - groups['secondary'] is defined
+    - "'secondary' in groups"
+
+- name: enable keepalived service
+  systemd: 
+    name: keepalived
+    enabled: yes
+    state: started
+  when:
+    - groups['secondary'] is defined
+    - "'secondary' in groups"
+
+- name: generate keepalived config file
+  template:
+    src: keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+  notify: keepalived restart
+  when:
+    - groups['secondary'] is defined
+    - "'secondary' in groups"

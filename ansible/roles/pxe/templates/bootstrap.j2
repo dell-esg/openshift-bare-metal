@@ -1,0 +1,11 @@
+set default=bootstrap
+set timeout=3
+
+{% if bootstrap_node is defined %}
+{% for node in bootstrap_node %}
+menuentry '{{ node.name }}' --class fedora --class gnu-linux --class gnu --class os {
+  linuxefi {{ os }}/{{ version }}/{{ kernel_file }} nomodeset rd.neednet=1 coreos.inst.insecure coreos.live.rootfs_url=http://{{ http_ip }}:{{ http_port }}/{{ os }}/{{ version }}/{{ rootfs }} coreos.inst.install_dev=/dev/sda coreos.inst.image_url=http://{{ http_ip }}:{{ http_port }}/{{ os }}/{{ version }}/{{ uefi_file }} coreos.inst.ignition_url=http://{{ http_ip }}:{{ http_port }}/{{ http_ignition }}/bootstrap.ign ip=dhcp
+  initrdefi {{ os }}/{{ version }}/{{ initramfs }}
+}
+{% endfor %}
+{% endif %}

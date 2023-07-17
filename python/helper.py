@@ -17,7 +17,6 @@ from urllib3.exceptions import InsecureRequestWarning
 def get_user_response(message=''):
     """
     User response invoked when error exists
-
     """
     valid_responses = ['y', 'NO']
     response = ''
@@ -46,7 +45,6 @@ def create_dir(directory):
 def check_path(path, isfile=False, isdir=False):
     """ 
     returns if path given is a file or directory
-
     """
     
     return os.path.isfile(path) if isfile else os.path.isdir(path)
@@ -55,7 +53,6 @@ def set_values(user_input, default, check=''):
     """ 
     sets default value if user input is empty value.
     ensures integer value if necessary
-
     """
     if check == 'integer' and user_input != '':
         user_input = check_user_input_if_integer(user_input)
@@ -65,7 +62,6 @@ def set_values(user_input, default, check=''):
 def validate_url(url):
     """ 
     validates url and checks if any HTTP Errors
-
     """
     url_verify = ''
 
@@ -79,7 +75,6 @@ def validate_url(url):
 def check_user_input_if_integer(user_input):
     """ 
     check if user input is integer and not any other data type
-
     """
     integer_input = ''
     while not integer_input:
@@ -94,7 +89,6 @@ def check_user_input_if_integer(user_input):
 def get_ip(node_name='', ip_type=''):
     """ 
     get the ip address of a node
-
     """
     ip = ''
     
@@ -147,7 +141,6 @@ def validate_ip(ip):
 def validate_port(port):
     """
     validate ports to ensure HAProxy ports are not reused
-
     """
     invalid_ports = [80, 443, 6443, 22623]
     while True:
@@ -169,7 +162,6 @@ def validate_port(port):
 def validate_network_cidr(network_cidr):
     """
     validate ip address with cidr format. defaults to /24 if only IP is given
-
     """
     compressed_network_cidr = ''
     while True:
@@ -186,7 +178,6 @@ def validate_network_cidr(network_cidr):
 def validate_cidr(cidr):
     """ 
     validates subnet in cidr format.
-
     """
     check_integer = ''
     while not check_integer:
@@ -206,7 +197,7 @@ def check_ip_ping(ip):
     return response           
 
 def get_idrac_creds(ip):
-    user = input('enter the idrac user for {}: '.format(ip))
+    user = input('\nenter the idrac user for {}: '.format(ip))
     passwd = getpass.getpass('enter the idrac password for {}: '.format(ip))
   
     return user, passwd
@@ -226,9 +217,9 @@ def map_interfaces_network(network_devices):
 def connect_to_idrac(user, passwd, base_api_url):
     """ 
     establishes connection to idrac
-
     """
     requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
+    logging.getLogger('urllib3').setLevel(logging.WARNING)
     response = ''
     status_code = None
     try:
@@ -249,11 +240,35 @@ def connect_to_idrac(user, passwd, base_api_url):
         return None
 
     return response if status_code == 200 else None
+
+
+def get_server_model(user, passwd, api_url):
+    """
+    get server model using redfish API
+    """
+    server_model = None
+    response = connect_to_idrac(user, passwd, api_url)
+    output = response.json()
+    if output:
+        server_model = output['Model']
+
+    return server_model
+
+def get_server_power_state(user, passwd, api_url):
+    """
+    get server power state using redfish API
+    """
+    server_powerstate = 'Unknown'
+    response = connect_to_idrac(user, passwd, api_url)
+    output = response.json()
+    if output:
+        server_powerstate = output['PowerState']
+
+    return server_powerstate
     
 def get_network_devices(user, passwd, base_api_url):
     """ 
     get list of network devices from iDRAC 
-
     """
     network_devices = ''
     response = connect_to_idrac(user, passwd, base_api_url)
@@ -269,10 +284,9 @@ def get_network_devices(user, passwd, base_api_url):
 
     return network_devices
   
-def generate_network_devices_menu(devices, purpose=''):
+def generate_network_devices_menu(devices, user, passwd, base_api_url, purpose='', show=True):
     """ 
     generate a list of network devices menu obtained from iDRAC 
-
     """
     menu = {}
     i = 1
@@ -283,8 +297,10 @@ def generate_network_devices_menu(devices, purpose=''):
         i += 1
     while True:
         options = menu.keys()
-        for entry in options:
-            logging.info('{} -> {}'.format(entry, menu[entry]))
+        if show:
+            for entry in options:
+                logging.info('{} -> {} [{}]'.format(entry, menu[entry], get_link_status(menu[entry], base_api_url, user, passwd)))
+                #logging.info('{} -> {}'.format(entry, menu[entry]))
         choice = input('Select the interface used by {}: '.format(purpose))
         try:
             menu[int(choice)]
@@ -304,8 +320,8 @@ def generate_network_devices_menu(devices, purpose=''):
 def get_mac_address(selected_network_device, base_api_url, user, passwd):
     """ 
     get mac address for a selected network device
-
     """   
+    logging.getLogger('urllib3').setLevel(logging.WARNING)
     url = '{}/{}'.format(base_api_url, selected_network_device)
     device_mac_address = ''
     try:
@@ -328,17 +344,43 @@ def get_mac_address(selected_network_device, base_api_url, user, passwd):
 
     return device_mac_address
 
+def get_link_status(selected_network_device, base_api_url, user, passwd):
+    """ 
+    get link status for a selected network device
+    """ 
+    logging.getLogger('urllib3').setLevel(logging.WARNING)
+    url = '{}/{}'.format(base_api_url, selected_network_device)
+    device_link_status = ''
+    try:
+        response = requests.get(url, verify=False, auth=(user, passwd),
+                                timeout=5)
+    except requests.exceptions.ConnectionTimeout:
+        logging.error('failed to establish connection to get link status')
+
+    try:
+        network_device_info = response.json()
+    except ValueError:
+        logging.error('check URL, iDRAC user and password may be invalid')
+        logging.info('{}'.format(url))
+
+    try:
+        device_link_status = network_device_info[u'LinkStatus']
+    except KeyError:
+        logging.error('Link status not found for network devices')
+        logging.info('{}'.format(selected_network_device))
+
+    return device_link_status
+
 def get_network_device_mac(devices, user, passwd, base_api_url):
     """ 
     lists available network devices from iDRAC
     generates a menu of network devices
     obtains mac address for the network device
-
     """
     network_device_mac_address = ''
 
     if devices:
-        selected_network_device = generate_network_devices_menu(devices, purpose='DHCP')
+        selected_network_device = generate_network_devices_menu(devices, user, passwd, base_api_url, purpose='DHCP')
         network_device_mac_address = get_mac_address(selected_network_device, base_api_url, user, passwd)
 
     if network_device_mac_address:
@@ -346,27 +388,54 @@ def get_network_device_mac(devices, user, passwd, base_api_url):
     
     return network_device_mac_address
 
-def get_device_enumeration(device, os=''):
-    integrated_nic_pattern = 'Integrated'
-    nic_slot_pattern = 'NIC.Slot.'   
+def get_device_enumeration(device, os='', server_model=''):
+    """
+    get device enumeration based on server model 
+    """
+
+    integrated_nic_pattern = 'NIC.Integrated.1-'
+    embedded_nic_pattern = 'NIC.Embedded.'
+    nic_slot_patterns = ['NIC.Slot.', 'NIC.Mezzanine.']
     enumeration = ''
+    nic_slot_pattern = [nic_slot for nic_slot in nic_slot_patterns if nic_slot in device]
 
     if integrated_nic_pattern in device:
-        enumeration_postfix = device.split('NIC.Integrated.1-')[1].split('-')[0]
+        enumeration_postfix = device.split(integrated_nic_pattern)[1].split('-')[0]
+        if '650' in server_model or '750' in server_model or '660' in server_model or '760' in server_model or '6525' in server_model or '7525' in server_model or '6625' in server_model or '7625' in server_model:
+            enumeration = 'eno' + str(int(12389 + (int(enumeration_postfix) * 10)))
+            return enumeration
+
         if os == 'rhcos':
             enumeration = 'eno' + enumeration_postfix
         if os == 'rhel':
             enumeration = 'em' + enumeration_postfix
-    
-    if nic_slot_pattern in device:
-        slot_number = device.split('NIC.Slot.')[1].split('-')[0]
-        port_number = device.split('NIC.Slot.')[1].split('-')[1]
+
+    elif embedded_nic_pattern in device:
+        enumeration_postfix = device.split(embedded_nic_pattern)[1].split('-')[0]
+        if 'XR11' in server_model or 'XR12' in server_model:
+            enumeration = 'eno' + str(int(8203 + (int(enumeration_postfix) * 100))) + 'np' + str(int(enumeration_postfix) - 1)
+            return enumeration
+
+        if '650' in server_model or '750' in server_model or '660' in server_model or '760' in server_model or '6525' in server_model or '7525' in server_model or '6625' in server_model or '7625' in server_model:
+            enumeration_postfix = device.split(embedded_nic_pattern)[1].split('-')[0]
+            enumeration = 'eno' + str(int(8203 + (int(enumeration_postfix) * 100)))
+            return enumeration
+
+        if os == 'rhcos':
+            enumeration = 'eno' + enumeration_postfix
+        if os == 'rhel':
+            enumeration = 'em' + enumeration_postfix
+
+    elif nic_slot_pattern and nic_slot_pattern[0] in device:
+        slot_number = device.split(nic_slot_pattern[0])[1].split('-')[0]
+        port_number = device.split(nic_slot_pattern[0])[1].split('-')[1]
         if os == 'rhcos':
             enumeration = 'ens' + slot_number + 'f' + str(int(port_number)-1)
         if os == 'rhel':
             enumeration = 'p' + slot_number + 'p' + port_number
 
-    return enumeration  
+    return enumeration
+
         
 
 def main():

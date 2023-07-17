@@ -1,0 +1,119 @@
+apiVersion: v1alpha1
+kind: AgentConfig
+metadata:
+  name: agent-3
+#rendezvousIP: 192.168.32.20
+hosts:
+  - hostname: node1
+    role: master
+    rootDeviceHints:
+      deviceName: /dev/sdb	
+    interfaces:
+     - name: eno12399
+       macAddress:  B4:83:51:08:D8:C0
+     - name: eno12409
+       macAddress: B4:83:51:08:D8:C1			
+    networkConfig:
+      interfaces:
+        - name: bond0  
+          type: bond
+          state: up
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.32.20
+                prefix-length: 23
+            dhcp: false
+          link-aggregation:
+            mode: 802.3ad
+            port:
+             - eno12399
+             - eno12409			
+      dns-resolver:
+        config:
+          server:
+            - 192.168.32.27
+          search:
+            - dcws.lab
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.32.1
+            next-hop-interface: bond0
+            table-id: 254
+  - hostname: node2
+    role: master
+    rootDeviceHints:
+      deviceName: /dev/sdb	
+    interfaces:
+     - name: eno12399
+       macAddress:  B4:83:51:08:D8:C0
+     - name: eno12409
+       macAddress: B4:83:51:08:D8:C1			
+    networkConfig:
+      interfaces:
+        - name: bond0  
+          type: bond
+          state: up
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.32.20
+                prefix-length: 23
+            dhcp: false
+          link-aggregation:
+            mode: 802.3ad 
+            port:
+             - eno12399
+             - eno12409			
+      dns-resolver:
+        config:
+          server:
+            - 192.168.32.27
+          search:
+            - dcws.lab
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.32.1
+            next-hop-interface: bond0
+            table-id: 254
+  - hostname: node3
+    role: master
+    rootDeviceHints:
+      deviceName: /dev/sdb	
+    interfaces:
+     - name: eno12399
+       macAddress:  B4:83:51:08:D8:C0
+     - name: eno12409
+       macAddress: B4:83:51:08:D8:C1			
+    networkConfig:
+      interfaces:
+        - name: bond0  
+          type: bond
+          state: up
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.32.20
+                prefix-length: 23
+            dhcp: false
+          link-aggregation:
+            mode: 802.3ad
+            port:
+             - eno12399
+             - eno12409			
+      dns-resolver:
+        config:
+          server:
+            - 192.168.32.27
+          search:
+            - dcws.lab
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.32.1
+            next-hop-interface: bond0
+            table-id: 254			
+  
+

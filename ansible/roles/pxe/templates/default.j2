@@ -15,4 +15,4 @@ menu label Boot from ^local drive
 localboot 0xffff
 LABEL Bootstrap
   KERNEL {{ os }}/{{ version }}/{{ kernel_file }}
-  APPEND initrd={{ os }}/{{ version }}/{{ initramfs }} ip=dhcp nomodeset rd.neednet=1 coreos.inst.insecure coreos.live.rootfs_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ os }}/{{ version }}/{{ rootfs }} coreos.inst=yes coreos.inst.install_dev=sda coreos.inst.image_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ os }}/{{ version }}/{{ uefi_file }} coreos.inst.ignition_url=http://{{ ansible_default_ipv4.address }}:{{ http_port }}/{{ http_ignition }}/bootstrap.ign
+  APPEND initrd={{ os }}/{{ version }}/{{ initramfs }} ip=dhcp nomodeset rd.neednet=1 coreos.inst.insecure coreos.live.rootfs_url=http://{{ vip_ip }}:{{ http_port }}/{{ os }}/{{ version }}/{{ rootfs }} coreos.inst.install_dev=/dev/sda coreos.inst.image_url=http://{{ vip_ip }}:{{ http_port }}/{{ os }}/{{ version }}/{{ uefi_file }} coreos.inst.ignition_url=http://{{ vip_ip }}:{{ http_port }}/{{ http_ignition }}/bootstrap.ign

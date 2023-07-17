@@ -4,15 +4,9 @@
   set_fact:
     striped_netmask: "{{ ansible_default_ipv4.netmask | regex_findall('(255)') |length }}" 
 
-- debug:
-    msg: custom netmask is {{ striped_netmask|int }}
-
 - name: number of octets to remove
   set_fact:
     strip_last_octets: "{{ 4 - striped_netmask|int }}"
-
-- debug:
-    msg: last {{ strip_last_octets }} octet(s) in reverse order will be added in reverse zone file for {{ ansible_default_ipv4.network }}
 
 - name: set reverse zone name prefix
   set_fact:
@@ -21,9 +15,6 @@
 - name: set reverse zone file name
   set_fact:
     arpa_name: "{{ arpa_name_prefix | join('.') }}.in-addr.arpa"
-
-- debug:
-    msg: reverse zone name is {{ arpa_name }}
 
 - name: install dns 
   yum:
@@ -52,6 +43,14 @@
   template:
     src: forward.dns.j2
     dest: /var/named/{{ ansible_domain }}
+  when: cluster_install != '1 node'
+  notify: "restart named"
+
+- name: generate sno forward zone file
+  template:
+    src: sno_forward.dns.j2
+    dest: /var/named/{{ ansible_domain }}
+  when: cluster_install == '1 node'
   notify: "restart named"
 
 - name: generate reverse zone file

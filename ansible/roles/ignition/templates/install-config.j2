@@ -1,7 +1,7 @@
 apiVersion: v1
 baseDomain: {{ ansible_domain }}
 compute:
-{% if cluster_install == '6+ node' %}
+{% if cluster_install == '5+ node' %}
 - hyperthreading: Enabled
   name: worker
   replicas: {{ num_of_compute_nodes }}
@@ -20,7 +20,7 @@ networking:
   clusterNetworks:
   - cidr: {{ cluster_network_cidr }}
     hostPrefix: {{ host_prefix }}
-  networkType: OpenShiftSDN
+  networkType: {{ network_type }}
   serviceNetwork:
   - {{ service_network_cidr }}
 platform:

@@ -1,0 +1,6 @@
+---
+- name: restart keepalived
+  systemd:
+    name: keepalived
+    state: restarted
+  listen: "keepalived restart"
