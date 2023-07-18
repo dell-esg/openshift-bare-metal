@@ -1,0 +1,18 @@
+interfaces:
+- name: eno12399
+  type: ethernet
+  state: up
+  ipv4:
+    address:
+    - ip: 192.168.32.39
+      prefix-length: 24
+    enabled: true
+dns-resolver:
+  config:
+    server:
+    - 192.168.31.50
+routes:
+  config:
+  - destination: 0.0.0.0/0
+    next-hop-address: 192.168.32.1
+    next-hop-interface: eno12399

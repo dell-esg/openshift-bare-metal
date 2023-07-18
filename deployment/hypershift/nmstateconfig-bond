@@ -1,0 +1,23 @@
+interfaces:
+- name: bond0
+  type: bond
+  state: up
+  ipv4:
+    address:
+    - ip: 192.168.32.39
+      prefix-length: 24
+    enabled: true
+  link-aggregation:
+    mode: active-backup
+    port:
+    - eno12399
+    - eno12409
+dns-resolver:
+  config:
+    server:
+    - 192.168.31.50
+routes:
+  config:
+  - destination: 0.0.0.0/0
+    next-hop-address: 192.168.32.1
+    next-hop-interface: bond0
