@@ -1,0 +1,32 @@
+apiVersion: agent-install.openshift.io/v1beta1
+kind: AgentServiceConfig
+metadata:
+ name: agent
+spec:
+  databaseStorage:
+    volumeName: db-ztp          
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+  filesystemStorage:
+    volumeName: fs-ztp          
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 15Gi
+  imageStorage:
+    volumeName: image-ztp
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+  osImages: 
+    - openshiftVersion: "4.12.17" 
+      version: "412.86.202305161131-0" 
+      url: "http://ipi-65.dcws.lab/rhcos-4.12.17-x86_64-live.x86_64.iso"
+      rootFSUrl:  "http://ipi-65.dcws.lab/rhcos-4.12.17-x86_64-live-rootfs.x86_64.img"
+      cpuArchitecture: "x86_64"
