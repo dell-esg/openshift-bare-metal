@@ -1,0 +1,8 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: dellcsi-powerstore-sc-fc
+provisioner: csi-powerstore.dellemc.com
+parameters:
+  type: any
+  fstype: xfs

@@ -1,0 +1,10 @@
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata:
+  name: isilon-snapshot
+  namespace: isilon
+spec:
+  volumeSnapshotClassName: csi-hostpath-snap-isilon
+  source:
+    persistentVolumeClaimName: dynamic-nfs-isilon-pvc
+

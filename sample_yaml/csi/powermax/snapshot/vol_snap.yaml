@@ -1,0 +1,8 @@
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata:
+  name: powermax-snapshot
+spec:
+  volumeSnapshotClassName: powermax-snap-class
+  source:
+    persistentVolumeClaimName: dynamic-fc-powermax-pvc

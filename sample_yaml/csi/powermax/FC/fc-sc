@@ -1,0 +1,13 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: powermaxscfc
+  namespace: powermax
+parameters:
+  csi.storage.k8s.io/fstype: xfs
+  SRP: "SRP_1"
+  SYMID: "<Storage_Array_ID>"
+  ServiceLevel: "Diamond"
+  ApplicationPrefix: "Test"
+provisioner: csi-powermax.dellemc.com
+reclaimPolicy: Delete
