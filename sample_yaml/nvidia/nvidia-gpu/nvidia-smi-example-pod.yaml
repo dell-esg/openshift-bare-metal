@@ -12,3 +12,4 @@ spec:
         nvidia.com/gpu: 1
       requests:
         nvidia.com/gpu: 1
+
