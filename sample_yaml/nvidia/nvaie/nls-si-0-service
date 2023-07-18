@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nls-si-0
+  name: nls-si-0
+spec:
+  type: NodePort
+  ports:
+    - name: "dls-http-container"
+      port: 9080
+      targetPort: 9080
+      nodePort: 30000
+    - name: "dls-https-container"
+      port: 9443
+      targetPort: 9443
+      nodePort: 30001
+    - name: "dls-rabbitmq-ssl-port"
+      port: 5671
+      targetPort: 5671
+      nodePort: 30002
+    - name: "dls-va-service-port"
+      port: 8085
+      targetPort: 8085
+      nodePort: 30003
+    - name: "8081"
+      port: 8081
+      targetPort: 8081
+      nodePort: 30006
+    - name: "8082"
+      port: 8082
+      targetPort: 8082
+      nodePort: 30007
+    - name: "8083"
+      port: 8083
+      targetPort: 8083
+      nodePort: 30008
+    - name: "8084"
+      port: 8084
+      targetPort: 8084
+      nodePort: 30009
+    - name: "4369"
+      port: 4369
+      targetPort: 4369
+      nodePort: 30010
+  selector:
+    io.kompose.service: nls-si-0
+status:
+  loadBalancer: {}

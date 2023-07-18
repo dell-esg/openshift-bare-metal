@@ -1,0 +1,114 @@
+## Mandatory ports that are needed by Appliance as container:
+## Below ports should always be available for the appliance containers to run
+## 9001, 18080, 18081, 18082, 18083, 18084,8085, 8084, 8083, 8081, 8082, 25672
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nls-si-0
+  name: nls-si-0
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: nls-si-0
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/back-tier: "true"
+        io.kompose.service: nls-si-0
+    spec:
+      hostNetwork: false
+      imagePullSecrets:
+      - name: registry-secret
+      containers:
+        - env:
+            - name: DLS_DB_HOST
+              value: 10.130.1.191
+            - name: DLS_HTTPS_PORT
+              value: "9443"
+            - name: DLS_HTTP_PORT
+              value: "9080"
+            - name: DLS_PUBLIC_IP
+              value: 192.168.32.76
+            - name: DLS_PRIVATE_HOSTNAME
+              value: dls-2
+            - name: FQDN
+              value: dls-2.ocp-411.dcws.lab
+            - name: DLS_EXPOSED_HTTP_PORT
+              value: "30000"
+            - name : DLS_EXPOSED_HTTPS_PORT
+              value: "30001"
+            - name: DLS_RABBITMQ_SSL_PORT
+              value: "5671"
+            - name: DLS_VA_SERVICE_PORT
+              value: "8085"
+            - name: CPU_CORE_LIMIT
+              value: "4"
+          image: docker.io/niteshmehra/nvaie:appliance
+          imagePullPolicy: IfNotPresent
+          name: nls-si-0
+          ports:
+            - containerPort: 9080
+              hostPort: 9080
+            - containerPort: 9443
+              hostPort: 9443
+            - containerPort: 5671
+              hostPort: 5671
+            - containerPort: 8085
+              hostPort: 8085
+            - containerPort: 8081
+              hostPort: 8081
+            - containerPort: 8082
+              hostPort: 8082
+            - containerPort: 8083
+              hostPort: 8083
+            - containerPort: 8084
+              hostPort: 8084
+            - containerPort: 4369
+              hostPort: 4369
+          resources:
+            limits:
+              cpu: 4.0
+              memory: "8192Mi"
+            requests:
+              cpu: 4.0
+              memory: "8192Mi"
+          volumeMounts:
+            - mountPath: /etc/dls/network
+              name: configurations
+            - mountPath: /bitnami/rabbitmq/mnesia
+              name: rabbitmq-data
+            - mountPath: /var/log
+              name: logs
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              add:
+                - NET_BIND_SERVICE
+              drop:
+                - ALL
+            procMount: Default
+            runAsUser: 65532
+      restartPolicy: Always
+      volumes:
+        - name: configurations
+          persistentVolumeClaim:
+            claimName: configurations
+        - name: rabbitmq-data
+          persistentVolumeClaim:
+            claimName: rabbitmq-data
+        - name: logs
+          persistentVolumeClaim:
+            claimName: logs
+status: {}
