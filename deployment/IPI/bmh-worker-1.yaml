@@ -44,7 +44,7 @@ data:
 apiVersion: metal3.io/v1alpha1
 kind: BareMetalHost
 metadata:
-  name: ipi-ans-8023ad-w1
+  name: ipi-w1
   namespace: openshift-machine-api
 spec:
   online: True
