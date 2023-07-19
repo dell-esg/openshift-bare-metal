@@ -25,7 +25,7 @@ platform:
   baremetal:
     apiVIP: 192.168.32.80
     ingressVIP: 192.168.32.81
-pullSecret: '{"auths":{"ipi-prov.dcws.lab:8443":{"auth":"aW5pdDpwTFF1NjN6WUVSMThYOTdHMlxxx","email":"nitesh_mehra@dell.com"},"cloud.openshift.com":{"auth":"b3Blbxxxxxx.com"}}}'
+pullSecret: '{"auths":{"ipi-prov.dcws.lab:8443":{"auth":"aW5pdDpwTFF1NjN6WUVSMThYOTdHM....","email":"nitesh_mehra@dell.com"},"cloud.openshift.com":{"auth":"b3Blb........."}}}'
 sshKey: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMSK2+NjOg11nWUCEBFrrlce1WUhHGiB/acRathL5W80 kni@ipi-prov.dcws.lab'
 imageContentSources:
 - mirrors:
