@@ -1,0 +1,21 @@
+all:
+  children:
+    primary:
+      hosts: hypershift.dcws.lab
+  vars:
+    api_ip: 192.168.32.224
+    cluster: ocp-ai
+    cluster_install: 3 node
+    control_nodes:
+    - ip: 192.168.32.69
+      name: etcd0
+    - ip: 192.168.32.62
+      name: etcd1
+    - ip: 192.168.32.63
+      name: etcd2
+    default_zone_file: /var/named/ocp-ai.zones
+    dhcp: unmanaged
+    dns_forwarder: 10.8.8.8
+    install_type: AI
+    num_of_control_nodes: 3
+    wildcard_ip: 192.168.32.225
