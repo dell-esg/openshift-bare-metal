@@ -10,7 +10,7 @@ spec:
   pullSecretRef:
     name: "assisted-deployment-pull-secret"
   clusterImageSetNameRef: "img4.12.17-x86-64-appsub"
-  sshPublicKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDevbhga2fEsDW4eRDxnLHdkyjxmlG78Stz46OvXTF/SRFJdMz1tBSHDBngtLJRrDn3DyIOrYzewo5e0UQvUWpSkidDPDZAA13QhOM5dEDJ4rFz6Yf3BMEewnbJMWwfChZQpJrKlz5JN68/y7699J3CGcfmP3jkrQs/MELYeDL38ozqdywRMBfJsPIu/mSCYIjrj3efAK/JrZb2/bNiC9S5Ip+drmoKOUXON4ACptZEvwe2h8n31anetMcRY3jE6ZtfW6grhFDXP6GtbfGbAvfzZWhtwETppqdMyM0Z/I9AMAc0nGLfwrdoMF6ErkFk9E36eKafaifQU8loySp7Hgxg5L6KSTac49ndVRFzOMPwdv+f5ackrecIxRxSl2Sa6GgUCyXkcf20pWXN+PLVqJHPA0srSFWZRv6kdkY/1BeUAvrUa7TXnP9nG5upNInHOlWPsmFofChOX4yz6RXUXubZ7J/Jh1ycNLMdZ94yVjzj2e2FHH1IKGzkCbNXGJ0coQE= ansible@ipi-65.dcws.lab"
+  sshPublicKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDexxxxxxxx ansible@ipi-65.dcws.lab"
   # Optionally; This can be used to configure desired BIOS setting on all hosts in this site:
   #biosConfigRef:
   #  filePath: "example-hw.profile"
