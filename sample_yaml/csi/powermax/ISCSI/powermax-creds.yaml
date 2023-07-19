@@ -1,8 +1,8 @@
 ---
 apiVersion: v1
 data:
-  username: <username_of_unisphere>
-  password: <password_of_unisphere>
+  username: <base64 encoded username_of_unisphere>
+  password: <base64 encoded password_of_unisphere>
 kind: Secret
 metadata:
   name: powermax-creds
