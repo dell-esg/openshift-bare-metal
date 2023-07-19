@@ -1,0 +1,29 @@
+---
+apiVersion: ran.openshift.io/v1
+kind: PolicyGenTemplate
+metadata:
+  name: "example-multinode-site"
+  namespace: "ztp-site"
+spec:
+  bindingRules:
+    sites: "standard" 
+  mcp: "worker" 
+  sourceFiles:
+    - fileName: MachineConfigGeneric.yaml 
+      policyName: "config-policy"
+      metadata:
+        labels:
+          machineconfiguration.openshift.io/role: worker
+        name: 01-worker-container-runtime
+      spec:
+        config:
+          storage:
+            files:
+            - contents:
+                source: data:text/plain;charset=utf-8;base64,W2NyaW8ucnVudGltZV0KcGlkc19saW1pdCA9IDE2Mzg0IApbY3Jpby5pbWFnZV0KaW5zZWN1cmVfcmVnaXN0cmllcyA9IFsiMC4wLjAuMC8wIl0=
+              mode: 420
+              overwrite: true
+              path: /etc/crio/crio.conf.d/00-default
+              user:
+                name: root
+      

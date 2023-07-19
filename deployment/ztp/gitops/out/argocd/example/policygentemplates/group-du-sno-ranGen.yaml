@@ -1,0 +1,186 @@
+---
+apiVersion: ran.openshift.io/v1
+kind: PolicyGenTemplate
+metadata:
+  # The name will be used to generate the placementBinding and placementRule names as {name}-placementBinding and {name}-placementRule
+  name: "group-du-sno"
+  namespace: "ztp-group"
+spec:
+  bindingRules:
+    # These policies will correspond to all clusters with this label:
+    group-du-sno: ""
+  mcp: "master"
+  sourceFiles:
+    - fileName: ConsoleOperatorDisable.yaml
+      policyName: "config-policy"
+    # Set ClusterLogForwarder & ClusterLogging as example might be better to create another policyTemp-Group
+    - fileName: ClusterLogForwarder.yaml
+      policyName: "config-policy"
+      spec:
+        outputs:
+          - type: "kafka"
+            name: kafka-open
+            # below url is an example
+            url: tcp://10.46.55.190:9092/test
+        pipelines:
+          - name: audit-logs
+            inputRefs:
+             - audit
+            outputRefs:
+             - kafka-open
+          - name: infrastructure-logs
+            inputRefs:
+             - infrastructure
+            outputRefs:
+             - kafka-open
+    - fileName: ClusterLogging.yaml
+      policyName: "config-policy"
+      spec:
+        curation:
+          curator:
+            schedule: "30 3 * * *"
+        collection:
+          logs:
+            type: "fluentd"
+            fluentd: {}
+    # The setting below overrides the default "worker" selector predefined in
+    # the source-crs. The change is recommended on SNOs configured with PTP 
+    # event notification for forward compatibility with possible SNO expansion.
+    # When the default setting is left intact, then in case of an SNO 
+    # expansion with one or more workers, PTP operator
+    # would not create linuxptp-daemon containers on the worker node(s). Any
+    # attempt to change the daemonsetNodeSelector will result in ptp daemon
+    # restart and time synchronization loss.
+    # After complying with the policy, complianceType can be set to a safer "musthave"
+    # - fileName: PtpOperatorConfigForEvent.yaml
+    #   policyName: "config-policy"
+    #   complianceType: mustonlyhave
+    #   spec:
+    #     daemonNodeSelector:
+    #       node-role.kubernetes.io/worker: ""
+    - fileName: PtpConfigSlave.yaml   # Change to PtpConfigSlaveCvl.yaml for ColumbiaVille NIC
+      policyName: "config-policy"
+      metadata:
+        name: "du-ptp-slave"
+      spec:
+        profile:
+        - name: "slave"
+          # This interface must match the hardware in this group
+          interface: "ens5f0"
+          ptp4lOpts: "-2 -s --summary_interval -4"
+          phc2sysOpts: "-a -r -n 24"
+    - fileName: SriovOperatorConfig.yaml
+      policyName: "config-policy"
+      # For existing clusters with node selector set as "master", 
+      # change the complianceType to "mustonlyhave".
+      # After complying with the policy, the complianceType can 
+      # be reverted to "musthave"
+      complianceType: musthave
+      spec:
+        configDaemonNodeSelector:
+          node-role.kubernetes.io/worker: ""
+        disableDrain: true
+    - fileName: StorageLV.yaml
+      policyName: "config-policy"
+      spec:
+        storageClassDevices:
+          - storageClassName: "example-storage-class-1"
+            volumeMode: Filesystem
+            fsType: xfs
+            devicePaths:
+              - /dev/sdb1
+          - storageClassName: "example-storage-class-2"
+            volumeMode: Filesystem
+            fsType: xfs
+            devicePaths:
+              - /dev/sdb2
+    - fileName: DisableSnoNetworkDiag.yaml
+      policyName: "config-policy"
+    - fileName: PerformanceProfile.yaml
+      policyName: "config-policy"
+      spec:
+        cpu:
+          # These must be tailored for the specific hardware platform
+          isolated: "2-19,22-39"
+          reserved: "0-1,20-21"
+        hugepages:
+          defaultHugepagesSize: 1G
+          pages:
+            - size: 1G
+              count: 32
+    - fileName: TunedPerformancePatch.yaml
+      policyName: "config-policy"
+      spec:
+        profile:
+          - name: performance-patch
+            # The cmdline_crash CPU set must match the 'isolated' set in the PerformanceProfile above
+            data: |
+              [main]
+              summary=Configuration changes profile inherited from performance created tuned
+              include=openshift-node-performance-openshift-node-performance-profile
+              [bootloader]
+              cmdline_crash=nohz_full=2-19,22-39
+              [sysctl]
+              kernel.timer_migration=1
+              [scheduler]
+              group.ice-ptp=0:f:10:*:ice-ptp.*
+              [service]
+              service.stalld=start,enable
+              service.chronyd=stop,disable
+#    --- sources needed for image registry (check ImageRegistry.md for more details)----
+#    - fileName: StorageClass.yaml
+#      policyName: "config-policy"
+#      metadata:
+#        name: image-registry-sc
+#    - fileName: StoragePVC.yaml
+#      policyName: "config-policy"
+#      metadata:
+#        name: image-registry-pvc
+#        namespace: openshift-image-registry
+#      spec:
+#        accessModes:
+#          - ReadWriteMany
+#        resources:
+#          requests:
+#            storage: 100Gi
+#        storageClassName: image-registry-sc
+#        volumeMode: Filesystem
+#    - fileName: ImageRegistryPV.yaml  # this is assuming that mount_point is set to `/var/imageregistry` in SiteConfig
+                                       # using StorageClass `image-registry-sc` (see the first sc-file)
+#      policyName: "config-policy"
+#    - fileName: ImageRegistryConfig.yaml
+#      policyName: "config-policy"
+#      spec:
+#        storage:
+#          pvc:
+#            claim: "image-registry-pvc"
+#     ---- sources needed for image registry ends here ----
+
+#    --- sources needed for updating CRI-O workload-partitioning ----
+#      more info here: on the base64 content https://docs.openshift.com/container-platform/4.11/scalability_and_performance/sno-du-enabling-workload-partitioning-on-single-node-openshift.html
+#    - fileName: MachineConfigGeneric.yaml
+#      policyName: "config-policy"
+#      complianceType: mustonlyhave # This is to update array entry as opposed to appending a new entry.
+#      metadata:
+#        name: 02-master-workload-partitioning
+#      spec:
+#        config:
+#          storage:
+#            files:
+#              - contents:
+#                  # crio cpuset config goes below. This value needs to updated and matched PerformanceProfile. Check the link for more info on the content.
+#                  source: data:text/plain;charset=utf-8;base64,W2NyaW8ucnVudGltZS53b3JrbG9hZHMubWFuYWdlbWVudF0KYWN0aXZhdGlvbl9hbm5vdGF0aW9uID0gInRhcmdldC53b3JrbG9hZC5vcGVuc2hpZnQuaW8vbWFuYWdlbWVudCIKYW5ub3RhdGlvbl9wcmVmaXggPSAicmVzb3VyY2VzLndvcmtsb2FkLm9wZW5zaGlmdC5pbyIKcmVzb3VyY2VzID0geyAiY3B1c2hhcmVzIiA9IDAsICJjcHVzZXQiID0gIjAtMSwyLTMiIH0=
+#                mode: 420
+#                overwrite: true
+#                path: /etc/crio/crio.conf.d/01-workload-partitioning
+#                user:
+#                  name: root
+#              - contents:
+#                  # openshift cpuset config goes below. This value needs to be updated and matched with crio cpuset (array entry above this). Check the link for more info on the content.
+#                  source: data:text/plain;charset=utf-8;base64,ewogICJtYW5hZ2VtZW50IjogewogICAgImNwdXNldCI6ICIwLTEsNTItNTMiCiAgfQp9Cg==
+#                mode: 420
+#                overwrite: true
+#                path: /etc/kubernetes/openshift-workload-pinning
+#                user:
+#                  name: root
+#     ---- sources needed for updating CRI-O workload-partitioning ends here ----

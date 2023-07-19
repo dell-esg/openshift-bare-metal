@@ -1,0 +1,10 @@
+generators:
+        #- group-du-standard-ranGen.yaml
+# This group validator policy is for all standard cluster deployments:
+#- group-du-standard-validator-ranGen.yaml
+# These are examples that should be replicated for every individual site:
+#- example-sno-site.yaml
+#- example-multinode-site.yaml
+
+resources:
+        #- ns.yaml
