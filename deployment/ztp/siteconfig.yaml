@@ -10,7 +10,7 @@ spec:
   pullSecretRef:
     name: "assisted-deployment-pull-secret"
   clusterImageSetNameRef: "img4.12.17-x86-64-appsub"
-  sshPublicKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDexxxxxxxx ansible@ipi-65.dcws.lab"
+  sshPublicKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQD....... ansible@ipi-65.dcws.lab"
   # Optionally; This can be used to configure desired BIOS setting on all hosts in this site:
   #biosConfigRef:
   #  filePath: "example-hw.profile"
