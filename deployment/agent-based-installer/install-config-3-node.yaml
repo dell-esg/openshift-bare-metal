@@ -25,7 +25,7 @@ platform:
   baremetal:
     apiVIP: 192.168.32.80
     ingressVIP: 192.168.32.81
-pullSecret: '{"auths":{"ipi-prov.dcws.lab:8443":{"auth":"aW5pdDpwTFF1NjN6WUVSMThYOTdHMlZ0MHdqaGFTVWs1TTRQcQ==","email":"nitesh_mehra@dell.com"},"cloud.openshift.com":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfNmZiZjM2ZWEyNTUxNDhmMTllODk.........................1Qg==","email":"nitesh_mehra@dell.com"},"quay.io":{"auth":"b3BlbnNoaWZ0LXJlb,..................GV1Qg==","email":"nitesh_mehra@dell.com"},"registry.connect.redhat.com":{"auth":"fHVoYy1wb29sLTM5OWVlqdzA4UTVzcw==","email":"nitesh_mehra@dell.com"}}}'
+pullSecret: '{"auths":{"ipi-prov.dcws.lab:8443":{"auth":"aW5pdDpwTFF1NjN6WUVSMThYOTdHMlxxx","email":"nitesh_mehra@dell.com"},"cloud.openshift.com":{"auth":"b3Blbxxxxxx.com"}}}'
 sshKey: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMSK2+NjOg11nWUCEBFrrlce1WUhHGiB/acRathL5W80 kni@ipi-prov.dcws.lab'
 imageContentSources:
 - mirrors:
