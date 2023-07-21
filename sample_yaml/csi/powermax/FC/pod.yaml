@@ -25,7 +25,7 @@ spec:
         name: confmap
     command: ["/bin/bash", "-c", "cp /tmp/keys /mnt/keys && sleep 2000000000"]
   nodeSelector:
-    kubernetes.io/hostname: ipi-ans-8023ad-m1.dcws.lab
+    kubernetes.io/hostname: ipi-w1.dcws.lab
   volumes:
     - name: fc
       persistentVolumeClaim:
