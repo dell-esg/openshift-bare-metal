@@ -1,0 +1,26 @@
+sourceClusterID: ""
+targetClusterID: ""
+name: "isilon-replication"
+driver: "isilon"
+reclaimPolicy: "Delete"
+replicationPrefix: "replication.storage.dell.com"
+remoteRetentionPolicy:
+  RG: "Retain"
+  PV: "Retain"
+parameters:
+  rpo: "Five_Minutes"
+  ignoreNamespaces: "false"
+  volumeGroupPrefix: "csi"
+  isiPath: "/ifs/data/csi"
+  clusterName:
+    source: ""                     # Cluster name of source storage array
+    target: ""                     # Cluster name of target storage array
+  rootClientEnabled:
+    source: "false"
+    target: "false"
+  accessZone:
+    source: "System"
+    target: "System"
+  #azServiceIP:
+    #source: "192.168.1.1"
+    #target: "192.168.1.2"
