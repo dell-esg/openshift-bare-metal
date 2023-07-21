@@ -1,15 +1,14 @@
-﻿# Placeholder UPI 4.12
+﻿#UPI 4.12
 
 # *Preparing the CSAH node*
 
 **Note:** If needed, an additional CSAH node can be added to ensure redundancy.
-
--   Install RHEL 8.x on the CSAH node.
--   After the installation is complete, perform the following tasks in the console as user root:
-1. Set the hostname to reflect the naming standards:
+Install RHEL 8.x on the CSAH node.
+After the installation is complete, perform the following tasks in the console as user root:
+Set the hostname to reflect the naming standards:
 `[root@localhost~]# hostnamectl set-hostname <hostname FQDN>`
 
-2. Create a bridge interface and a bond interface with bridge as the “master” (or primary) interface. Add “slaves” (secondary interfaces) to the bond and then assign an IP address to the bridge interface, as shown in the following example.
+Create a bridge interface and a bond interface with bridge as the “master” (or primary) interface. Add “slaves” (secondary interfaces) to the bond and then assign an IP address to the bridge interface, as shown in the following example.
 
 	**Note**: The assigned IP address must be able to reach the Internet, and the DNS must be able to resolve [subscription.rhsm.redhat.com](http://subscription.rhsm.redhat.com/). Ensure that the interface names and IP addresses reflect the environment.
 
