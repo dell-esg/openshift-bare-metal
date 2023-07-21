@@ -38,8 +38,8 @@ metadata:
   namespace: openshift-machine-api
 type: Opaque
 data:
-  username: cm9vdA==
-  password: Y2Fsdmlu
+  username: cm9....
+  password: Y2F.....
 ---
 apiVersion: metal3.io/v1alpha1
 kind: BareMetalHost
