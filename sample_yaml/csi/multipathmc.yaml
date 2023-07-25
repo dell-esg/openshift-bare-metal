@@ -1,7 +1,7 @@
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
 metadata:
-  name: compute-multipath-conf-default
+  name: 99-compute-multipath-conf-default
   labels:
     machineconfiguration.openshift.io/role: worker
 spec:
