@@ -60,7 +60,7 @@ Update password for user using below commands.
 
 	`[ansible@csah-pri ~]$ ssh-copy-id <FQDN>`
 
-10. Download the Ansible playbooks from GitHub and check out branch ecws**_**ocp410 by running:
+10. Download the Ansible playbooks from GitHub and check out branch ecws**_**ocp412 by running:
 
 	`[ansible@csah-pri ~]$ git clone https://github.com/dell-esg/openshift-bare-metal.git`
 
