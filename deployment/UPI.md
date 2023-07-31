@@ -4,8 +4,11 @@
 
 **Note:** If needed, an additional CSAH node can be added to ensure redundancy.
 Install RHEL 8.x on the CSAH node.
+
 After the installation is complete, perform the following tasks in the console as user root:
+
 Set the hostname to reflect the naming standards:
+
 `[root@localhost~]# hostnamectl set-hostname <hostname FQDN>`
 
 Create a bridge interface and a bond interface with bridge as the “master” (or primary) interface. Add “slaves” (secondary interfaces) to the bond and then assign an IP address to the bridge interface, as shown in the following example.
@@ -41,26 +44,33 @@ Create a bridge interface and a bond interface with bridge as the “master” (
 **Note**: Do not use the username core. User core is part of the OpenShift Container Platform cluster configuration and is a predefined user in CoreOS. In the CSAH (primary/secondary), user core is created using Ansible playbooks.
 Update password for user using below commands.
 `[root@csah-pri ~]# useradd ansible`
+
 `[root@csah-pri ~]# passwd ansible`
 
-5. As user root, provide sudoers permissions to user ansible by creating anisble file with below content under /etc/sudoers.d:
+6. As user root, provide sudoers permissions to user ansible by creating anisble file with below content under /etc/sudoers.d:
 
 	`[root@csah-pri sudoers.d]# cat /etc/sudoers.d/ansible`
+
 	`ansible ALL=(ALL) NOPASSWD: ALL`
 
-6. As user ansible, set up password-less access to the CSAH FQDN:
+8. As user ansible, set up password-less access to the CSAH FQDN:
 	`[ansible@csah-pri ~]$ ssh-keygen (press enter and go by defaults for the next set of questions)`
+
 	After ssh keys are generated, copy the FQDN of CSAH node.
+
 	`[ansible@csah-pri ~]$ ssh-copy-id <FQDN>`
 
-7. Download the Ansible playbooks from GitHub and check out branch ecws**_**ocp410 by running:
+10. Download the Ansible playbooks from GitHub and check out branch ecws**_**ocp410 by running:
 
 	`[ansible@csah-pri ~]$ git clone https://github.com/dell-esg/openshift-bare-metal.git`
+
 	`[ansible@csah-pri ~]$ cd <git clone dir>/openshift-bare-metal`
-	`[ansible@csah-pri openshift-bare-metal]$ git checkout origin/ecws_ocp410`
+
+	`[ansible@csah-pri openshift-bare-metal]$ git checkout origin/ecws_ocp412`
+
 **Note**: If there is no secondary CSAH node, ignore below steps.
 
-8. To create a secondary CSAH node, repeat steps above. This step is necessary to create a secondary CSAH.
+12. To create a secondary CSAH node, repeat steps above. This step is necessary to create a secondary CSAH.
 
 **Note**: Install Red Hat Enterprise Linux 8 in a CSAH secondary node manually and repeat above steps with necessary modifications.
 
