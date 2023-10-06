@@ -7,4 +7,3 @@ spec:
   volumeSnapshotClassName: csi-hostpath-snap-isilon
   source:
     persistentVolumeClaimName: dynamic-nfs-isilon-pvc
-

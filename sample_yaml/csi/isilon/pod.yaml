@@ -15,7 +15,7 @@ spec:
         name: dy-nfs-isilon
     command: ["/bin/bash", "-c", "sleep 2000000000"]
   nodeSelector:
-    kubernetes.io/hostname: ipi-w1.dcws.lab
+    kubernetes.io/hostname: etcd2.dcws.lab
   volumes:
     - name: dy-nfs-isilon
       persistentVolumeClaim:

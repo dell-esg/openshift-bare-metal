@@ -1,11 +1,11 @@
 arrays:
-   - endpoint: ""     # full URL path to the PowerStore API
-     globalID: ""                        # unique id of the PowerStore array
-     username: ""                          # username for connecting to API
-     password: ""                      # password for connecting to API
+   - endpoint: "https://192.168.30.100/api/rest"     # full URL path to the PowerStore API
+     globalID: "PS2322ad0f1d02"                        # unique id of the PowerStore array
+     username: "admin"                          # username for connecting to API
+     password: "Dell@123"                      # password for connecting to API
      skipCertificateValidation: true           # indicates if client side validation of (management)server's certificate can be skipped
      isDefault: true                           # treat current array as a default (would be used by storage classes without arrayID parameter)
-     blockProtocol: ""                     # what SCSI transport protocol use on node side (FC, ISCSI, None, or auto)
-     nasName: ""                        # what NAS should be used for NFS volumes
+     blockProtocol: "FC"                     # what SCSI transport protocol use on node side (FC, ISCSI, None, or auto)
+     nasName: "nas-test"                        # what NAS should be used for NFS volumes
      nfsAcls: "0777"                           # (Optional) defines permissions - POSIX mode bits or NFSv4 ACLs, to be set on NFS target mount directory.
                                                # NFSv4 ACls are supported for NFSv4 shares on NFSv4 enabled NAS servers only. POSIX ACLs are not supported and only POSIX mode bits are supported for NFSv3 shares.

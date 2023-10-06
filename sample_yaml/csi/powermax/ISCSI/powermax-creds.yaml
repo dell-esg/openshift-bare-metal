@@ -1,12 +1,8 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: powermax
 ---
 apiVersion: v1
 data:
-  username: <base64 encoded username_of_unisphere>
-  password: <base64 encoded password_of_unisphere>
+  username: c21j
+  password: c21j
 kind: Secret
 metadata:
   name: powermax-creds

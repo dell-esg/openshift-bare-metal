@@ -6,7 +6,7 @@ metadata:
 parameters:
   csi.storage.k8s.io/fstype: xfs
   SRP: "SRP_1"
-  SYMID: "<Storage_Array_ID>"
+  SYMID: "000297901797"
   ServiceLevel: "Diamond"
   ApplicationPrefix: "Test"
 provisioner: csi-powermax.dellemc.com

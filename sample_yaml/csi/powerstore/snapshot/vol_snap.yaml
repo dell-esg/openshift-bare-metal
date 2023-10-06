@@ -5,4 +5,4 @@ metadata:
 spec:
   volumeSnapshotClassName: powerstore-snap-class
   source:
-    persistentVolumeClaimName: powerstore-pvc-iscsi
+    persistentVolumeClaimName: powerstore-nfs-pvc
