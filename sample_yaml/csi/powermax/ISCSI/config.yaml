@@ -21,11 +21,11 @@ logLevel: debug
 logFormat: text
 standAloneConfig:
   storageArrays:
-    - storageArrayId: "000297901797"
-      primaryURL: https://172.14.0.49:8443
+    - storageArrayId: ""
+      primaryURL: <IPAddress:port>
       proxyCredentialSecrets:
         - powermax-creds
   managementServers:
-    - url: https://172.14.0.49:8443
+    - url: <IPAddress:port>
       arrayCredentialSecret: powermax-creds
       skipCertificateValidation: true
