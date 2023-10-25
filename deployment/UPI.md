@@ -2,9 +2,8 @@
 
 # Preparing the CSAH node
 
-**Note**: If needed, an additional CSAH node can be added to ensure redundancy.
+Install RHEL 8.6 on the CSAH node. If needed, an additional CSAH node can be added to ensure redundancy.
 
-Install RHEL 8.x on the CSAH node.
 After the installation is complete, perform the following tasks in the console as user root.
 
 Set the hostname to reflect the naming standards:
@@ -13,7 +12,7 @@ Set the hostname to reflect the naming standards:
 
 Create a bridge interface and a bond interface with bridge as the “master” (or primary) interface. Add “slaves” (secondary interfaces) to the bond and then assign an IP address to the bridge interface, as shown in the following example.
 
-**Note**: The assigned IP address must be able to reach the Internet, and the DNS must be able to resolve [subscription.rhsm.redhat.com](http://subscription.rhsm.redhat.com/). Ensure that the interface names and IP addresses reflect the environment.
+**Note**: The assigned IP address must be able to reach the Internet, and the DNS must be able to resolve [subscription.rhsm.redhat.com](http://subscription.rhsm.redhat.com/). 
 
 #Create bridge interface
 
@@ -67,13 +66,15 @@ As user root, provide sudoers permissions to user ansible by creating anisble fi
 
 As user ansible, set up password-less access to the CSAH FQDN:
 
-`[ansible@csah-pri ~]$ ssh-keygen (press enter and go by defaults for the next set of questions)`
+`[ansible@csah-pri ~]$ ssh-keygen`
+
+Press enter and go by defaults for the next set of questions
 
 After ssh keys are generated, copy the FQDN of CSAH node.
 
 `[ansible@csah-pri ~]$ ssh-copy-id <FQDN>`
 
-Download the Ansible playbooks from GitHub and check out branch ecws**_**ocp412 by running:
+Download the Ansible playbooks from GitHub and check out branch ecws_ocp412 by running:
 
 `[ansible@csah-pri ~]$ git clone https://github.com/dell-esg/openshift-bare-metal.git`
 
@@ -81,11 +82,7 @@ Download the Ansible playbooks from GitHub and check out branch ecws**_**ocp412 
 
 `[ansible@csah-pri openshift-bare-metal]$ git checkout origin/ecws_ocp412`
 
-**Note**: If there is no secondary CSAH node, ignore below steps.
-
-To create a secondary CSAH node, repeat steps above. This step is necessary to create a secondary CSAH.
-
-**Note**: Install Red Hat Enterprise Linux 8 in a CSAH secondary node manually and repeat above steps with necessary modifications.
+**Note**: To create a secondary CSAH node, install Red Hat Enterprise Linux 8 in a CSAH secondary node manually and repeat above steps with necessary modifications.
 
 As user root, add an entry for a secondary CSAH node in the primary CSAH node /etc/hosts file by running:
 
@@ -120,9 +117,9 @@ Run the program to generate inventory file.
 4.  --nodes nodes inventory file
 5.  --debug specify debug logs
 
-**Note:** In the argument that is passed, --release 4.12 specifies the OpenShift version and is the only value that the script accepts. The nodes_upi.yaml file that is updated in the preceding step includes information about the bootstrap, control-plane, and compute nodes.
+**Note:** In the argument that is passed, --release 4.12 specifies the OpenShift version and is the only value that the script accepts. 
 
-Specify the FQDN of the secondary management node and press Enter. The following output is displayed:
+The following output is displayed. If there is a secondary management node, enter Yes. The IP address that you specify is configured for Keepalived. Ensure that this IP address is not in use. If there is no backup management node, enter No.
 
 `Is there a backup management node [yes/No]: yes`
 
@@ -130,17 +127,9 @@ Specify the FQDN of the secondary management node and press Enter. The following
 
 `Enter the IP address of VIP used for HAProxy:  _<IP>_`
 
-Enter the appropriate response as follows:
-
-If there is a secondary management node, enter Yes. The IP address that you specify is configured for Keepalived. Ensure that this IP address is not in use.
-
-If there is no backup management node, enter No.
-
-A menu of numbered tasks is displayed.
-
 **Inventory file generation inputs menu**
 
-Select each task number in turn and provide the requested input. If you are unsure about what value to enter for an option, accept the default value.
+Select each task number and provide the requested input. If you are unsure about what value to enter for an option, accept the default value.
 
 **Note:** Run the program with all the tasks to ensure that all the necessary keys that are used in the Ansible playbooks are generated.
 
@@ -152,23 +141,21 @@ Option 1 downloads OpenShift Container Platform 4.12 software from Red Hat into 
 
 For option 2, enter the cluster installation options by selecting 3 node or 5+ node.
 
-OpenShift 4.12 supports the 3 node and 5+ node options. If you select the 3 node option, you are not prompted for information about compute nodes. The next step shows the steps to follow if you select a 5+ node cluster installation.
+OpenShift 4.12 supports the 3 node and 5+ node options. If you select the 3 node option, you are not prompted for information about compute nodes. 
 
 Specify the bonding details of the control-plane nodes in the cluster and provide additional details as appropriate.
 
-Select the interface to be used for DHCP and PXE and select two interfaces to be used for bonding. If only one interface is available, choose NO.
+Select the interface to be used for DHCP and PXE and select two interfaces to be used for bonding. If only one interface is available, choose No as an option for creating bonds.
 
 **Note**: In this document, the interface that DHCP and the active bond interface use are the same.
 
-Repeat the preceding step for the remaining control-plane nodes.
+Repeat the steps for the remaining control-plane nodes.
 
-After you have entered the control-plane node information, provide the compute node information by entering the default number of compute nodes.
-
-**Note:** This step is not necessary if you selected 3 node.
+After you have entered the control-plane node information, provide the compute node information if you have chosen 5+ node cluster.
 
 For this release, all compute nodes are installed with RHCOS 4.12.
 
-Provide information relating to bonding and the interfaces that bonding uses for each compute node
+Provide information related to bonding and the interfaces that bonding uses for each compute node.
 
 For option 3, provide details about the disks that are used in control-plane and compute nodes:
 
@@ -178,7 +165,7 @@ Ensure disknames are available. Otherwise OpenShift install fails
 
 For option 4, provide the cluster name and the DNS forwarder and zone file name, if required. 
 
-**Note:** If DNS Forwarder is not required, enter No**.**
+**Note:** If DNS Forwarder is not required, enter No.
 
 For option 5, provide details for the HTTP web server setup and directory names that are created under /var/www/html:
 
@@ -196,15 +183,11 @@ Select option 8 to perform a YAML dump of all the displayed contents into the ge
 
 Download the pullsecret file from your [Red Hat](https://cloud.redhat.com/openshift/install/metal/user-provisioned) account (Red Hat account credentials are required) and copy the file contents into the pullsecret file in the directory that contains the OpenShift Container Platform 4.12 software bits.
 
-**Note**: This guide uses the /home/ansible/files directory for the software bits.
-
 **Note**: Copy the generated_inventory and ansible.yaml file from the _<git clone dir>_/python/ directory to _<git clone dir>_/ansible directory. Ensure that the pull_secret_file is copied under /home/ansible/files.
 
-As user ansible, run the playbooks:
+As ansible user, run the playbooks:
 
-`[ansible@csah-pri ansible] $ pwd`
-
-`/home/ansible/openshift-bare-metal/ansible`
+`[ansible@csah-pri ansible] $ cd /home/ansible/openshift-bare-metal/ansible`
 
 `[ansible@csah-pri ansible] $ ansible-playbook -i generated_inventory ansible.yaml`
 
@@ -227,26 +210,6 @@ At a high level, creating a multi-node OpenShift Container Platform cluster cons
 
 Start the cluster installation by creating a bootstrap KVM. The bootstrap KVM creates the persistent control plane that the control-plane nodes manage. The bootstrap KVM is created as a VM using a QEMU emulator in the CSAH node.
 
-Ensure that DNS is updated for the bridge interface.
-
-**Note**: This step is necessary because the Ansible playbooks configured a DNS setup in the CSAH node.
-
-`[root@csah-pri ~]# nmcli connection modify bridge-br0 ipv4.dns <IP address>`
-
-`[root@csah-pri ~]# systemctl restart NetworkManager`
-
-`[root@csah-pri ~]# cat /etc/resolv.conf`
-
-`#Generated by NetworkManager`
-`Search dcws.lab`
-`nameserver <IP address>`
-
-The DNS IP is the keepalived IP that is specified in step 4 of Preparing and running the Ansible playbooks.
-
-**Note**: If there is no secondary management node, specify the IP address that was configured for the primary CSAH node.
-
-Repeat the preceding steps for the secondary management node if needed.
-
 To use virt-install to create KVM, the Ansible playbooks generate a command and place it in the bootstrap_command file under the /home/ansible/files directory.
 
 **Note**: Configure the graphical display to ensure that the PXE menu is displayed. If no graphical menu is set, connect to the virtual console in iDRAC and run the command in step 4. Ensure that PXE is enabled through a bridge interface.
@@ -255,22 +218,17 @@ Create the bootstrap VM by running
 
 `[root@csah-pri ~] virt-install --name bootstrapkvm --ram 20480 --vcpu 8 --disk path=/home/bootstrapvm-disk.qcow2,format=qcow2,size=200 --os-variant generic --network=bridge=br0,model=virtio,mac=52:54:00:89:91:18 --pxe --boot uefi,hd,network &`
 
-**Notes:**  
-Do not change the MAC address. This address is auto-generated and added in the dhcpd.conf file by the Ansible playbooks. Adding the ampersand symbol (&) at the end ensures that the command is run in the background.  
+**Note:** Do not change the MAC address. This address is auto-generated and added in the dhcpd.conf file by the Ansible playbooks. Adding the ampersand symbol (&) at the end ensures that the command is run in the background.  
   
-Ensure that the partition that is used to save the disk is of sufficient size. This example uses /home and allocates 200G to the _qcow2_ image that is used by the bootstrap KVM. Size is a hard-coded value. Reduce the size if there is not enough space.
-
-As user core in CSAH, run ssh bootstrap to ensure that the correct IP address is assigned to bond0.
+Ensure that the partition that is used to save the disk is of sufficient size. This example uses /home and allocates 200G to the _qcow2_ image that is used by the bootstrap KVM. Size is a hard-coded value. Increase the size if there is not enough space.
 
 When the installation process is complete, KVM reboots into the hard disk.
 
-As user core in CSAH, run ssh bootstrap to ensure that the correct IP address is assigned to bond0.
-
-From the CSAH node, as user core, SSH  to the bootstrap node and verify that ports 6443 and 22623 are listening:
+As user core in CSAH, run `ssh bootstrap` to ensure that the correct IP address is assigned to bond0 and verify that ports 6443 and 22623 are listening:
 
 `[core@csah-pri ~]$ ssh bootstrap sudo ss -tulpn | grep -E'6443|22623|2379'`
 
-Allow approximately 15 minutes for the ports to show up as “listening.” If the ports are not listening after 15 minutes, return to step 4 to reinstall the bootstrap.
+Allow approximately 15 minutes for the ports to show up as “listening.” If the ports are not listening after 15 minutes, return to step to reinstall the bootstrap.
 
 # Installing the control-plane nodes
 
@@ -288,7 +246,7 @@ To install the control-plane nodes:
 10.  After the installation is complete and before the node reboots into the PXE, ensure that the hard disk is placed above the PXE interface in the boot order:
     1.  Press **F2** to enter **System Setup**.
     2.  Select System BIOS > Boot Settings > UEFI Boot Settings > UEFI Boot Sequence.
-    3.  Select **PXE Device 1** and click  **-****.**
+    3.  Select **PXE Device 1**.
     4.  Repeat the preceding step until **PXE Device 1** is at the bottom of the boot menu.
     5.  Click **OK**, and then click **Back**.
     6.  Click **Finish** and save the changes.
@@ -316,13 +274,10 @@ Validate the status of the control-plane nodes and cluster operators:
 
 `[core@csah-pri ~]$ oc get nodes,co`
 
-**Note:** In a three-node cluster, each control plane node has an additional ROLE worker along with the master node.
+**Note:** In a three-node cluster, each control plane node has an additional ROLE worker along with the master node. In a five+ node cluster, compute nodes must be in the Ready state before the cluster operator AVAILABLE state is displayed as True.
 
-**Note**: In a five+ node cluster, compute nodes must be in the Ready state before the cluster operator AVAILABLE state is displayed as True.
+# Installing compute nodes for a 5+ node cluster
 
-# Installing compute nodes
-
-**Note:** Skip these installation instructions for a three-node cluster.
 To install the compute nodes:
 1.  Connect to the iDRAC of a compute node and open the virtual console.
 2.  In the iDRAC UI, click **Configuration** and select **BIOS Settings**.
@@ -335,7 +290,7 @@ To install the compute nodes:
 9.  Select the compute node name and let the system reboot after the installation. Before the node reboots into the PXE, ensure that the hard disk is placed above the PXE interface in the boot order:
 10.  Press **F2** to enter **System Setup**.
 11.  Select System BIOS > Boot Settings > UEFI Boot Settings > UEFI Boot Sequence.
-12.  Select **PXE Device 1** and click -.
+12.  Select **PXE Device 1**.
 13.  Repeat the preceding step until **PXE Device 1** is at the bottom of the boot menu.
 14.  Click **OK**, and then click **Back**.
 15.  Click **Finish** and save the changes.
@@ -348,6 +303,8 @@ As user core in CSAH primary node, approve the CSR to ensure that RHCOS-based co
 `[core@csah-pri ~]$ oc get csr -o name | xargs oc adm certificate approve`
 
 Verify that all compute nodes are listed and their status is READY.
+
+`oc get nodes`
 
 **Completing the cluster setup**
 
@@ -367,7 +324,7 @@ After the verification is complete, run the following command and ensure there a
 
 A bootstrap node was created as part of the deployment procedure. Now that the OpenShift Container Platform cluster is running, you can remove this node.
 
-Remove the bootstrap node entries - the names, IP addresses, and MAC addresses, along with the bootstrap_node: line:
+Remove the bootstrap node entries - the names, IP addresses, and MAC addresses, along with the bootstrap_node` key
 
 On the CSAH node, run the playbooks as user ansible:
 
@@ -392,8 +349,6 @@ You can scale up an existing OpenShift cluster by adding more compute nodes:
 
 Add a new_compute_nodes key in the nodes.yaml file. Under the new_compute_nodes key, specify values such as the hostname, IP address for ip_os, IP address for ip_idrac, and supported os.
 
-**Note:** For this release, only rhcos computes is supported.
-
 `new_compute_nodes:`
 
 `- name: compute-3`
@@ -404,32 +359,24 @@ Add a new_compute_nodes key in the nodes.yaml file. Under the new_compute_nodes 
 
   `os: rhcos`
 
-**Note**: On the CSAH node, run the commands as user ansible unless otherwise specified.
+To add the new compute nodes to the inventory file, run the Python script as ansible user:
 
-To add the new compute nodes to the inventory file, run the Python script:
-
-`[ansible@csah-pri python]$ pwd`
-
-_<git clone dir>_/python
+`[ansible@csah-pri python]$ cd_<git clone dir>_/python`
 
 `[ansible@csah-pri python]$ python3 generate_inventory_file.py --add --release 4.12 --nodes nodes_upi.yaml --id_user _<idrac user>_ --id_pass _<idrac_password>_`
 
-Enter complete path to existing inventory file: _<git clone dir>_/ansible/generated_inventory
-
-Do you want to perform bonding for 'new_compute_nodes' (y/NO): y
-
 Specify the bonding information as appropriate. An updated inventory file is created with the new compute node information added.
 
-Run the playbook, update the DNS, DHCP, and HAProxy entries, and set up PXE for the new compute node:
+`Enter complete path to existing inventory file: _<git clone dir>_/ansible/generated_inventory`
 
-**Note**: If there is no secondary CSAH node, use the ansible.yaml playbook file. The following example uses the ansible.yaml file as there are both primary and secondary CSAH nodes set up.
+`Do you want to perform bonding for 'new_compute_nodes' (y/NO): y`
+
+Run the playbook, update the DNS, DHCP, and HAProxy entries, and set up PXE for the new compute node:
 
 `[ansible@csah-pri ansible]$ pwd`
 
 /home/ansible/openshift-bare-metal/ansible
 
 `[ansible@csah-pri ansible]$ ansible-playbook -i _<updated inventory file>_ ansible.yaml`
-
-Note: In the above step there is no need to copy the generated inventory file from <git clone dir>/python to  _<git clone dir>_/ansible as the generated file in ansible directory is being updated in python script.
 
 To complete the installation, follow the steps in Installing compute nodes.
