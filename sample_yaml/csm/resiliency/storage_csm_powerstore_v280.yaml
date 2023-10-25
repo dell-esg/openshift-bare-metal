@@ -1,5 +1,3 @@
-#
-#
 # Copyright © 2023 Dell Inc. or its subsidiaries. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,20 +20,20 @@ spec:
   driver:
     csiDriverType: "powerstore"
     csiDriverSpec:
-      # fsGroupPolicy: Defines if the underlying volume supports changing ownership and permission of the volume before being mounted.
+      # fsGroupPolicy: Defines if the underlying volume supports changing owners                                                                                                 hip and permission of the volume before being mounted.
       # Allowed values: ReadWriteOnceWithFSType, File , None
       # Default value: ReadWriteOnceWithFSType
       fSGroupPolicy: "ReadWriteOnceWithFSType"
-      # storageCapacity: Helps the scheduler to schedule the pod on a node satisfying the topology constraints, only if the requested capacity is available on the storage array
+      # storageCapacity: Helps the scheduler to schedule the pod on a node satis                                                                                                 fying the topology constraints, only if the requested capacity is available on t                                                                                                 he storage array
       # Allowed values:
       #   true: enable storage capacity tracking
       #   false: disable storage capacity tracking
       storageCapacity: true
-    # Config version for CSI PowerStore v2.7.0 driver
-    configVersion: v2.7.0
-    # authSecret: This is the secret used to validate the default PowerStore secret used for installation
+    # Config version for CSI PowerStore v2.8.0 driver
+    configVersion: v2.8.0
+    # authSecret: This is the secret used to validate the default PowerStore sec                                                                                                 ret used for installation
     # Allowed values: <metadataName specified in the Manifest>-config
-    # For example: If the metadataName is set to powerstore, authSecret value should be set to powerstore-config
+    # For example: If the metadataName is set to powerstore, authSecret value sh                                                                                                 ould be set to powerstore-config
     authSecret: powerstore-config
     # Controller count
     replicas: 2
@@ -43,8 +41,8 @@ spec:
     forceUpdate: false
     forceRemoveDriver: true
     common:
-      # Image for CSI PowerStore driver v2.7.0
-      image: "dellemc/csi-powerstore:v2.7.0"
+      # Image for CSI PowerStore driver v2.8.0
+      image: "dellemc/csi-powerstore:v2.8.0"
       imagePullPolicy: IfNotPresent
       envs:
         - name: X_CSI_POWERSTORE_NODE_NAME_PREFIX
@@ -59,12 +57,12 @@ spec:
           value: debug
 
     sideCars:
-      # health monitor is disabled by default, refer to driver documentation before enabling it
+      # health monitor is disabled by default, refer to driver documentation bef                                                                                                 ore enabling it
       - name: external-health-monitor
         enabled: false
         args: ["--monitor-interval=60s"]
 
-      # Uncomment the following to configure how often external-provisioner polls the driver to detect changed capacity
+      # Uncomment the following to configure how often external-provisioner poll                                                                                                 s the driver to detect changed capacity
       # Configure only when the storageCapacity is set as "true"
       # Allowed values: 1m,2m,3m,...,10m,...,60m etc. Default value: 5m
       #- name: provisioner
@@ -73,7 +71,7 @@ spec:
     controller:
       envs:
         # X_CSI_NFS_ACLS: enables setting permissions on NFS mount directory
-        # This value will be the default value if a storage class and array config in secret
+        # This value will be the default value if a storage class and array conf                                                                                                 ig in secret
         # do not contain the NFS ACL (nfsAcls) parameter specified
         # Permissions can be specified in two formats:
         #   1) Unix mode (NFSv3)
@@ -89,7 +87,7 @@ spec:
         # nfsAcls: "0777"
         - name: X_CSI_NFS_ACLS
           value: "0777"
-        # X_CSI_HEALTH_MONITOR_ENABLED: Enable/Disable health monitor of CSI volumes from Controller plugin - volume condition.
+        # X_CSI_HEALTH_MONITOR_ENABLED: Enable/Disable health monitor of CSI vol                                                                                                 umes from Controller plugin - volume condition.
         # Install the 'external-health-monitor' sidecar accordingly.
         # Allowed values:
         #   true: enable checking of health condition of CSI volumes
@@ -97,7 +95,7 @@ spec:
         # Default value: false
         - name: X_CSI_HEALTH_MONITOR_ENABLED
           value: "false"
-        # X_CSI_POWERSTORE_EXTERNAL_ACCESS: Allows to specify additional entries for hostAccess of NFS volumes. Both single IP address and subnet are valid entries.
+        # X_CSI_POWERSTORE_EXTERNAL_ACCESS: Allows to specify additional entries                                                                                                  for hostAccess of NFS volumes. Both single IP address and subnet are valid entr                                                                                                 ies.
         # Allowed Values: x.x.x.x/xx or x.x.x.x
         # Default Value:
         - name: X_CSI_POWERSTORE_EXTERNAL_ACCESS
@@ -110,14 +108,14 @@ spec:
       # Allowed values: map of key-value pairs
       # Default value: None
       nodeSelector:
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/cont                                                                                                 rol-plane taint
       #  node-role.kubernetes.io/control-plane: ""
 
       # tolerations: Define tolerations for the controllers, if required.
       # Leave as blank to install controller on worker nodes
       # Default value: None
       tolerations:
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/cont                                                                                                 rol-plane taint
       # - key: "node-role.kubernetes.io/control-plane"
       #   operator: "Exists"
       #   effect: "NoSchedule"
@@ -127,13 +125,18 @@ spec:
         # CHAP password will be autogenerated by driver
         - name: "X_CSI_POWERSTORE_ENABLE_CHAP"
           value: "false"
-        # X_CSI_HEALTH_MONITOR_ENABLED: Enable/Disable health monitor of CSI volumes from node plugin - volume usage
+        # X_CSI_HEALTH_MONITOR_ENABLED: Enable/Disable health monitor of CSI vol                                                                                                 umes from node plugin - volume usage
         # Allowed values:
         #   true: enable checking of health condition of CSI volumes
         #   false: disable checking of health condition of CSI volumes
         # Default value: false
         - name: X_CSI_HEALTH_MONITOR_ENABLED
           value: "false"
+        # X_CSI_POWERSTORE_MAX_VOLUMES_PER_NODE: Defines the maximum PowerStore                                                                                                  volumes that can be created per node
+        # Allowed values: Any value greater than or equal to 0
+        # Default value: "0"
+        - name: X_CSI_POWERSTORE_MAX_VOLUMES_PER_NODE
+          value: "0"
 
       # nodeSelector: Define node selection constraints for node pods.
       # For the pod to be eligible to run on a node, the node must have each
@@ -142,14 +145,14 @@ spec:
       # Allowed values: map of key-value pairs
       # Default value: None
       nodeSelector:
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/cont                                                                                                 rol-plane taint
       #  node-role.kubernetes.io/control-plane: ""
 
       # tolerations: Define tolerations for the controllers, if required.
       # Leave as blank to install controller on worker nodes
       # Default value: None
       tolerations:
-      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/control-plane taint
+      # Uncomment if nodes you wish to use have the node-role.kubernetes.io/cont                                                                                                 rol-plane taint
       # - key: "node-role.kubernetes.io/control-plane"
       #   operator: "Exists"
       #   effect: "NoSchedule"
@@ -162,10 +165,10 @@ spec:
       #   false: disable Resiliency feature(do not deploy podmon sidecar)
       # Default value: false
       enabled: true
-      configVersion: v1.6.0
+      configVersion: v1.7.0
       components:
         - name: podmon-controller
-          image: dellemc/podmon:v1.6.0
+          image: dellemc/podmon:v1.7.0
           imagePullPolicy: IfNotPresent
           args:
             - "--labelvalue=csi-powerstore"
@@ -177,13 +180,13 @@ spec:
             # Below 4 args should not be modified.
             - "--csisock=unix:/var/run/csi/csi.sock"
             - "--mode=controller"
-            - "--driver-config-params=/powerstore-config-params/driver-config-params.yaml"
+            - "--driver-config-params=/powerstore-config-params/driver-config-pa                                                                                                 rams.yaml"
             - "--driverPath=csi-powerstore.dellemc.com"
         - name: podmon-node
-          image: dellemc/podmon:v1.6.0
+          image: dellemc/podmon:v1.7.0
           imagePullPolicy: IfNotPresent
           envs:
-            # podmonAPIPort: Defines the port to be used within the kubernetes cluster
+            # podmonAPIPort: Defines the port to be used within the kubernetes c                                                                                                 luster
             # Allowed values: Any valid and free port (string)
             # Default value: 8083
             - name: "X_CSI_PODMON_API_PORT"
@@ -195,7 +198,8 @@ spec:
             - "--driverPodLabelValue=dell-storage"
             - "--ignoreVolumelessPods=false"
             # Below 4 args should not be modified.
-            - "--csisock=unix:/var/lib/kubelet/plugins/csi-powerstore.dellemc.com/csi_sock"
+            - "--csisock=unix:/var/lib/kubelet/plugins/csi-powerstore.dellemc.co                                                                                                 m/csi_sock"
             - "--mode=node"
-            - "--driver-config-params=/powerstore-config-params/driver-config-params.yaml"
+            - "--driver-config-params=/powerstore-config-params/driver-config-pa                                                                                                 rams.yaml"
             - "--driverPath=csi-powerstore.dellemc.com"
+
