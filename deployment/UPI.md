@@ -101,6 +101,7 @@ As user ansible, set up passwordless access from the primary CSAH node to the se
 # *Preparing and running the Ansible playbooks*
 
 In the primary CSAH node, prepare and run the Ansible playbooks as user ansible.
+
 Update the nodes_upi.yaml file containing information about the bootstrap, control-plane, and compute nodes.
 
 **Note:** Ensure that you only modify values in the YAML file. Keys must always remain the same.
@@ -109,9 +110,9 @@ Run the program to generate inventory file.
 
 **Note**: If the iDRAC user and password are the same across all control-plane and compute nodes, run the program with the --id_user and --id_pass arguments.
 
-`ansible@csah-pri ]$ cd <git clone dir>/openshift-bare-metal/python`
+`[ansible@csah-pri ]$ cd <git clone dir>/openshift-bare-metal/python`
 
-`[ansible@csah-pri python]$ python3 generate_inventory_file.py –-run --id_user <idrac user> --id_pass <idrac password> –-nodes nodes.yaml`
+`[ansible@csah-pri python]$ python3 generate_inventory_file.py –-run --id_user <idrac user> --id_pass <idrac password> –-nodes nodes_upi.yaml`
 
 1.  --run is to build cluster from a bootstrap, master and worker nodes in the same sequence
 2.  --add is to add additional master nodes after cluster is set up
@@ -119,7 +120,7 @@ Run the program to generate inventory file.
 4.  --nodes nodes inventory file
 5.  --debug specify debug logs
 
-[**Note:** In the argument that is passed, --release 4.12 specifies the OpenShift version and is the only value that the script accepts. The nodes.yaml file that is updated in the preceding step includes information about the bootstrap, control-plane, and compute nodes.
+[**Note:** In the argument that is passed, --release 4.12 specifies the OpenShift version and is the only value that the script accepts. The nodes_upi.yaml file that is updated in the preceding step includes information about the bootstrap, control-plane, and compute nodes.
 
 Specify the FQDN of the secondary management node and press Enter. The following output is displayed:
 
