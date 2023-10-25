@@ -1,6 +1,6 @@
 ﻿UPI 4.12
 
-# *Preparing the CSAH node*
+# *_Preparing the CSAH node_*
 
 **Note**: If needed, an additional CSAH node can be added to ensure redundancy.
 
