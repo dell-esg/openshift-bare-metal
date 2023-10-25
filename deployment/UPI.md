@@ -1,6 +1,6 @@
 ﻿UPI 4.12
 
-# *_Preparing the CSAH node_*
+# Preparing the CSAH node
 
 **Note**: If needed, an additional CSAH node can be added to ensure redundancy.
 
@@ -98,7 +98,7 @@ As user ansible, set up passwordless access from the primary CSAH node to the se
 `[ansible@csah-pri ~]$ ssh-copy-id <secondary CSAH FQDN>`
 
 
-# *Preparing and running the Ansible playbooks*
+# Preparing and running the Ansible playbooks
 
 In the primary CSAH node, prepare and run the Ansible playbooks as user ansible.
 
@@ -219,7 +219,7 @@ At a high level, creating a multi-node OpenShift Container Platform cluster cons
  2. Create the control-plane nodes.
  3. Create the compute nodes.
 
-# *Creating a bootstrap KVM*
+# Creating a bootstrap KVM
 
 Start the cluster installation by creating a bootstrap KVM. The bootstrap KVM creates the persistent control plane that the control-plane nodes manage. The bootstrap KVM is created as a VM using a QEMU emulator in the CSAH node.
 
@@ -265,7 +265,7 @@ From the CSAH node, as user core, SSH  to the bootstrap node and verify that por
 
 Allow approximately 15 minutes for the ports to show up as “listening.” If the ports are not listening after 15 minutes, return to step 4 to reinstall the bootstrap.
 
-# *Installing the control-plane nodes*
+# Installing the control-plane nodes
 
 To install the control-plane nodes:
 
@@ -313,7 +313,7 @@ Validate the status of the control-plane nodes and cluster operators:
 
 **Note**: In a five+ node cluster, compute nodes must be in the Ready state before the cluster operator AVAILABLE state is displayed as True.
 
-# *Installing compute nodes*
+# Installing compute nodes
 
 **Note:** Skip these installation instructions for a three-node cluster.
 To install the compute nodes:
@@ -380,7 +380,7 @@ Delete the qcow2 image manually if necessary:
 
   
 
-# **Adding hosts to the cluster**
+# Adding hosts to the cluster
 
 You can scale up an existing OpenShift cluster by adding more compute nodes:
 
