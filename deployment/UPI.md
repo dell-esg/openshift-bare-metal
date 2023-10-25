@@ -120,7 +120,7 @@ Run the program to generate inventory file.
 4.  --nodes nodes inventory file
 5.  --debug specify debug logs
 
-[**Note:** In the argument that is passed, --release 4.12 specifies the OpenShift version and is the only value that the script accepts. The nodes_upi.yaml file that is updated in the preceding step includes information about the bootstrap, control-plane, and compute nodes.
+**Note:** In the argument that is passed, --release 4.12 specifies the OpenShift version and is the only value that the script accepts. The nodes_upi.yaml file that is updated in the preceding step includes information about the bootstrap, control-plane, and compute nodes.
 
 Specify the FQDN of the secondary management node and press Enter. The following output is displayed:
 
@@ -380,7 +380,7 @@ Delete the qcow2 image manually if necessary:
 
   
 
-**Adding hosts to the cluster**
+# **Adding hosts to the cluster**
 
 You can scale up an existing OpenShift cluster by adding more compute nodes:
 
@@ -403,9 +403,10 @@ Add a new_compute_nodes key in the nodes.yaml file. Under the new_compute_nodes 
 To add the new compute nodes to the inventory file, run the Python script:
 
 `[ansible@csah-pri python]$ pwd`
+
 _<git clone dir>_/python
 
-`[ansible@csah-pri python]$ python3 generate_inventory_file.py --add --release 4.12 --nodes nodes.yaml --id_user _<idrac user>_ --id_pass _<idrac_password>_`
+`[ansible@csah-pri python]$ python3 generate_inventory_file.py --add --release 4.12 --nodes nodes_upi.yaml --id_user _<idrac user>_ --id_pass _<idrac_password>_`
 
 Enter complete path to existing inventory file: _<git clone dir>_/ansible/generated_inventory
 
