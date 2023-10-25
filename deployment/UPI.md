@@ -171,7 +171,7 @@ For option 5, provide details for the HTTP web server setup and directory names 
 
 For option 6, provide details about the default user that is used to install the OpenShift Container Platform cluster, the service network CIDR, pod network CIDR, and any other information to be added in the install-config.yaml file.
 
-For information about the values to be specified for the pod network and the service network, see [sample install-config.yaml file for bare metal](https://docs.openshift.com/container-platform/4.10/installing/installing_bare_metal/installing-bare-metal.html#installation-bare-metal-config-yaml_installing-bare-metal). 
+For information about the values to be specified for the pod network and the service network, see [sample install-config.yaml file for bare metal](https://docs.openshift.com/container-platform/4.12/installing/installing_bare_metal/installing-bare-metal.html#installation-bare-metal-config-yaml_installing-bare-metal). 
 
 Red Hat specifies the values that are used for the Container Network Interface (CNI). Ensure that these values do not overlap with your existing network.
 
