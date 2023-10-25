@@ -198,7 +198,8 @@ Download the pullsecret file from your [Red Hat](https://cloud.redhat.com/opensh
 As user ansible, run the playbooks:
 
 `[ansible@csah-pri ansible] $ pwd`
-/home/ansible/openshift-bare-metal/ansible
+
+`/home/ansible/openshift-bare-metal/ansible`
 
 `[ansible@csah-pri ansible] $ ansible-playbook -i generated_inventory ansible.yaml`
 
@@ -245,6 +246,7 @@ To use virt-install to create KVM, the Ansible playbooks generate a command and 
 **Note**: Configure the graphical display to ensure that the PXE menu is displayed. If no graphical menu is set, connect to the virtual console in iDRAC and run the command in step 4. Ensure that PXE is enabled through a bridge interface.
 
 Create the bootstrap VM by running
+
 `[root@csah-pri ~] virt-install --name bootstrapkvm --ram 20480 --vcpu 8 --disk path=/home/bootstrapvm-disk.qcow2,format=qcow2,size=200 --os-variant generic --network=bridge=br0,model=virtio,mac=52:54:00:89:91:18 --pxe --boot uefi,hd,network &`
 
 **Notes:**  
@@ -257,6 +259,7 @@ When the installation process is complete, KVM reboots into the hard disk.
 As user core in CSAH, run ssh bootstrap to ensure that the correct IP address is assigned to bond0.
 
 From the CSAH node, as user core, SSH  to the bootstrap node and verify that ports 6443 and 22623 are listening:
+
 `[core@csah-pri ~]$ ssh bootstrap sudo ss -tulpn | grep -E'6443|22623|2379'`
 
 Allow approximately 15 minutes for the ports to show up as “listening.” If the ports are not listening after 15 minutes, return to step 4 to reinstall the bootstrap.
@@ -296,16 +299,21 @@ After three control-plane nodes are installed and running, from the CSAH node, l
 **Completing the bootstrap setup**
 
 To complete the bootstrap process:
+
 As user core, run the following command on CSAH node inside /home/core directory:
+
 `[core@csah-pri ~]$ ./openshift-install --dir=openshift wait-for bootstrap-complete --log-level debug`
 
 Validate the status of the control-plane nodes and cluster operators:
+
 `[core@csah-pri ~]$ oc get nodes,co`
 
 **Note:** In a three-node cluster, each control plane node has an additional ROLE worker along with the master node.
 
 **Note**: In a five+ node cluster, compute nodes must be in the Ready state before the cluster operator AVAILABLE state is displayed as True.
+
 # *Installing compute nodes*
+
 **Note:** Skip these installation instructions for a three-node cluster.
 To install the compute nodes:
 1.  Connect to the iDRAC of a compute node and open the virtual console.
@@ -328,6 +336,7 @@ To install the compute nodes:
 Repeat the preceding steps for the remaining compute nodes.
 
 As user core in CSAH primary node, approve the CSR to ensure that RHCOS-based compute nodes are added in the cluster.
+
 `[core@csah-pri ~]$ oc get csr -o name | xargs oc adm certificate approve`
 
 Verify that all compute nodes are listed and their status is READY.
@@ -339,9 +348,11 @@ This section uses openshift for the install_dir variable. See the inventory file
 After the bootstrap, control-plane, and compute nodes are installed, complete the cluster setup:
 
 As user core, run the following command to get cluster operators. Ensure that all the operators are set to True in the AVAILABLE column.
+
 `[core@csah-pri ~]$ oc get clusteroperators`
 
 After the verification is complete, run the following command and ensure there are no errors.
+
 `[core@csah-pri ~]$ ./openshift-install --dir=openshift wait-for install-complete --log-level debug`
 
 **Removing the bootstrap node**
@@ -351,14 +362,19 @@ A bootstrap node was created as part of the deployment procedure. Now that the O
 Remove the bootstrap node entries - the names, IP addresses, and MAC addresses, along with the bootstrap_node: line:
 
 On the CSAH node, run the playbooks as user ansible:
+
 `[ansible@csah-pri ansible]$ ansible-playbook -i generated_inventory ansible.yaml`
 
 If the bootstrap KVM is listed, delete it by running:
+
 `[ansible@csah-pri ansible]$ sudo virsh list`
+
 `[ansible@csah-pri ansible]$ sudo virsh destroy bootstrapkvm`
+
 `[ansible@csah-pri ansible]$ sudo virsh undefine --nvram bootstrapkvm`
 
 Delete the qcow2 image manually if necessary:
+
 `[ansible@csah-pri ansible]$ sudo rm -rf /path-to-file/bootstrapvm-disk.qcow2`
 
   
@@ -397,7 +413,9 @@ Run the playbook, update the DNS, DHCP, and HAProxy entries, and set up PXE for 
 **Note**: If there is no secondary CSAH node, use the ansible.yaml playbook file. The following example uses the ansible.yaml file as there are both primary and secondary CSAH nodes set up.
 
 `[ansible@csah-pri ansible]$ pwd`
+
 /home/ansible/openshift-bare-metal/ansible
+
 `[ansible@csah-pri ansible]$ ansible-playbook -i _<updated inventory file>_ ansible.yaml`
 
 Note: In the above step there is no need to copy the generated inventory file from <git clone dir>/python to  _<git clone dir>_/ansible as the generated file in ansible directory is being updated in python script.
