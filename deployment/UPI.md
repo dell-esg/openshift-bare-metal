@@ -1,11 +1,11 @@
-﻿#UPI 4.12
+﻿UPI 4.12
 
 # *Preparing the CSAH node*
 
-**Note:** If needed, an additional CSAH node can be added to ensure redundancy.
-Install RHEL 8.x on the CSAH node.
+**Note**: If needed, an additional CSAH node can be added to ensure redundancy.
 
-After the installation is complete, perform the following tasks in the console as user root:
+Install RHEL 8.x on the CSAH node.
+After the installation is complete, perform the following tasks in the console as user root.
 
 Set the hostname to reflect the naming standards:
 
@@ -13,89 +13,99 @@ Set the hostname to reflect the naming standards:
 
 Create a bridge interface and a bond interface with bridge as the “master” (or primary) interface. Add “slaves” (secondary interfaces) to the bond and then assign an IP address to the bridge interface, as shown in the following example.
 
-	**Note**: The assigned IP address must be able to reach the Internet, and the DNS must be able to resolve [subscription.rhsm.redhat.com](http://subscription.rhsm.redhat.com/). Ensure that the interface names and IP addresses reflect the environment.
+**Note**: The assigned IP address must be able to reach the Internet, and the DNS must be able to resolve [subscription.rhsm.redhat.com](http://subscription.rhsm.redhat.com/). Ensure that the interface names and IP addresses reflect the environment.
 
-		#Create bridge interface
-		nmcli connection add type bridge ifname br0 con-name bridge-br0
+#Create bridge interface
 
-		#Create bond interface with bridge bridge-br0 as master
-		nmcli connection add type bond con-name bond0 ifname bond0 bond.options "lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4" ipv4.method disabled ipv6.method ignore master bridge-br0
+`nmcli connection add type bridge ifname br0 con-name bridge-br0`
 
-		#Add slaves to bond interfaces, update the interface names in below commands. Run nmcli connection show to fetch available interfaces
-		nmcli connection add type ethernet con-name bond-slave-0  ifname <ifname> master bond0 slave-type bond
-		nmcli connection add type ethernet con-name bond-slave-1 ifname <ifname> master bond0 slave-type bond
+#Create bond interface with bridge bridge-br0 as master
 
-		#Set IP Address to bridge-br0 interface
-		nmcli connection modify bridge-br0 ipv4.method manual ipv4.addresses 192.168.32.20/24 connection.autoconnect yes ipv4.gateway 192.168.32.1  ipv4.dns 192.168.31.50 ipv4.dns-search dcws.lab
+`nmcli connection add type bond con-name bond0 ifname bond0 bond.options "lacp_rate=1,miimon=100,mode=802.3ad,xmit_hash_policy=layer3+4" ipv4.method disabled ipv6.method ignore master bridge-br0`
 
-		#Bring up bridge-br0 interface
-		nmcli connection up bridge-br0
+#Add slaves to bond interfaces, update the interface names in below commands. Run nmcli connection show to fetch available interfaces
 
-3. Enable the ansible-2.9-for-rhel-8-x86_64-rpms repository, and install the required packages:
+`nmcli connection add type ethernet con-name bond-slave-0  ifname <ifname> master bond0 slave-type bond`
 
-		[root@csah-pri ~]# subscription-manager register --username <subscription.user> --password <subscription.password> --force
-		[root@csah-pri ~]# subscription-manager attach --pool=<pool id> 
-		[root@csah-pri ~]# subscription-manager repos --enable=ansible-2.9-for-rhel-8-x86_64-rpms
+`nmcli connection add type ethernet con-name bond-slave-1 ifname <ifname> master bond0 slave-type bond`
+
+#Set IP Address to bridge-br0 interface
+
+`nmcli connection modify bridge-br0 ipv4.method manual ipv4.addresses 192.168.32.20/24 connection.autoconnect yes ipv4.gateway 192.168.32.1  ipv4.dns 192.168.31.50 ipv4.dns-search dcws.lab`
+
+#Bring up bridge-br0 interface
+
+`nmcli connection up bridge-br0`
+
+Enable the ansible-2.9-for-rhel-8-x86_64-rpms repository, and install the required packages:
+
+`subscription-manager register --username <subscription.user> --password <subscription.password> --force`
+
+`subscription-manager attach --pool=<pool id> `
+
+`subscription-manager repos --enable=ansible-2.9-for-rhel-8-x86_64-rpms`
 		
-	Install the following Red Hat Package Manager (RPMs):
-`[root@csah-pri ~]# yum install -y jq ansible python3-netaddr git`
+Install the following Red Hat Package Manager (RPMs):
 
-4. Create a user to run the playbooks.
+`yum install -y jq ansible python3-netaddr git`
+
+Create a user to run the playbooks.
+
 **Note**: Do not use the username core. User core is part of the OpenShift Container Platform cluster configuration and is a predefined user in CoreOS. In the CSAH (primary/secondary), user core is created using Ansible playbooks.
+
 Update password for user using below commands.
+
 `[root@csah-pri ~]# useradd ansible`
 
 `[root@csah-pri ~]# passwd ansible`
 
-6. As user root, provide sudoers permissions to user ansible by creating anisble file with below content under /etc/sudoers.d:
+As user root, provide sudoers permissions to user ansible by creating anisble file with below content under /etc/sudoers.d:
 
-	`[root@csah-pri sudoers.d]# cat /etc/sudoers.d/ansible`
+`[root@csah-pri sudoers.d]# cat /etc/sudoers.d/ansible`
 
-	`ansible ALL=(ALL) NOPASSWD: ALL`
+`ansible ALL=(ALL) NOPASSWD: ALL`
 
-8. As user ansible, set up password-less access to the CSAH FQDN:
-	`[ansible@csah-pri ~]$ ssh-keygen (press enter and go by defaults for the next set of questions)`
+As user ansible, set up password-less access to the CSAH FQDN:
 
-	After ssh keys are generated, copy the FQDN of CSAH node.
+`[ansible@csah-pri ~]$ ssh-keygen (press enter and go by defaults for the next set of questions)`
 
-	`[ansible@csah-pri ~]$ ssh-copy-id <FQDN>`
+After ssh keys are generated, copy the FQDN of CSAH node.
 
-10. Download the Ansible playbooks from GitHub and check out branch ecws**_**ocp412 by running:
+`[ansible@csah-pri ~]$ ssh-copy-id <FQDN>`
 
-	`[ansible@csah-pri ~]$ git clone https://github.com/dell-esg/openshift-bare-metal.git`
+Download the Ansible playbooks from GitHub and check out branch ecws**_**ocp412 by running:
 
-	`[ansible@csah-pri ~]$ cd <git clone dir>/openshift-bare-metal`
+`[ansible@csah-pri ~]$ git clone https://github.com/dell-esg/openshift-bare-metal.git`
 
-	`[ansible@csah-pri openshift-bare-metal]$ git checkout origin/ecws_ocp412`
+`[ansible@csah-pri ~]$ cd <git clone dir>/openshift-bare-metal`
+
+`[ansible@csah-pri openshift-bare-metal]$ git checkout origin/ecws_ocp412`
 
 **Note**: If there is no secondary CSAH node, ignore below steps.
 
-12. To create a secondary CSAH node, repeat steps above. This step is necessary to create a secondary CSAH.
+To create a secondary CSAH node, repeat steps above. This step is necessary to create a secondary CSAH.
 
 **Note**: Install Red Hat Enterprise Linux 8 in a CSAH secondary node manually and repeat above steps with necessary modifications.
 
 As user root, add an entry for a secondary CSAH node in the primary CSAH node /etc/hosts file by running:
-			`[root@csah-pri ~]# cat /etc/hosts`
-			<IP Address of secondary csah> csah-sec csah-sec.dcws.lab
 
-9. As user ansible, set up passwordless access from the primary CSAH node to the secondary CSAH node:
+`[root@csah-pri ~]# cat /etc/hosts`
+
+<IP Address of secondary csah> csah-sec csah-sec.dcws.lab
+
+As user ansible, set up passwordless access from the primary CSAH node to the secondary CSAH node:
+
 `[ansible@csah-pri ~]$ ssh-copy-id <secondary CSAH FQDN>`
 
-  
 
 # *Preparing and running the Ansible playbooks*
 
-1. In the primary CSAH node, prepare and run the Ansible playbooks as user ansible.
-
-  
-
-2. Update the nodes_upi.yaml file containing information about the bootstrap, control-plane, and compute nodes.
+In the primary CSAH node, prepare and run the Ansible playbooks as user ansible.
+Update the nodes_upi.yaml file containing information about the bootstrap, control-plane, and compute nodes.
 
 **Note:** Ensure that you only modify values in the YAML file. Keys must always remain the same.
 
-  
-
-3.Run the program to generate inventory file.
+Run the program to generate inventory file.
 
 **Note**: If the iDRAC user and password are the same across all control-plane and compute nodes, run the program with the --id_user and --id_pass arguments.
 
@@ -113,11 +123,11 @@ As user root, add an entry for a secondary CSAH node in the primary CSAH node /e
 
 Specify the FQDN of the secondary management node and press Enter. The following output is displayed:
 
-Is there a backup management node [yes/No]: yes
+`Is there a backup management node [yes/No]: yes`
 
-Enter backup management node FQDN: csah-sec.dcws.lab
+`Enter backup management node FQDN: csah-sec.dcws.lab`
 
-Enter the IP address of VIP used for HAProxy:  _<IP>_
+`Enter the IP address of VIP used for HAProxy:  _<IP>_`
 
 Enter the appropriate response as follows:
 
@@ -125,7 +135,7 @@ If there is a secondary management node, enter Yes. The IP address that you spec
 
 If there is no backup management node, enter No.
 
-A menu of numbered tasks is displayed, as shown in the following figure:
+A menu of numbered tasks is displayed.
 
 **Inventory file generation inputs menu**
 
@@ -135,7 +145,7 @@ Select each task number in turn and provide the requested input. If you are unsu
 
 For option 1, specify the directory to which to download the files:
 
-provide complete path of directory to download OCP 4.12 software bits; default is /home/ansible/files.
+Provide complete path of directory to download OCP 4.12 software bits; default is /home/ansible/files.
 
 Option 1 downloads OpenShift Container Platform 4.12 software from Red Hat into a directory for which user ansible has permissions. This guide assumes that the directory is specified as /home/ansible/files.
 
@@ -216,7 +226,9 @@ Ensure that DNS is updated for the bridge interface.
 **Note**: This step is necessary because the Ansible playbooks configured a DNS setup in the CSAH node.
 
 `[root@csah-pri ~]# nmcli connection modify bridge-br0 ipv4.dns <IP address>`
+
 `[root@csah-pri ~]# systemctl restart NetworkManager`
+
 `[root@csah-pri ~]# cat /etc/resolv.conf`
 
 #Generated by NetworkManager
