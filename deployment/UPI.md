@@ -388,11 +388,15 @@ Add a new_compute_nodes key in the nodes.yaml file. Under the new_compute_nodes 
 
 **Note:** For this release, only rhcos computes is supported.
 
-new_compute_nodes:
-- name: compute-3
-ip_os: _<bond IP>_
-ip_idrac: _<iDRAC IP>_
-os: rhcos
+`new_compute_nodes:`
+
+`- name: compute-3`
+ 
+  `ip_os: _<bond IP>_`
+
+  `ip_idrac: _<iDRAC IP>_`
+
+  `os: rhcos`
 
 **Note**: On the CSAH node, run the commands as user ansible unless otherwise specified.
 
