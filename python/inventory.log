@@ -3207,3 +3207,1127 @@ select network interfaces for node etcd2
  4: generate inventory file
  5: exit
 
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 1
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root get_fips_details(): 
+
+
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root get_ntp_details(): 
+
+
+[INFO] root get_http_details(): 
+
+
+[INFO] root get_http_details(): Ensure the nodes have connectivity to the HTTP server.
+[INFO] root get_http_details(): Copy the files from 10.0.0.0 directory to the HTTP server.
+[INFO] root get_http_details(): adding http_port: 8080 http_ignition: 10.0.0.0 version: 4.12
+[INFO] root set_haproxy(): 
+
+
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: ink86.dcws.lab
+  vars:
+    cluster: ocp
+    default_zone_file: /var/named/ocp.zones
+    dhcp: unmanaged
+    dns_forwarder: 10.8.8.8
+    fips: 'true'
+    haproxy_conf: /etc/haproxy/haproxy.cfg
+    http: unmanaged
+    http_ignition: 10.0.0.0
+    http_ip: 10.0.0.0
+    http_port: 8080
+    install_type: UPI
+    master_ports:
+    - description: apiserver
+      port: 6443
+    - description: configserver
+      port: 22623
+    ntp: unmanaged
+    ntp_ip: 10.0.0.0
+    os: rhcos
+    proxy: haproxy
+    version: '4.12'
+    worker_ports:
+    - description: http
+      port: 80
+    - description: https
+      port: 443
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - pxe
+    - bootstrap
+    - proxy
+    - dns
+
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 1
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root get_fips_details(): 
+
+
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root get_ntp_details(): 
+
+
+[INFO] root get_http_details(): 
+
+
+[INFO] root get_http_details(): adding http_port: 8080 http_ignition: ignition version: 4.12
+[INFO] root set_haproxy(): 
+
+
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: ink86.dcws.lab
+  vars:
+    cluster: ocp
+    default_lease_time: 8000
+    default_zone_file: /var/named/ocp.zones
+    dhcp: managed
+    dns_forwarder: 10.8.8.8
+    fips: 'false'
+    haproxy_conf: /etc/haproxy/haproxy.cfg
+    http: managed
+    http_ignition: ignition
+    http_port: 8080
+    install_type: UPI
+    master_ports:
+    - description: apiserver
+      port: 6443
+    - description: configserver
+      port: 22623
+    max_lease_time: 72000
+    ntp: managed
+    os: rhcos
+    proxy: haproxy
+    version: '4.12'
+    worker_ports:
+    - description: http
+      port: 80
+    - description: https
+      port: 443
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - proxy
+    - pxe
+    - bootstrap
+    - dns
+    - http
+    - dhcp
+
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_dns_details(): 
+
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root get_fips_details(): 
+
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: ink86.dcws.lab
+  vars:
+    cluster: ocp
+    default_zone_file: /var/named/ocp.zones
+    dns_forwarder: 10.8.8.8
+    fips: 'true'
+    install_type: IPI
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - dns
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 1
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 1
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 1
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[ERROR] root get_cluster_nodes(): Three control nodes are required, but 1 is/are provided as input. Fix the issue and retry.
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 1
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): test0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): test1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): test2 iDRAC is reachable.
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 1
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): test0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): test1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): test2 iDRAC is reachable.
+[INFO] root get_bootstrap_node(): adding bootstrap_node values as name: bootstrap ip: 192.168.32.18 mac: 52:54:00:16:70:89
+[INFO] root get_bootstrap_node(): If using an external DHCP server, add an IP reservation entry in the DHCP server.
+[INFO] root get_nodes_info(): 
+select network interfaces for node test0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node test1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node test2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_master_nodes_disk_info(): ensure disknames are available. Otherwise OpenShift install fails
+[INFO] root get_ignition_details(): pod network cidr: 10.128.0.0/14
+[INFO] root get_ignition_details(): adding install_dir: openshift cluster_network_cidr: 10.128.0.0/14                      host_prefix: 23 service_network_cidr: 172.30.0.0/16
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root get_fips_details(): 
+
+
+[INFO] root dhcp_lease_times(): 
+
+
+[INFO] root get_ntp_details(): 
+
+
+[INFO] root get_http_details(): 
+
+
+[INFO] root get_http_details(): adding http_port: 8080 http_ignition: ignition version: 4.12
+[INFO] root set_haproxy(): 
+
+
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: ink86.dcws.lab
+  vars:
+    bootstrap_node:
+    - ip: 192.168.32.18
+      mac: 52:54:00:16:70:89
+      name: bootstrap
+    cluster: ocp
+    cluster_install: 3 node
+    cluster_network_cidr: 10.128.0.0/14
+    control_nodes:
+    - interface: eno12399
+      ip: 192.168.32.26
+      mac: B8:CE:F6:13:09:D4
+      name: test0
+      os: rhcos
+    - interface: eno12399
+      ip: 192.168.32.216
+      mac: B8:CE:F6:13:09:D4
+      name: test1
+      os: rhcos
+    - interface: eno12399
+      ip: 192.168.32.217
+      mac: B8:CE:F6:13:09:D4
+      name: test2
+      os: rhcos
+    default_lease_time: 8000
+    default_zone_file: /var/named/ocp.zones
+    dhcp: managed
+    dns_forwarder: 10.8.8.8
+    fips: 'true'
+    haproxy_conf: /etc/haproxy/haproxy.cfg
+    host_prefix: 23
+    http: managed
+    http_ignition: ignition
+    http_port: 8080
+    install_dir: openshift
+    install_type: UPI
+    install_user: core
+    master_install_device: /dev/nvme0n1
+    master_ports:
+    - description: apiserver
+      port: 6443
+    - description: configserver
+      port: 22623
+    max_lease_time: 72000
+    network_type: OVNKubernetes
+    ntp: managed
+    num_of_control_nodes: 3
+    os: rhcos
+    proxy: haproxy
+    service_network_cidr: 172.30.0.0/16
+    version: '4.12'
+    worker_ports:
+    - description: http
+      port: 80
+    - description: https
+      port: 443
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - http
+    - bootstrap
+    - proxy
+    - dns
+    - ignition
+    - dhcp
+    - pxe
+
+[INFO] root generate_inputs_menu(): 
+ 1: download OpenShift software
+ 2: cluster install
+ 3: infra components
+ 4: review inventory file
+ 5: generate inventory file
+ 6: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): test0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): test1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): test2 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node test0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node test1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node test2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_master_nodes_disk_info(): ensure disknames are available. Otherwise OpenShift install fails
+[INFO] root get_ipi_ignition_details(): adding machine_network_cidr: 192.168.32.0/24
+[INFO] root get_ipi_ignition_details(): adding api_ip: 192.168.32.66
+[INFO] root get_ipi_ignition_details(): adding wildcard_ip: 192.168.32.67
+[INFO] root get_ipi_ignition_details(): adding pull_secret_file: /home/ansible/files/pullsecret
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/ocp.zones cluster: ocp
+[INFO] root get_fips_details(): 
+
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: ink86.dcws.lab
+  vars:
+    api_ip: 192.168.32.66
+    bootstrap_gateway: 192.168.32.1
+    bootstrap_ip: 192.168.32.18
+    cluster: ocp
+    cluster_install: 3 node
+    compute_nodes: []
+    control_nodes:
+    - interface: eno12399
+      ip: 192.168.32.26
+      mac: B8:CE:F6:13:09:D4
+      name: test0
+      oob: 172.16.0.26
+      os: rhcos
+      passwd: Y2Fsdmlu
+      user: root
+    - interface: eno12399
+      ip: 192.168.32.216
+      mac: B8:CE:F6:13:09:D4
+      name: test1
+      oob: 172.16.0.26
+      os: rhcos
+      passwd: Y2Fsdmlu
+      user: root
+    - interface: eno12399
+      ip: 192.168.32.217
+      mac: B8:CE:F6:13:09:D4
+      name: test2
+      oob: 172.16.0.26
+      os: rhcos
+      passwd: Y2Fsdmlu
+      user: root
+    default_zone_file: /var/named/ocp.zones
+    dns_forwarder: 10.8.8.8
+    fips: 'true'
+    install_type: IPI
+    machine_network_cidr: 192.168.32.0/24
+    master_install_device: /dev/nvme0n1
+    network_type: OVNKubernetes
+    num_of_compute_nodes: 0
+    num_of_control_nodes: 3
+    pull_secret_file: /home/ansible/files/pullsecret
+    version: latest-4.12
+    wildcard_ip: 192.168.32.67
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - ipi
+    - dns
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): test0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): test1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): test2 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node test0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node test1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node test2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.6-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.6-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_master_nodes_disk_info(): ensure disknames are available. Otherwise OpenShift install fails
+[INFO] root get_ipi_ignition_details(): adding machine_network_cidr: 192.168.32.0/24
+[INFO] root get_ipi_ignition_details(): adding api_ip: 192.168.32.66
+[INFO] root get_ipi_ignition_details(): adding wildcard_ip: 192.168.32.67
+[INFO] root get_ipi_ignition_details(): adding pull_secret_file: /home/ansible/files/pullsecret
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/fip.zones cluster: fip
+[INFO] root get_fips_details(): 
+
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: ink86.dcws.lab
+  vars:
+    api_ip: 192.168.32.66
+    bootstrap_gateway: 192.168.32.1
+    bootstrap_ip: 192.168.32.18
+    cluster: fip
+    cluster_install: 3 node
+    compute_nodes: []
+    control_nodes:
+    - interface: eno12399
+      ip: 192.168.32.26
+      mac: B8:CE:F6:13:09:D4
+      name: test0
+      oob: 172.16.0.26
+      os: rhcos
+      passwd: Y2Fsdmlu
+      user: root
+    - interface: eno12399
+      ip: 192.168.32.216
+      mac: B8:CE:F6:0D:07:08
+      name: test1
+      oob: 172.16.0.27
+      os: rhcos
+      passwd: Y2Fsdmlu
+      user: root
+    - interface: eno12399
+      ip: 192.168.32.217
+      mac: B8:CE:F6:0D:10:C8
+      name: test2
+      oob: 172.16.0.28
+      os: rhcos
+      passwd: Y2Fsdmlu
+      user: root
+    default_zone_file: /var/named/fip.zones
+    dns_forwarder: 10.8.8.8
+    fips: 'true'
+    install_type: IPI
+    machine_network_cidr: 192.168.32.0/24
+    master_install_device: /dev/nvme0n1
+    network_type: OVNKubernetes
+    num_of_compute_nodes: 0
+    num_of_control_nodes: 3
+    pull_secret_file: /home/ansible/files/pullsecret
+    version: latest-4.14
+    wildcard_ip: 192.168.32.67
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - dns
+    - ipi
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): test0 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): test1 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): test2 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node test0
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node test1
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node test2
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.1-2-1 [LinkDown]
+[WARNING] root generate_network_devices_menu(): Invalid option
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root get_master_nodes_disk_info(): ensure disknames are available. Otherwise OpenShift install fails
+[INFO] root get_ipi_ignition_details(): adding machine_network_cidr: 192.168.32.0/24
+[INFO] root get_ipi_ignition_details(): adding api_ip: 192.168.32.66
+[INFO] root get_ipi_ignition_details(): adding wildcard_ip: 192.168.32.67
+[INFO] root get_ipi_ignition_details(): adding pull_secret_file: /home/ansible/files/pullsecret
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/fip.zones cluster: fip
+[INFO] root get_fips_details(): 
+
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: ink86.dcws.lab
+  vars:
+    api_ip: 192.168.32.66
+    bootstrap_gateway: 192.168.32.1
+    bootstrap_ip: 192.168.32.18
+    cluster: fip
+    cluster_install: 3 node
+    compute_nodes: []
+    control_nodes:
+    - interface: eno12399
+      ip: 192.168.32.26
+      mac: B8:CE:F6:13:09:D4
+      name: test0
+      oob: 172.16.0.26
+      os: rhcos
+      passwd: Y2Fsdmlu
+      user: root
+    - interface: eno12399
+      ip: 192.168.32.216
+      mac: B8:CE:F6:0E:C0:06
+      name: test1
+      oob: 172.16.0.31
+      os: rhcos
+      passwd: Y2Fsdmlu
+      user: root
+    - interface: eno12399
+      ip: 192.168.32.217
+      mac: B8:CE:F6:0E:BF:EE
+      name: test2
+      oob: 172.16.0.33
+      os: rhcos
+      passwd: Y2Fsdmlu
+      user: root
+    default_zone_file: /var/named/fip.zones
+    dns_forwarder: 10.8.8.8
+    fips: 'true'
+    install_type: IPI
+    machine_network_cidr: 192.168.32.0/24
+    master_install_device: /dev/nvme0n1
+    network_type: OVNKubernetes
+    num_of_compute_nodes: 0
+    num_of_control_nodes: 3
+    pull_secret_file: /home/ansible/files/pullsecret
+    version: latest-4.14
+    wildcard_ip: 192.168.32.67
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - ipi
+    - dns
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): fip8622 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): fip8623 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): fip8624 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node fip8622
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root log_setup(): setting log file as: inventory.log
+[INFO] root getInstallationType(): installation type: 
+ 1. UPI
+ 2. IPI
+ 3. Assisted Installer
+        
+[INFO] root getInstallationType(): option selected: 2
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_cluster_nodes(): supported cluster install options: 
+ 1. Standard - 5+ node (3 control and 2+ compute)
+ 2. Compact - 3 node (converged control/compute nodes)
+        
+[INFO] root get_cluster_nodes(): option selected: 2
+[INFO] root get_cluster_nodes(): 
+Checking iDRAC connectivity for control nodes.
+[INFO] root get_cluster_nodes(): fip8622 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): fip8623 iDRAC is reachable.
+[INFO] root get_cluster_nodes(): fip8624 iDRAC is reachable.
+[INFO] root get_nodes_info(): 
+select network interfaces for node fip8622
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[WARNING] root generate_network_devices_menu(): Input option should be integer and not string
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node fip8623
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_nodes_info(): 
+select network interfaces for node fip8624
+[INFO] root generate_network_devices_menu(): 1 -> NIC.Embedded.1-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 2 -> NIC.Embedded.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 3 -> NIC.Integrated.1-1-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 4 -> NIC.Integrated.1-2-1 [LinkUp]
+[INFO] root generate_network_devices_menu(): 5 -> NIC.Slot.2-1-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): 6 -> NIC.Slot.2-2-1 [LinkDown]
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-1-1
+[INFO] root generate_network_devices_menu(): selected interface is: NIC.Integrated.1-2-1
+[INFO] root get_master_nodes_disk_info(): ensure disknames are available. Otherwise OpenShift install fails
+[INFO] root get_ipi_ignition_details(): adding machine_network_cidr: 192.168.32.0/24
+[INFO] root get_ipi_ignition_details(): adding api_ip: 192.168.32.66
+[INFO] root get_ipi_ignition_details(): adding wildcard_ip: 192.168.32.67
+[INFO] root get_ipi_ignition_details(): adding pull_secret_file: /home/ansible/files/pullsecret
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root get_dns_details(): 
+
+
+[INFO] root get_dns_details(): adding zone_file: /var/named/fip.zones cluster: fip
+[INFO] root get_fips_details(): 
+
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+
+[INFO] root display_inventory(): all:
+  children:
+    primary:
+      hosts: ink86.dcws.lab
+  vars:
+    api_ip: 192.168.32.66
+    bootstrap_gateway: 192.168.32.1
+    bootstrap_ip: 192.168.32.18
+    cluster: fip
+    cluster_install: 3 node
+    compute_nodes: []
+    control_nodes:
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.22
+      mac: B8:CE:F6:13:09:CC
+      name: fip8622
+      oob: 172.16.0.22
+      options: mode=802.3ad
+      passwd: Y2Fsdmlu
+      primary: eno12399
+      user: root
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.23
+      mac: B8:CE:F6:13:09:E4
+      name: fip8623
+      oob: 172.16.0.23
+      options: mode=802.3ad
+      passwd: Y2Fsdmlu
+      primary: eno12399
+      user: root
+    - backup: eno12409
+      bond: bond0
+      ip: 192.168.32.24
+      mac: B8:CE:F6:13:0A:1C
+      name: fip8624
+      oob: 172.16.0.24
+      options: mode=802.3ad
+      passwd: Y2Fsdmlu
+      primary: eno12399
+      user: root
+    default_zone_file: /var/named/fip.zones
+    dns_forwarder: 10.8.8.8
+    fips: 'true'
+    install_type: IPI
+    machine_network_cidr: 192.168.32.0/24
+    master_install_device: /dev/nvme0n1
+    network_type: OVNKubernetes
+    num_of_compute_nodes: 0
+    num_of_control_nodes: 3
+    pull_secret_file: /home/ansible/files/pullsecret
+    version: latest-4.14
+    wildcard_ip: 192.168.32.67
+
+[INFO] root display_inventory(): 
+
+[INFO] root display_inventory(): - become: 'yes'
+  hosts: primary
+  roles:
+    - ipi
+    - dns
+
+[INFO] root generate_inputs_menu(): 
+ 1: cluster install
+ 2: infra components
+ 3: review inventory file
+ 4: generate inventory file
+ 5: exit
+

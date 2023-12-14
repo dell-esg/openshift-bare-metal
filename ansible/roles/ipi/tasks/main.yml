@@ -29,7 +29,7 @@
 - name: create ssh key
   become_user: kni
   shell: |
-    ssh-keygen -t ed25519 -f /home/kni/.ssh/id_rsa -N ''
+    ssh-keygen -f /home/kni/.ssh/id_rsa -N ''
 
 - name: install required packages
   dnf:

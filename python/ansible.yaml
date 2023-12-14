@@ -1,5 +1,5 @@
 - become: 'yes'
   hosts: primary
   roles:
-    - dns
     - ipi
+    - dns

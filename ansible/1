@@ -2,4 +2,3 @@
   hosts: primary
   roles:
     - ipi
-    - dns

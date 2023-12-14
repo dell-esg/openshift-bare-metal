@@ -4,7 +4,7 @@ import logging
 import socket
 import sys
 import yaml
-
+import subprocess
 from random import randint
 from urllib.request import urlopen
 from urllib.request import urlretrieve
@@ -19,6 +19,8 @@ from helper import create_dir, check_path, get_ip, get_network_device_mac, \
 
 from nodes import get_nodes_info, get_sno_info
 from nodes import get_nodes_disk_info
+
+#subprocess.Popen('echo "Geeks 4 Geeks"', shell=True)
 
 class InventoryFile:
     def __init__(self, inventory_dict = {}, id_user='', id_pass='', version='', z_stream='', rhcos='', nodes_inventory=''):
@@ -157,6 +159,7 @@ class InventoryFile:
             elif self.input_choice == 3:
                 self.clear_screen()
                 self.get_dns_details()
+                self.get_fips_details()
                 self.dhcp_lease_times()
                 self.get_ntp_details()
                 self.get_http_details()
@@ -173,6 +176,7 @@ class InventoryFile:
                 self.get_cluster_nodes()
             elif self.input_choice == 2:
                 self.get_dns_details()
+                self.get_fips_details()
             elif self.input_choice == 3:
                 self.display_inventory()
             elif self.input_choice == 4:
@@ -544,6 +548,23 @@ class InventoryFile:
             self.inventory_dict['all']['vars']['api_ip'] = api_ip
             self.inventory_dict['all']['vars']['wildcard_ip'] = wildcard_ip
 
+    def get_fips_details(self):
+        """
+        get NTP details
+
+        """
+        logging.info('\n\n')
+        isFIPS = self.getInput(param='FIPS')
+        if isFIPS == 'No' and self.install_type == 3:
+            return
+
+        if isFIPS == 'No':
+            self.inventory_dict['all']['vars']['fips'] = 'false'
+        else:
+            self.inventory_dict['all']['vars']['fips'] = 'true'
+
+    
+    
     def get_ntp_details(self):
         """
         get NTP details
@@ -897,7 +918,7 @@ def main():
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--run', help='generate inventory file', action='store_true', required=False)
     group.add_argument('--add', help='number of worker nodes', action='store_true', required=False)
-    parser.add_argument('--release', type=str, help='specify OpenShift release version', required=False, choices=["4.10", "4.11", "4.12"], default="4.12")
+    parser.add_argument('--release', type=str, help='specify OpenShift release version', required=False, choices=["4.10", "4.11", "4.14"], default="4.14")
     parser.add_argument('--z_stream', type=str, help='specify OpenShift z-stream version [DEVELOPMENT ONLY]', required=False, default='latest')
     parser.add_argument('--rhcos_ver', type=str, help='specify RHCOS version [DEVELOPMENT ONLY]', required=False, default='latest')
     parser.add_argument('--nodes', help='nodes inventory file', required=True)

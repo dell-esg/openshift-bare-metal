@@ -14,6 +14,7 @@ controlPlane:
   hyperthreading: Enabled
   name: master
   replicas: {{ num_of_control_nodes }}
+fips: {{ fips }}
 metadata:
   name: {{ cluster }}
 networking:

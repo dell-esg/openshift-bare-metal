@@ -5,12 +5,12 @@ all:
   vars:
     api_ip: 192.168.32.66
     bootstrap_gateway: 192.168.32.1
-    bootstrap_ip: 192.168.32.18
+    bootstrap_ip: 192.168.32.48
     cluster: fip
     cluster_install: 3 node
     compute_nodes: []
     control_nodes:
-    - backup: eno12409
+    - backup: eno12409np1
       bond: bond0
       ip: 192.168.32.22
       mac: B8:CE:F6:13:09:CC
@@ -18,9 +18,9 @@ all:
       oob: 172.16.0.22
       options: mode=802.3ad
       passwd: Y2Fsdmlu
-      primary: eno12399
+      primary: eno12399np0
       user: root
-    - backup: eno12409
+    - backup: eno12409np1
       bond: bond0
       ip: 192.168.32.23
       mac: B8:CE:F6:13:09:E4
@@ -28,9 +28,9 @@ all:
       oob: 172.16.0.23
       options: mode=802.3ad
       passwd: Y2Fsdmlu
-      primary: eno12399
+      primary: eno12399np0
       user: root
-    - backup: eno12409
+    - backup: eno12409np1
       bond: bond0
       ip: 192.168.32.24
       mac: B8:CE:F6:13:0A:1C
@@ -38,7 +38,7 @@ all:
       oob: 172.16.0.24
       options: mode=802.3ad
       passwd: Y2Fsdmlu
-      primary: eno12399
+      primary: eno12399np0
       user: root
     default_zone_file: /var/named/fip.zones
     dns_forwarder: 10.8.8.8
