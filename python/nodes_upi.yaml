@@ -12,7 +12,7 @@ control_nodes:
   - name: etcd3
     ip_os: 192.168.32.68
     ip_idrac: 172.16.0.68
-new_compute_nodes:
+compute_nodes:
   - name: etcd2
     ip_os: 192.168.32.40
     ip_idrac: 172.16.0.40
