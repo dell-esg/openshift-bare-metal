@@ -430,7 +430,7 @@ def get_device_enumeration(device, os='', server_model=''):
         slot_number = device.split(nic_slot_pattern[0])[1].split('-')[0]
         port_number = device.split(nic_slot_pattern[0])[1].split('-')[1]
         if os == 'rhcos':
-            enumeration = 'ens' + slot_number + 'f' + str(int(port_number)-1)
+            enumeration = 'ens' + slot_number + 'f' + str(int(port_number)-1) + 'np' + str(int(port_number) - 1)
         if os == 'rhel':
             enumeration = 'p' + slot_number + 'p' + port_number
 
