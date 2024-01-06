@@ -1,0 +1,22 @@
+variant: openshift
+version: 4.12.0
+metadata:
+  name: 100-worker-vfiopci
+  labels:
+    machineconfiguration.openshift.io/role: master
+openshift:
+  kernel_arguments:
+    - intel_iommu=on
+storage:
+  files:
+  - path: /etc/modprobe.d/vfio.conf
+    mode: 0644
+    overwrite: true
+    contents:
+      inline: |
+        options vfio-pci ids=10de:2235
+  - path: /etc/modules-load.d/vfio-pci.conf
+    mode: 0644
+    overwrite: true
+    contents:
+      inline: vfio-pci

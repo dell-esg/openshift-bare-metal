@@ -1,0 +1,11 @@
+apiVersion: hco.kubevirt.io/v1beta1
+kind: HyperConverged
+metadata:
+  name: kubevirt-hyperconverged
+<...>
+spec:
+  permittedHostDevices:
+    pciHostDevices:
+      - pciDeviceSelector: '10DE:2235'
+        resourceName: nvidia.com/NVIDIA-A40
+<...>

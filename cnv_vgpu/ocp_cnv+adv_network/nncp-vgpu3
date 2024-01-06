@@ -1,0 +1,25 @@
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: 29eno12409
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: cnv-vgpu3
+  desiredState:
+    interfaces:
+      - name: br1
+        description: Linux bridge with eno12409 as a port
+        type: linux-bridge
+        state: up
+        ipv4:
+          address:
+          - prefix-length: 24
+            ip: 192.168.4.29
+          dhcp: false
+          enabled: true
+        bridge:
+          options:
+            stp:
+              enabled: false
+          port:
+            - name: eno12409

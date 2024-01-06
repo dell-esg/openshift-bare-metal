@@ -1,0 +1,20 @@
+apiVersion: hco.kubevirt.io/v1beta1
+kind: HyperConverged
+metadata:
+  name: kubevirt-hyperconverged
+<...>
+spec:
+ configuration:
+ developerConfiguration:
+   featureGates:
+   - GPU
+ permittedHostDevices:
+   pciHostDevices:
+   - externalResourceProvider: true
+     pciDeviceSelector: 10DE:2235
+     resourceName: nvidia.com/GA102GL_A40
+   mediatedDevices:
+   - externalResourceProvider: true
+     mdevNameSelector: NVIDIA A40-24Q
+     resourceName: nvidia.com/NVIDIA_A40-24Q
+<...>

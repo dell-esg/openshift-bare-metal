@@ -1,0 +1,10 @@
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetwork
+metadata:
+  name: network-sr-iov-cnv-vgpu3
+  namespace: openshift-sriov-network-operator 
+spec:
+  resourceName: sriov_resource_vgpu3
+  networkNamespace: ocp-vm
+#  ipam: '{"type":"host-local","subnet": "192.168.4.0/24, "rangeStart":"192.168.4.120/24", "rangeEnd":"192.168.4.125","routes": [{"dst":"0.0.0.0/0"}],"gw":"192.168.4.1"}'
+#  capabilities: '{"mac": true, "ips": true}' 

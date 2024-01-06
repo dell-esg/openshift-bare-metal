@@ -1,0 +1,17 @@
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetworkNodePolicy
+metadata:
+  name: sriov-vgpu3
+  namespace: openshift-sriov-network-operator 
+spec:
+  resourceName: sriov_resource_vgpu3
+  nodeSelector:
+    kubernetes.io/hostname: cnv-vgpu3 
+  numVfs: 10
+  nicSelector: 
+    vendor: "15b3" 
+    deviceID: "1017"
+    pfNames: ["eno12409"]
+    rootDevices: ["0000:33:00.1"] 
+  deviceType: vfio-pci
+  isRdma: false
