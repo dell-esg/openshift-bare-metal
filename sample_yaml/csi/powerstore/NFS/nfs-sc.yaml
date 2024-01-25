@@ -4,7 +4,7 @@ metadata:
   name: powerstore-sc-nfs
 provisioner: csi-powerstore.dellemc.com
 parameters:
-  server: <endpoint_IPAddress>
+  server: <url_of_server>
   path: /nfs-testing
   fstype: nfs
   readOnly: "false"

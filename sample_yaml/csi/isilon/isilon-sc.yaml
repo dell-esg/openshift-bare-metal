@@ -10,7 +10,7 @@ volumeBindingMode: Immediate
 parameters:
   AccessZone: "System"
   IsiPath: "/ifs/OCP"
-  AzServiceIP: <endpoint_IPAddress>
+  AzServiceIP: <endpoint_address>
   RootClientEnabled: "false"
 snapshotClass:
   # The volumeSnapshotClass name will have a prefix "isilon"

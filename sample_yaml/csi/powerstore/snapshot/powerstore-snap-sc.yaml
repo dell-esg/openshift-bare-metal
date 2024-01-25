@@ -4,3 +4,4 @@ metadata:
   name: powerstore-snap-class
 driver: csi-powerstore.dellemc.com
 deletionPolicy: Delete
+

@@ -10,3 +10,4 @@ spec:
     requests:
       storage: 10Gi
   storageClassName: dellcsi-powerstore-sc-fc
+

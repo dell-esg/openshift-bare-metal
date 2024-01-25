@@ -24,7 +24,7 @@ spec:
       - mountPath: "/tmp"
         name: confmap
     command: ["/bin/bash", "-c", " sleep 2000000000"]
-  nodeName: etcd0.dcws.lab
+  nodeName: clstraim2
   volumes:
     - name: vol
       persistentVolumeClaim:
@@ -35,3 +35,4 @@ spec:
         items:
         - key: sample
           path: keys
+

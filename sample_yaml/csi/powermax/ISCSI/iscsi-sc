@@ -5,7 +5,7 @@ metadata:
 parameters:
   csi.storage.k8s.io/fstype: xfs
   SRP: SRP_1
-  SYMID: "000297901797"
+  SYMID: "<storage_id>"
   ServiceLevel: "Diamond"
 provisioner: csi-powermax.dellemc.com
 reclaimPolicy: Delete
@@ -13,9 +13,9 @@ volumeBindingMode: Immediate
 allowVolumeExpansion: true
 allowedTopologies:
   - matchLabelExpressions:
-      - key: csi-powermax.dellemc.com/000297901797
+      - key: csi-powermax.dellemc.com/<storage_id>
         values:
           - csi-powermax.dellemc.com
-      - key: csi-powermax.dellemc.com/000297901797.iscsi
+      - key: csi-powermax.dellemc.com/<storage_id>.iscsi
         values:
           - csi-powermax.dellemc.com
