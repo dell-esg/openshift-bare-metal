@@ -6,10 +6,10 @@
 
 - name: display cidr
   set_fact:
-    net_mask_cidr: "{{ net_mask | ipaddr('prefix') }}"
+    net_mask_cidr: "{{ net_mask | ansible.utils.ipaddr('prefix') }}"
 
 - name: enable firewalld chronyd service
-  firewalld:
+  ansible.posix.firewalld:
     service: ntp
     permanent: yes
     immediate: yes

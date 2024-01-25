@@ -1,5 +1,6 @@
 - become: 'yes'
   hosts: primary
   roles:
-    - dns
-    - ipi
+    - pxe
+    - bootstrap
+    - keepalived

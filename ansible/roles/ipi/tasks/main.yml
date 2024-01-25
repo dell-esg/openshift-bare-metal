@@ -54,7 +54,7 @@
 
 - name: poweroff control plane nodes
   shell: |
-    if [[ $(ipmitool -I lanplus -U root -P calvin -H {{ item.oob }} power status) == *"on"* ]]; then
+    if [[ $(ipmitool -I lanplus -U {{ item.user }} -P {{ item.passwd | b64decode }} -H {{ item.oob }} power status) == *"on"* ]]; then
       ipmitool -I lanplus -U {{ item.user }} -P {{ item.passwd | b64decode }} -H {{ item.oob }} power off
     fi
   args:
@@ -64,7 +64,7 @@
 
 - name: poweroff compute nodes
   shell: |
-    if [[ $(ipmitool -I lanplus -U root -P calvin -H {{ item.oob }} power status) == *"on"* ]]; then
+    if [[ $(ipmitool -I lanplus -U {{ item.user }} -P {{ item.passwd | b64decode }} -H {{ item.oob }} power status) == *"on"* ]]; then
       ipmitool -I lanplus -U {{ item.user }} -P {{ item.passwd | b64decode }} -H {{ item.oob }} power off
     fi
   args:

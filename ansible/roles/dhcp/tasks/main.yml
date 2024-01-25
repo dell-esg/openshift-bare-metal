@@ -6,7 +6,7 @@
     state: latest
 
 - name: add firewalld service for dhcp
-  firewalld:
+  ansible.posix.firewalld:
     service: dhcp
     permanent: yes
     immediate: yes

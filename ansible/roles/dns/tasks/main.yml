@@ -22,7 +22,7 @@
     state: latest
 
 - name: enable firewalld bind service
-  firewalld:
+  ansible.posix.firewalld:
     service: dns
     permanent: yes
     immediate: yes

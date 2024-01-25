@@ -26,9 +26,7 @@ def set_network_details(node_type='', node_name='', ip='', mac='', bond_name='',
     devices = []
     node_keys = ['name', 'ip', 'mac', 'bond', 'primary', 'backup', 'options']
     node_values = []
-    bond_options = 'mode=active-backup'
-    if inventory['all']['vars']['install_type'] == 'IPI':
-        bond_options = 'mode=802.3ad'
+    bond_options = 'mode=802.3ad'
     bond_interfaces = '{},{}'.format(primary, backup)
     node_values.append(node_name)
     node_values.append(ip)
@@ -115,7 +113,7 @@ def get_nodes_info(node_type='', inventory='', add=False, idrac_user='', idrac_p
                     mac = get_network_device_mac(map_devices, user, passwd, base_api_url)
                     show_menu = False
                 bond_name = 'bond0'
-                active_bond_device = generate_network_devices_menu(map_devices, user, passwd, base_api_url, purpose='{} first bond interface'.format(name), show=show_menu)
+                active_bond_device = generate_network_devices_menu(map_devices, user, passwd, base_api_url, purpose='{} active bond interface'.format(name), show=show_menu)
                 logging.debug('selected {} active bond interface: {}'.format(name, active_bond_device))
                 active_bond_enumeration = get_device_enumeration(active_bond_device, os=os, server_model=server_model)
                 logging.debug('{} active bond enumeration: {}'.format(name, active_bond_enumeration))
@@ -123,7 +121,7 @@ def get_nodes_info(node_type='', inventory='', add=False, idrac_user='', idrac_p
                 if inventory['all']['vars']['install_type'] == 'IPI':
                     mac = get_mac_address(active_bond_device, base_api_url, user, passwd)
                     #pstate = get_server_power_state(user, passwd, model_api_url)
-                backup_bond_device = generate_network_devices_menu(map_devices, user, passwd, base_api_url, purpose='{} second bond interface'.format(name), show=False)
+                backup_bond_device = generate_network_devices_menu(map_devices, user, passwd, base_api_url, purpose='{} backup bond interface'.format(name), show=False)
                 logging.debug('selected {} backup bond interface: {}'.format(name, backup_bond_device))
                 backup_bond_enumeration = get_device_enumeration(backup_bond_device, os=os, server_model=server_model)
                 #logging.debug('{} backup bond enumeration: {}'.format(name, backup_bond_enumeration))

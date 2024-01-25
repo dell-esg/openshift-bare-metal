@@ -897,7 +897,7 @@ def main():
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--run', help='generate inventory file', action='store_true', required=False)
     group.add_argument('--add', help='number of worker nodes', action='store_true', required=False)
-    parser.add_argument('--release', type=str, help='specify OpenShift release version', required=False, choices=["4.10", "4.11", "4.12"], default="4.12")
+    parser.add_argument('--release', type=str, help='specify OpenShift release version', required=False, choices=["4.10", "4.11", "4.12", "4.14"], default="4.14")
     parser.add_argument('--z_stream', type=str, help='specify OpenShift z-stream version [DEVELOPMENT ONLY]', required=False, default='latest')
     parser.add_argument('--rhcos_ver', type=str, help='specify RHCOS version [DEVELOPMENT ONLY]', required=False, default='latest')
     parser.add_argument('--nodes', help='nodes inventory file', required=True)

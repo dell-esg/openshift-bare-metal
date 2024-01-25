@@ -26,10 +26,10 @@
 
 - name: display cidr
   set_fact:
-    net_mask_cidr: "{{ net_mask | ipaddr('prefix') }}"
+    net_mask_cidr: "{{ net_mask | ansible.utils.ipaddr('prefix') }}"
 
 - name: keepalived firewall rich rule
-  firewalld:
+  ansible.posix.firewalld:
     rich_rule: 'rule protocol value="vrrp" accept'
     permanent: true
     immediate: true

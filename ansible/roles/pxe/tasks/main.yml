@@ -2,7 +2,7 @@
 # tasks file for pxe
 - name: install pxe pre-requisite packages 
   yum:
-    name: ['tftp-server', 'xinetd']
+    name: ['tftp-server']
     state: latest
   when:
     - groups['primary'] is defined
@@ -14,14 +14,13 @@
     enabled: yes
     state: started
   with_items:
-    - xinetd
     - tftp
   when:
     - groups['primary'] is defined
     - ansible_fqdn in groups['primary']
 
 - name: add firewalld service for tftp
-  firewalld:
+  ansible.posix.firewalld:
     service: tftp
     permanent: yes
     immediate: yes
@@ -88,7 +87,7 @@
 
 - name: display cidr
   set_fact:
-    net_mask_cidr: "{{ net_mask | ipaddr('prefix') }}"
+    net_mask_cidr: "{{ net_mask | ansible.utils.ipaddr('prefix') }}"
 
 - name: get worker nodes details
   set_fact:
@@ -157,21 +156,20 @@
     - ansible_fqdn in groups['primary']
     - compute_nodes is defined
 
-- name: create tftp file under /etc/xinetd.d
+
+- name: create tftp directory under /etc/systemd/system
+  file: 
+     path: "/etc/systemd/system/tftp.service.d"
+     state: directory  
+- name: create upload file under /etc/systemd/system/tftp.service.d
   copy:
-    dest: "/etc/xinetd.d/tftp"
+    dest: "/etc/systemd/system/tftp.service.d/allow_uploads.conf"
     content: |
-      service tftp
-      {
-         socket_type     = dgram
-         protocol        = udp
-         wait            = yes
-         user            = root
-         server          = /usr/sbin/in.tftpd
-         server_args     = -s /var/lib/tftpboot
-         disable         = no
-      }
-  notify: "restart xinetd"
+      [Service]
+      ExecStart=
+      ExecStart=/usr/sbin/in.tftpd -c -p  -s /var/lib/tftpboot
+  notify: "reload systemd"
+  notify: "restart tftp"  
   when:
     - groups['primary'] is defined
     - ansible_fqdn in groups['primary']

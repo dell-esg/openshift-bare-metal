@@ -1,53 +1,98 @@
 all:
   children:
     primary:
-      hosts: intel16g0.dcws.lab
+      hosts: fips.dcws.lab
   vars:
-    api_ip: 192.168.32.200
-    bootstrap_gateway: 192.168.32.1
-    bootstrap_ip: 192.168.32.18
-    cluster: test200
-    cluster_install: 3 node
-    compute_nodes: []
-    control_nodes:
+    bootstrap_node:
+    - ip: 192.168.32.18
+      mac: 52:54:00:40:89:88
+      name: bootstrap
+    cluster: ocp
+    cluster_install: 5+ node
+    cluster_network_cidr: 10.128.0.0/14
+    compute_nodes:
+    - backup: eno12409
+      bond: bond0
+      installation_disk: /dev/sda
+      interfaces:
+      - eno12399
+      ip: 192.168.32.67
+      mac: B4:83:51:08:E1:C8
+      name: node1
+      options: mode=active-backup
+      os: rhcos
+      primary: eno12399
     - backup: ens6f1
       bond: bond0
+      installation_disk: /dev/sda
+      interfaces:
+      - ens6f0
       ip: 192.168.32.69
       mac: 10:70:FD:F5:D6:68
-      name: etcd0
-      oob: 172.16.0.69
+      name: node2
       options: mode=active-backup
-      passwd: Y2Fsdmlu
+      os: rhcos
       primary: ens6f0
-      user: root
-    - backup: eno12409
+    control_nodes:
+    - backup: ens2f1
       bond: bond0
       ip: 192.168.32.62
       mac: B4:83:51:06:21:04
-      name: etcd1
-      oob: 172.16.0.62
+      name: etcd0
       options: mode=active-backup
-      passwd: Y2Fsdmlu
       primary: eno12399
-      user: root
-    - backup: eno12409
+    - backup: ens2f1
       bond: bond0
       ip: 192.168.32.63
       mac: B4:83:51:06:25:F0
-      name: etcd2
-      oob: 172.16.0.63
+      name: etcd1
       options: mode=active-backup
-      passwd: Y2Fsdmlu
       primary: eno12399
-      user: root
-    default_zone_file: /var/named/test200.zones
+    - backup: ens2f1
+      bond: bond0
+      ip: 192.168.32.64
+      mac: B4:83:51:08:E4:F8
+      name: etcd3
+      options: mode=active-backup
+      primary: eno12399
+    default_lease_time: 8000
+    default_zone_file: /var/named/ocp.zones
+    dhcp: managed
     dns_forwarder: 10.8.8.8
-    install_type: IPI
-    machine_network_cidr: 192.168.32.0/24
-    master_install_device: /dev/nvme0n1
+    haproxy_conf: /etc/haproxy/haproxy.cfg
+    host_prefix: 23
+    http: managed
+    http_ignition: ignition
+    http_port: 8080
+    install_dir: openshift
+    install_type: UPI
+    install_user: core
+    master_install_device: ' /dev/sda'
+    master_ports:
+    - description: apiserver
+      port: 6443
+    - description: configserver
+      port: 22623
+    max_lease_time: 72000
     network_type: OVNKubernetes
-    num_of_compute_nodes: 0
+    ntp: managed
+    num_of_compute_nodes: 2
     num_of_control_nodes: 3
-    pull_secret_file: /home/ansible/files/pullsecret
-    version: latest-4.12
-    wildcard_ip: 192.168.32.201
+    os: rhcos
+    proxy: haproxy
+    service_network_cidr: 172.30.0.0/16
+    version: '4.12'
+    worker_ports:
+    - description: http
+      port: 80
+    - description: https
+      port: 443
+    initramfs: rhcos-live-initramfs.x86_64.img
+    kernel_file: rhcos-live-kernel-x86_64
+    openshift_client: openshift-client-linux.tar.gz
+    openshift_installer: openshift-install-linux.tar.gz
+    pull_secret_file: pullsecret
+    rootfs: rhcos-live-rootfs.x86_64.img
+    software_src: /home/ansible/files
+    uefi_file: rhcos-metal.x86_64.raw.gz
+
