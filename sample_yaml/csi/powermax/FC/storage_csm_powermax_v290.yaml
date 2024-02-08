@@ -58,13 +58,13 @@ spec:
         # Default value: None
         # Examples: "000000000001", "000000000002"
         - name: X_CSI_MANAGED_ARRAYS
-          value: "000297901797"
+          value: ""
         # X_CSI_POWERMAX_ENDPOINT: Address of the Unisphere server that is managing the PowerMax arrays
         # In case of multi-array, provide an endpoint of locally attached array
         # Default value: None
         # Example: https://0.0.0.1:8443
         - name: X_CSI_POWERMAX_ENDPOINT
-          value: "https://172.14.0.49:8443/"
+          value: ""
         # X_CSI_K8S_CLUSTER_PREFIX: Define a prefix that is appended onto
         # all resources created in the Array
         # This should be unique per K8s/CSI deployment
