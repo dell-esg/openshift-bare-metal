@@ -17,8 +17,7 @@
       "volumes": [
         {
           "name": "kustomize",
-          "readOnly": false,
-          "path": "/.config"
+          "emptyDir": {}
         }
       ],
       "initContainers": [
@@ -41,7 +40,25 @@
             }
           ],
           "terminationMessagePolicy": "File",
-          "image": "registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.12.3"
+          "image": "registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.14.1"
+        },
+        {
+          "args": [
+            "-c",
+            "mkdir -p /.config/kustomize/plugin/ && cp -r /etc/kustomize/plugin/policy.open-cluster-management.io /.config/kustomize/plugin/"
+          ],
+          "command": [
+            "/bin/bash"
+          ],
+          "image": "registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel8:v2.7",
+          "name": "policy-generator-install",
+          "imagePullPolicy": "Always",
+          "volumeMounts": [
+            {
+              "mountPath": "/.config",
+              "name": "kustomize"
+            }
+          ]
         }
       ],
       "volumeMounts": [

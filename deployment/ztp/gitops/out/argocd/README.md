@@ -8,7 +8,7 @@ The GitOps ZTP infrastructure relies on the ztp-site-generator container to prov
 
 ## Obtaining pre-built image
 ```
-    $ podman pull registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.12.3
+    $ podman pull registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.14.1
 ```
 
 ### Preparation of ZTP GIT repository
@@ -45,7 +45,11 @@ In order to deploy OpenShift GitOps operator v1.4.2 you may apply the provided s
 ```
     $ oc patch argocd openshift-gitops -n openshift-gitops  --type=merge --patch-file out/argocd/deployment/argocd-openshift-gitops-patch.json
 ```
-3. Prepare the ArgoCD pipeline configuration
+3. Starting ACM 2.7 multiclusterengine enables cluster-proxy-addon by default. Patch to disable and clean-up pods in the hub cluster (and managed clusters, if any) responsible for this addon.  
+```
+    $ oc patch multiclusterengines.multicluster.openshift.io multiclusterengine --type=merge --patch-file out/argocd/deployment/disable-cluster-proxy-addon.json
+```
+4. Prepare the ArgoCD pipeline configuration
 - Create a git repository with directory structure similar to the example directory.
 - Configure access to the repository using the ArgoCD UI. Under Settings configure:
   - Repositories --> Add connection information (URL ending in .git, eg https://repo.example.com/repo.git, and credentials)
@@ -54,7 +58,7 @@ In order to deploy OpenShift GitOps operator v1.4.2 you may apply the provided s
   - Update URL to point to git repository. The URL must end with .git, eg: https://repo.example.com/repo.git
   - The targetRevision should indicate which branch to monitor
   - The path should specify the path to the SiteConfig or PolicyGenTemplate CRs respectively
-4. Apply pipeline configuration to your *hub* cluster using the following command.
+5. Apply pipeline configuration to your *hub* cluster using the following command.
 ```
     oc apply -k out/argocd/deployment
 ```
@@ -108,8 +112,16 @@ EOF
         - For SNO deployments, you must have exactly one host defined.
         - For 3-node deployments, you must have exactly three hosts defined.
         - For standard deployments, you must have exactly three hosts defined with `role: master` and one or more hosts defined with `role: worker`
-      - The default set of extra-manifest MachineConfigs can be inspected in out/argocd/extra-manifest, and will be automatically applied to the cluster as it is installed.
-        - Optional: For provisiong additional install-time manifests on the provisioned cluster, create a directory in your GIT repository (for example, `sno-extra-manifest/`) and add your custom manifest CRs to this directory.  If your SiteConfig.yaml refers to this directory via the `extraManifestPath` field, any CRs in this referenced directory will be appended to the default set of extra manifests.
+      - The ztp container version specific set of extra-manifest MachineConfigs can be inspected in out/argocd/extra-manifest. When `extraManifests.searchPaths` is defined in siteconfig, one must copy all the contents from out/argocd/extra-manifest to the user GIT repository, and include that GIT directory path under `extraManifests.searchPaths`. It will allow those CR files will be applied during cluster installation. When searchPath is defined, **the manifests will not be fetched from ztp container**. 
+      - *It is strongly recommended that, user extracts `extra-manifest` and its content and push the content to users GIT repository*. 
+        - For the 4.14 release, we will still support the behavior of `extraManifestPath` and applying default extra manifests from the container during site installation only if `extraManifests.searchPaths` is not declared in the SiteConfig file. Going forward, the behavior will be deprecated and we strongly recommend to use `extraManifests.searchPaths` instead. Deprecation warning of this field is also added in the release.
+        - Optional: For provisioning additional install-time manifests on the provisioned cluster, create another directory in your GIT repository (for example, `custom-manifest/`) and add your custom manifest CRs to this directory. In the SiteConfig, refer to this newly created directory via the `extraManifests.searchPaths` field, any CRs in this referenced directory will be appended in addition to the default set of extra manifests. For the same named CR files in multiple directories, the last found file in the directory will override the content.
+          ```
+          extraManifests:
+            searchPaths:
+             - sno-extra-manifest/ <-- ztp-containers's reference manifests
+             - custom-manifests/ <-- user's custom manifests
+          ```      
    3. Add the SiteConfig CR to the kustomization.yaml in the 'generators' section, much like in the example out/argocd/example/siteconfig/kustomization.yaml
    4. Commit your SiteConfig and associated kustomization.yaml in git.
 3. Create the PolicyGenTemplate CR for your site in your local clone of the git repository:
