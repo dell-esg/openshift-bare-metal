@@ -44,7 +44,7 @@ data:
 apiVersion: metal3.io/v1alpha1
 kind: BareMetalHost
 metadata:
-  name: ipi-w1
+  name: compute0
   namespace: openshift-machine-api
 spec:
   online: True
@@ -53,8 +53,8 @@ spec:
     address: idrac-virtualmedia://172.16.0.67/redfish/v1/Systems/System.Embedded.1 
     credentialsName: openshift-worker-1-bmc-secret 
     disableCertificateVerification: True 
-    username: root
-    password: calvin
+    username: ro...
+    password: ca....
   rootDeviceHints:
     deviceName: /dev/nvme0n1
   preprovisioningNetworkDataName: openshift-worker-1-network-config-secret 
