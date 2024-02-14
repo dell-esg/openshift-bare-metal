@@ -13,7 +13,7 @@ stringData:
     state: up
     ipv4:
       address:
-      - ip: 192.168.32.67
+      - ip: 192.168.36.67
         prefix-length: 24
       enabled: true
     link-aggregation:
@@ -24,11 +24,11 @@ stringData:
   dns-resolver:
     config:
       server:
-      - 192.168.32.65
+      - 192.168.36.65
   routes:
     config:
     - destination: 0.0.0.0/0
-      next-hop-address: 192.168.32.1
+      next-hop-address: 192.168.36.1
       next-hop-interface: bond0
 ---
 apiVersion: v1
