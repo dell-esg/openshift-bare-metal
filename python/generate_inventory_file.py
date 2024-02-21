@@ -550,7 +550,7 @@ class InventoryFile:
 
     def get_fips_details(self):
         """
-        get NTP details
+        get FIPS details
 
         """
         logging.info('\n\n')
