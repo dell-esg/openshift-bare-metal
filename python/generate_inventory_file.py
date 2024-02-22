@@ -554,7 +554,14 @@ class InventoryFile:
 
         """
         logging.info('\n\n')
-        isFIPS = self.getInput(param='FIPS')
+        isFIPS= ''
+        msg = 'Do you want to install cluster with FIPS enabled '
+        response = input(msg + '[yes/No]: ')
+        accepted_response = ['yes', 'No']
+        while response not in accepted_response:
+            #response = input('Do you want to install ' + param + ' on CSAH [yes/No]: ')
+            isFIPS = input(msg + '[yes/No]: ')
+
         if isFIPS == 'No' and self.install_type == 3:
             return
 
