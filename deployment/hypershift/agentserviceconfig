@@ -15,9 +15,15 @@ spec:
     resources:
       requests:
         storage: 10Gi
+  imageStorage:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
   osImages:
-  - openshiftVersion: "4.12.10"
-    version: "412.86.202303211731-0"
-    url: "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.12/4.12.10/rhcos-4.12.10-x86_64-live.x86_64.iso"
-    rootFSUrl: "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.12/4.12.10/rhcos-4.12.10-x86_64-live-rootfs.x86_64.img"
+  - openshiftVersion: "4.14.0"
+    version: "414.92.202310210434-0"
+    url: "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.14/4.14.0/rhcos-4.14.0-x86_64-live.x86_64.iso"
+    rootFSUrl: "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.14/4.14.0/rhcos-4.14.1-x86_64-live-rootfs.x86_64.img"
     cpuArchitecture: "x86_64"
