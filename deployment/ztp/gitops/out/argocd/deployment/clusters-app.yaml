@@ -14,9 +14,9 @@ spec:
     namespace: clusters-sub
   project: ztp-app-project
   source:
-    path: SiteConfig
-    repoURL: https://github.com/manikrihsna/ztp-gitops.git
-    targetRevision: ztp-4.14
+    path: deployment/ztp/gitops/siteconfig
+    repoURL: https://github.com/dell-esg/openshift-bare-metal.git
+    targetRevision: ecws_ocp414
     # uncomment the below plugin if you will be adding the plugin binaries in the same repo->dir where
     # the sitconfig.yaml exist AND use the ../../hack/patch-argocd-dev.sh script to re-patch the deployment-repo-server
 #    plugin:
