@@ -4,14 +4,14 @@ metadata:
  name: agent
 spec:
   databaseStorage:
-    volumeName: db-ztp          
+    volumeName: db-ztp
     accessModes:
     - ReadWriteOnce
     resources:
       requests:
         storage: 10Gi
   filesystemStorage:
-    volumeName: fs-ztp          
+    volumeName: fs-ztp
     accessModes:
     - ReadWriteOnce
     resources:
@@ -24,9 +24,9 @@ spec:
     resources:
       requests:
         storage: 10Gi
-  osImages: 
-    - openshiftVersion: "4.12.17" 
-      version: "412.86.202305161131-0" 
-      url: "http://ipi-65.dcws.lab/rhcos-4.12.17-x86_64-live.x86_64.iso"
-      rootFSUrl:  "http://ipi-65.dcws.lab/rhcos-4.12.17-x86_64-live-rootfs.x86_64.img"
+  osImages:
+    - openshiftVersion: "4.14.0"
+      version: "414.92.202310210434-0"
+      url: "http://bastion.dcws.lab/rhcos-4.14.0-x86_64-live.x86_64.iso"
+      rootFSUrl:  "http://bastion.dcws.lab/rhcos-4.14.0-x86_64-live-rootfs.x86_64.img"
       cpuArchitecture: "x86_64"
