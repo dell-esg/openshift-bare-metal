@@ -401,8 +401,13 @@ def get_device_enumeration(device, os='', server_model=''):
 
     if integrated_nic_pattern in device:
         enumeration_postfix = device.split(integrated_nic_pattern)[1].split('-')[0]
-        if '650' in server_model or '750' in server_model or '660' in server_model or '760' in server_model or '6525' in server_model or '7525' in server_model or '6625' in server_model or '7625' in server_model:
+        print(enumeration_postfix)
+        if '650' in server_model or '750' in server_model or '660' in server_model or '760' in server_model or '6525' in server_model or '7525' in server_model:
             enumeration = 'eno' + str(int(12389 + (int(enumeration_postfix) * 10)))
+            return enumeration
+
+        elif '6625' in server_model or '7625' in server_model:
+            enumeration = 'eno' + str(int(12389 + (int(enumeration_postfix) * 10))) + 'np' + str(int(enumeration_postfix) - 1)
             return enumeration
 
         if os == 'rhcos':
